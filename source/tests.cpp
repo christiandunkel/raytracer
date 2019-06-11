@@ -145,7 +145,7 @@ TEST_CASE ("Task 5.6", "Ray, intersection()") {
 }
 
 // test for task 5.6 given in assignemnt
-TEST_CASE ("intersect_ray_sphere", "[intersect]") {
+TEST_CASE("intersect_ray_sphere", "[intersect]") {
   // Ray
   glm::vec3 ray_origin{0.0f, 0.0f, 0.0f};
   // ray direction has to be normalized !
@@ -162,4 +162,24 @@ TEST_CASE ("intersect_ray_sphere", "[intersect]") {
     distance
   );
   REQUIRE(distance == Approx(4.0f));
+}
+
+/*
+
+  TASK 5.7
+
+  dynamic variable = variable whose address is determined when the program is run
+  static variable = has memory reseved for it at compilation time
+
+*/
+
+TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
+  Color red{255, 0, 0};
+  glm::vec3 position{0.0f, 0.0f, 0.0f};
+  std::shared_ptr<Sphere> s1 = 
+    std::make_shared<Sphere>("sphere0", red, position, 1.2f);
+  std::shared_ptr<Shape> s2 =
+    std::make_shared<Sphere>("sphere1", red, position, 1.2f);
+  s1->print(std::cout);
+  s2->print(std::cout);
 }
