@@ -17,3 +17,22 @@ float Box::volume() const {
         side_z = max_.z - min_.z;
   return side_x * side_y * side_z;
 }
+
+// print box object
+std::ostream& Box::print(std::ostream& os) const {
+  os << "{\"sphere\":{\n" <<
+            "   name: " << name_ << ",\n" <<
+            "   min: {" << 
+                    min_.x << "," <<
+                    min_.y << "," <<
+                    min_.z << 
+            "},\n" << 
+            "   max: {" << 
+                    max_.x << "," <<
+                    max_.y << "," <<
+                    max_.z << 
+            "},\n" << 
+            "   color: " << color_ <<
+        "}}";
+  return os;
+}

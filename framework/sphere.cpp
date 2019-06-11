@@ -22,3 +22,18 @@ float Sphere::volume() const {
 
   return (4.0f / 3.0f) * M_PI * pow(radius_, 3);
 }
+
+// print sphere object
+std::ostream& Sphere::print(std::ostream& os) const {
+  os << "{\"sphere\":{\n" <<
+            "   name: " << name_ << ",\n" <<
+            "   middle: {" << 
+                    middle_.x << "," <<
+                    middle_.y << "," <<
+                    middle_.z << 
+            "},\n" << 
+            "   radius: " << radius_ << ",\n" <<
+            "   color: " << color_ <<
+        "}}";
+  return os;
+}

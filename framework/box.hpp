@@ -31,6 +31,7 @@ class Box : public Shape {
 
     virtual float area() const override;
     virtual float volume() const override;
+    std::ostream& Box::print(std::ostream& os) const override;
 
     // getter
     std::string get_name() const {return name_;}

@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
   return Catch::Session().run(argc, argv);
 }
 
-TEST_CASE("Task 5.2", "Sphere, Box (area(), volume())") {
+TEST_CASE("Task 5.2", "Sphere, Box methods area(), volume()") {
 
   // sphere
   Sphere s1;
@@ -87,8 +87,7 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
 }
 
-
-TEST_CASE("Task 5.4", "print()") {
+TEST_CASE("Task 5.5", "Sphere, Box method print()") {
 
   // sphere
   std::cout << Sphere() << std::endl;
