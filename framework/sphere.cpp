@@ -37,3 +37,32 @@ std::ostream& Sphere::print(std::ostream& os) const {
         "}}";
   return os;
 }
+
+// test if a ray intersects with the sphere
+Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
+
+  Hitpoint h;
+
+  h.has_hit_ = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, pow(radius_, 2), distance);
+
+  if (h.has_hit_) {
+    // 3d point at which ray and sphere intersected
+    glm::vec3 intersection_position;
+    glm::vec3 intersection_normal;
+    glm::intersectRaySphere(
+      ray.origin_, ray.direction_, middle_, pow(radius_, 2), 
+      intersection_position, intersection_normal
+    );
+    h.intersection_ = intersection_position;
+
+    // distance at which the intersection took place
+    h.distance_ = glm::distance(ray.origin_, intersection_position);
+  }
+
+  h.name_ = name_;
+  h.color_ = color_;
+  h.ray_direction_ = ray.direction_;
+
+  return h;
+
+}

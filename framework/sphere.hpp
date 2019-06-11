@@ -4,6 +4,8 @@
 
 #include "color.hpp"
 #include "shape.hpp"
+#include "ray.hpp"
+#include "hitpoint.hpp"
 
 class Sphere : public Shape {
 
@@ -35,6 +37,7 @@ class Sphere : public Shape {
     virtual float area() const override;
     virtual float volume() const override;
     std::ostream& Sphere::print(std::ostream& os) const override;
+    Hitpoint intersect(Ray const& ray, float distance) const;
 
     // getter
     std::string get_name() const {return name_;}
