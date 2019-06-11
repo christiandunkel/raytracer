@@ -17,6 +17,9 @@ class Sphere : public Shape {
     Sphere() :
       Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {}
 
+    Sphere(std::string name) :
+      Shape(name), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {}
+
     Sphere(float radius) :
       Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(radius) {}
 

@@ -17,6 +17,9 @@ class Box : public Shape {
     Box() :
       Shape(), min_(glm::vec3(0.0f, 0.0f, 0.0f)), max_(glm::vec3(0.0f, 0.0f, 0.0f)) {}
 
+    Box(std::string name) :
+      Shape(name), min_(glm::vec3(0.0f, 0.0f, 0.0f)), max_(glm::vec3(0.0f, 0.0f, 0.0f)) {}
+
     Box(glm::vec3 min, glm::vec3 max) :
       Shape(), min_(min), max_(max) {}
 

@@ -45,7 +45,6 @@ TEST_CASE("Task 5.2", "Sphere, Box (area(), volume())") {
 
 }
 
-
 TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
   // sphere
@@ -85,5 +84,16 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
   REQUIRE(b3.get_color().r == Approx(0.3f).epsilon(0.001));
   REQUIRE(b3.get_color().g == Approx(0.4f).epsilon(0.001));
   REQUIRE(b3.get_color().b == Approx(0.5f).epsilon(0.001));
+
+}
+
+
+TEST_CASE("Task 5.4", "print()") {
+
+  // sphere
+  std::cout << Sphere() << std::endl;
+
+  // box
+  std::cout << Box("test name") << std::endl;
 
 }

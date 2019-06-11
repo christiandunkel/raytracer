@@ -25,7 +25,13 @@ class Shape {
   
     virtual float area() const = 0;
     virtual float volume() const = 0;
+
+  public:
+
+    virtual std::ostream& print(std::ostream& os) const;
  
 };
+
+std::ostream& operator <<(std::ostream& os, Shape const& s);
 
 #endif // define SHAPE_HPP
