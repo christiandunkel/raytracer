@@ -3,9 +3,10 @@
 
 class Shape {
 
-  public:
-    virtual int area() const = 0; // flaeche
-    virtual int volume() const = 0; // oberfläche
+  protected:
+  
+    virtual float area() const = 0;
+    virtual float volume() const = 0;
  
 };
 
