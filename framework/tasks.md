@@ -9,13 +9,28 @@ Basisklasse aufgerufen?"
 ## Aufgabe 5.5
 
 *override*
-      - ensures a function is functional
-      - defines that the class overrides a virtual function from a base class
-      - *if this is not true: compile error*
+      - stellt sicher, dass eine Funktion virtuell ist
+      - *falls dies nicht zutrifft: compile error*
+      - definiert, dass eine Klasse eine virtuelle Funktion seiner Basisklasse überschreibt (ersetzt)
 
 ## Aufgabe 5.7
 
 ## Aufgabe 5.8
 
+## Aufgabe 5.9
 
+**Klassenhierarchie**
+- baumartige Struktur
+- ist Beziehung zwischen Klassen dar (Basisklasse und abgeleitete Klassen)
 
+**Objekthierarchie**
+- Relationen (Ordnung, Komposition) der Objekte in einem System (Geschwister, Eltern, Kinder, usw..)
+
+**Klassendiagramm**
+- zeigt statische Struktur eines Systems in Diagram Form
+- allgemein: Klassennamen, Attribute, Relation zwischen Klassen
+
+**Objektdiagramm**
+- stellt alle Objekte eines Systems mit ihren Relationen (Ordnung, Komposition) dar
+- mehrere Objekte einer Klasse möglich
+- Objektname, Klassennamen, Klassenattribute mit zugewiesenen Werten, Relation zu anderen Objekten (Geschwister, Eltern, Kinder, usw..)

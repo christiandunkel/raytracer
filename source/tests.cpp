@@ -90,11 +90,15 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
 }
 
+
+
+
 /*
   override
-    - ensures a function is functional
-    - defines that the class overrides a virtual function from a base class
+    - ensures a function is virtual
     --> if this is not true: compile error
+    - defines that the class overrides (replaces) a virtual function 
+      from a base class
   */
 TEST_CASE("Task 5.5", "Sphere, Box method print()") {
 
@@ -167,6 +171,8 @@ TEST_CASE("intersect_ray_sphere", "[intersect]") {
   REQUIRE(distance == Approx(4.0f));
 }
 
+
+
 /*
 
   TASK 5.7
@@ -206,26 +212,27 @@ TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
   // but are two different objects
 }
 
+
+
+/* 
+  order of constructor / destructor calls
+    1. constructor s1 (shape)
+    2. constructor s1 (sphere)
+    3. constructor s2 (shape)
+    4. constructor s2 (sphere)
+    5. destructor s1 (sphere)
+    6. destructor s1 (shape)
+    7. destructor s2 (sphere)
+    8. destructor s2 (shape)
+
+  on removing 'virtual' of base class 'shape' (and 'override' tags)
+    - destructor for sphere3 is called only once,
+      since it's not linked with child class
+    - 
+  */
 TEST_CASE("Task 5.8", "Virtual destructor") {
   Color red{255, 0, 0};
   glm::vec3 position{0.0f, 0.0f, 0.0f};
-
-  /* 
-    order of constructor / destructor calls
-      1. constructor s1 (shape)
-      2. constructor s1 (sphere)
-      3. constructor s2 (shape)
-      4. constructor s2 (sphere)
-      5. destructor s1 (sphere)
-      6. destructor s1 (shape)
-      7. destructor s2 (sphere)
-      8. destructor s2 (shape)
-
-    on removing 'virtual' of base class 'shape' (and 'override' tags)
-      - destructor for sphere3 is called only once,
-        since it's not linked with child class
-      - 
-   */
 
   Sphere* s1 = new Sphere{position, 1.2f, red, "sphere2"};
   Shape* s2 = new Sphere{position, 1.2f, red, "sphere3"};
