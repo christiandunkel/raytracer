@@ -57,13 +57,13 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
   REQUIRE(s1.get_color().g == Approx(1.0f).epsilon(0.001));
   REQUIRE(s1.get_color().b == Approx(1.0f).epsilon(0.001));
 
-  Sphere s2(Color(0.3f, 0.4f, 0.5f), glm::vec3(0.5f, 0.3f, 5.0f), 25.0f);
+  Sphere s2(glm::vec3(0.5f, 0.3f, 5.0f), 25.0f, Color(0.3f, 0.4f, 0.5f));
   REQUIRE(s2.get_name() == "default");
   REQUIRE(s2.get_color().r == Approx(0.3f).epsilon(0.001));
   REQUIRE(s2.get_color().g == Approx(0.4f).epsilon(0.001));
   REQUIRE(s2.get_color().b == Approx(0.5f).epsilon(0.001));
 
-  Sphere s3("test", Color(0.3f, 0.4f, 0.5f), glm::vec3(0.5f, 0.3f, 5.0f), 25.0f);
+  Sphere s3(glm::vec3(0.5f, 0.3f, 5.0f), 25.0f, Color(0.3f, 0.4f, 0.5f), "test");
   REQUIRE(s3.get_name() == "test");
   REQUIRE(s3.get_color().r == Approx(0.3f).epsilon(0.001));
   REQUIRE(s3.get_color().g == Approx(0.4f).epsilon(0.001));
@@ -76,13 +76,13 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
   REQUIRE(b1.get_color().g == Approx(1.0f).epsilon(0.001));
   REQUIRE(b1.get_color().b == Approx(1.0f).epsilon(0.001));
 
-  Box b2(Color(0.3f, 0.4f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+  Box b2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), Color(0.3f, 0.4f, 0.5f));
   REQUIRE(b2.get_name() == "default");
   REQUIRE(b2.get_color().r == Approx(0.3f).epsilon(0.001));
   REQUIRE(b2.get_color().g == Approx(0.4f).epsilon(0.001));
   REQUIRE(b2.get_color().b == Approx(0.5f).epsilon(0.001));
 
-  Box b3("test", Color(0.3f, 0.4f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+  Box b3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), Color(0.3f, 0.4f, 0.5f), "test");
   REQUIRE(b3.get_name() == "test");
   REQUIRE(b3.get_color().r == Approx(0.3f).epsilon(0.001));
   REQUIRE(b3.get_color().g == Approx(0.4f).epsilon(0.001));
@@ -90,13 +90,16 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
 }
 
+/*
+  override
+    - ensures a function is functional
+    - defines that the class overrides a virtual function from a base class
+    --> if this is not true: compile error
+  */
 TEST_CASE("Task 5.5", "Sphere, Box method print()") {
 
-  // sphere
-  std::cout << Sphere() << std::endl;
-
-  // box
-  std::cout << Box("test name") << std::endl;
+  std::cout << Sphere() << std::endl; // print sphere
+  std::cout << Box("test name") << std::endl; // print box
 
 }
 
@@ -168,8 +171,25 @@ TEST_CASE("intersect_ray_sphere", "[intersect]") {
 
   TASK 5.7
 
+  Zeiger Referenzierung dynamisch
+    - dynamische Datenstrukturen (wachsen/schrumpfen in Runtime e.g. Listen, Bäume, usw..)
+    - 
+
   dynamic variable = variable whose address is determined when the program is run
   static variable = has memory reseved for it at compilation time
+
+  std::shared_ptr
+    - smart pointer
+    - retains shared ownership of an object thrugh pointer
+    - several smart pointers may own the same object
+    - object is destroyed, when:
+      - last smart pointer owning it is destroyed
+      - last smart pointer owning it is assigned another pointer via = o. reset()
+    - can own object while storing pointer to another
+      - for exammple, can be used to point to an object's member, while still owning the object
+
+  std::make_shared
+    - construct T object and wrap it in smart pointer
 
 */
 
@@ -177,9 +197,42 @@ TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
   Color red{255, 0, 0};
   glm::vec3 position{0.0f, 0.0f, 0.0f};
   std::shared_ptr<Sphere> s1 = 
-    std::make_shared<Sphere>("sphere0", red, position, 1.2f);
+    std::make_shared<Sphere>(position, 1.2f, red, "sphere0");
   std::shared_ptr<Shape> s2 =
-    std::make_shared<Sphere>("sphere1", red, position, 1.2f);
+    std::make_shared<Sphere>(position, 1.2f, red, "sphere1");
   s1->print(std::cout);
   s2->print(std::cout);
+  // s1 and s2 have the same content (except for the name),
+  // but are two different objects
+}
+
+TEST_CASE("Task 5.8", "Virtual destructor") {
+  Color red{255, 0, 0};
+  glm::vec3 position{0.0f, 0.0f, 0.0f};
+
+  /* 
+    order of constructor / destructor calls
+      1. constructor s1 (shape)
+      2. constructor s1 (sphere)
+      3. constructor s2 (shape)
+      4. constructor s2 (sphere)
+      5. destructor s1 (sphere)
+      6. destructor s1 (shape)
+      7. destructor s2 (sphere)
+      8. destructor s2 (shape)
+
+    on removing 'virtual' of base class 'shape' (and 'override' tags)
+      - destructor for sphere3 is called only once,
+        since it's not linked with child class
+      - 
+   */
+
+  Sphere* s1 = new Sphere{position, 1.2f, red, "sphere2"};
+  Shape* s2 = new Sphere{position, 1.2f, red, "sphere3"};
+
+  s1->print(std::cout);
+  s2->print(std::cout);
+
+  delete s1;
+  delete s2;
 }

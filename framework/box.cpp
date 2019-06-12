@@ -1,5 +1,9 @@
 #include "box.hpp"
 
+Box::~Box() {
+  std::cout << "Destroyed box " + name_ << std::endl;
+}
+
 float Box::area() const {
   // area = 2*l*w + 2*l*h + 2*w*h
   float side_x = max_.x - min_.x,
@@ -33,6 +37,6 @@ std::ostream& Box::print(std::ostream& os) const {
                     max_.z << 
             "},\n" << 
             "   color: " << color_ <<
-        "}}";
+        "}}" << std::endl;
   return os;
 }

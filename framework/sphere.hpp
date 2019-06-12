@@ -17,22 +17,36 @@ class Sphere : public Shape {
   public:
 
     Sphere() :
-      Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {}
+      Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {
+        std::cout << "Created sphere " + name_ << std::endl;
+      }
 
     Sphere(std::string name) :
-      Shape(name), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {}
+      Shape(name), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {
+        std::cout << "Created sphere " + name_ << std::endl;
+      }
 
     Sphere(float radius) :
-      Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(radius) {}
+      Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(radius) {
+        std::cout << "Created sphere " + name_ << std::endl;
+      }
 
     Sphere(glm::vec3 middle, float radius) :
-      Shape(), middle_(middle), radius_(radius) {}
+      Shape(), middle_(middle), radius_(radius) {
+        std::cout << "Created sphere " + name_ << std::endl;
+      }
 
-    Sphere(Color color, glm::vec3 middle, float radius) :
-      Shape(color), middle_(middle), radius_(radius) {}
+    Sphere(glm::vec3 middle, float radius, Color color) :
+      Shape(color), middle_(middle), radius_(radius) {
+        std::cout << "Created sphere " + name_ << std::endl;
+      }
 
-    Sphere(std::string name, Color color, glm::vec3 middle, float radius) :
-      Shape(name, color), middle_(middle), radius_(radius) {}
+    Sphere(glm::vec3 middle, float radius, Color color, std::string name) :
+      Shape(name, color), middle_(middle), radius_(radius) {
+        std::cout << "Created sphere " + name_ << std::endl;
+      }
+
+    ~Sphere() override;
 
     virtual float area() const override;
     virtual float volume() const override;
@@ -40,10 +54,10 @@ class Sphere : public Shape {
     Hitpoint intersect(Ray const& ray, float distance) const;
 
     // getter
-    std::string get_name() const {return name_;}
-    Color get_color() const {return color_;}
     glm::vec3 get_middle() const {return middle_;}
     float get_radius() const {return radius_;}
+    Color get_color() const {return color_;}
+    std::string get_name() const {return name_;}
  
 };
 

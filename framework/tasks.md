@@ -8,8 +8,14 @@ Basisklasse aufgerufen?"
 
 ## Aufgabe 5.5
 
-"Erklären Sie den Effekt des Schlüsselworts override im Kontext der Vererbung! Was passiert, wenn Sie das Schlüsselwort weglassen?"
+*override*
+      - ensures a function is functional
+      - defines that the class overrides a virtual function from a base class
+      - *if this is not true: compile error*
 
 ## Aufgabe 5.7
 
-"Erklären Sie anhand des Beispiels die Begriffe „Statischer Typ einer Variablen“ und „Dynamischer Typ einer Variablen“. Wann wird welche Art des Typs überprüft? Was sind die dynamischen und die statischen Typen der Variablen s1 bzw s2?"
+## Aufgabe 5.8
+
+
+

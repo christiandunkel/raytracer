@@ -3,6 +3,10 @@
 #include <iostream>
 #include "sphere.hpp"
 
+Sphere::~Sphere() {
+  std::cout << "Destroyed sphere " + name_ << std::endl;
+}
+
 float Sphere::area() const {
 
   // error -> radius must at least be 0
@@ -34,7 +38,7 @@ std::ostream& Sphere::print(std::ostream& os) const {
             "},\n" << 
             "   radius: " << radius_ << ",\n" <<
             "   color: " << color_ <<
-        "}}";
+        "}}" << std::endl;
   return os;
 }
 

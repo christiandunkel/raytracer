@@ -12,16 +12,24 @@ class Shape {
     Color color_;
 
     Shape() :
-      name_("default"), color_(Color(1.0f, 1.0f, 1.0f)) {}
+      name_("default"), color_(Color(1.0f, 1.0f, 1.0f)) {
+        std::cout << "Created shape " + name_ << std::endl;
+      }
 
     Shape(std::string name) :
-      name_(name), color_(Color(1.0f, 1.0f, 1.0f)) {}
+      name_(name), color_(Color(1.0f, 1.0f, 1.0f)) {
+        std::cout << "Created shape " + name_ << std::endl;
+      }
 
     Shape(Color color) :
-      name_("default"), color_(color) {}
+      name_("default"), color_(color) {
+        std::cout << "Created shape " + name_ << std::endl;
+      }
 
     Shape(std::string name, Color color) :
-      name_(name), color_(color) {}
+      name_(name), color_(color) {
+        std::cout << "Created shape " + name_ << std::endl;
+      }
   
     virtual float area() const = 0;
     virtual float volume() const = 0;
@@ -29,6 +37,7 @@ class Shape {
   public:
 
     virtual std::ostream& print(std::ostream& os) const;
+    virtual ~Shape();
  
 };
 
