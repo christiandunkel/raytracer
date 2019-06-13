@@ -48,6 +48,12 @@ TEST_CASE("Task 5.2", "Sphere, Box methods area(), volume()") {
 
 }
 
+
+/*
+  create sphere object
+    --> calls base class constructor (shape) first,
+        then constructor of sphere
+ */
 TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
   // sphere

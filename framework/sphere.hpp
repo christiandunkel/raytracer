@@ -7,7 +7,7 @@
 #include "ray.hpp"
 #include "hitpoint.hpp"
 
-class Sphere : public Shape {
+class Sphere : public virtual Shape {
 
   private:
 
@@ -17,7 +17,7 @@ class Sphere : public Shape {
   public:
 
     Sphere() :
-      Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {
+      middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {
         std::cout << "Created sphere " + name_ << std::endl;
       }
 
@@ -27,7 +27,7 @@ class Sphere : public Shape {
       }
 
     Sphere(float radius) :
-      Shape(), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(radius) {
+      middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(radius) {
         std::cout << "Created sphere " + name_ << std::endl;
       }
 

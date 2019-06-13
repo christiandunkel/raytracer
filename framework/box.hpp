@@ -5,7 +5,7 @@
 #include "color.hpp"
 #include "shape.hpp"
 
-class Box : public Shape {
+class Box : public virtual Shape {
 
   private:
   
@@ -15,7 +15,7 @@ class Box : public Shape {
   public:
 
     Box() :
-      Shape(), min_(glm::vec3(0.0f, 0.0f, 0.0f)), max_(glm::vec3(0.0f, 0.0f, 0.0f)) {
+      min_(glm::vec3(0.0f, 0.0f, 0.0f)), max_(glm::vec3(0.0f, 0.0f, 0.0f)) {
         std::cout << "Created box " + name_ << std::endl;
       }
 
@@ -25,7 +25,7 @@ class Box : public Shape {
       }
 
     Box(glm::vec3 min, glm::vec3 max) :
-      Shape(), min_(min), max_(max) {
+      min_(min), max_(max) {
         std::cout << "Created box " + name_ << std::endl;
       }
 
