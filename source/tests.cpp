@@ -101,10 +101,10 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
 /*
   override
-    - ensures a function is virtual
-    --> if this is not true: compile error
-    - defines that the class overrides (replaces) a virtual function 
-      from a base class
+    - overriding would happen regardless, 
+      but 'override' makes sure that the inhterited method is virtual
+    --> if it is not virtual => compile error
+    
   */
 TEST_CASE("Task 5.5", "Sphere, Box method print()") {
 
@@ -183,12 +183,11 @@ TEST_CASE("intersect_ray_sphere", "[intersect]") {
 
   TASK 5.7
 
-  Zeiger Referenzierung dynamisch
-    - dynamische Datenstrukturen (wachsen/schrumpfen in Runtime e.g. Listen, Bäume, usw..)
-    - 
-
-  dynamic variable = variable whose address is determined when the program is run
-  static variable = has memory reseved for it at compilation time
+  dynamic variable = 
+    variable whose address is determined when the program is run
+  static variable = 
+    already known at compilation time, 
+    has memory reseved for it at compilation time
 
   std::shared_ptr
     - smart pointer
@@ -234,7 +233,15 @@ TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
   on removing 'virtual' of base class 'shape' (and 'override' tags)
     - destructor for sphere3 is called only once,
       since it's not linked with child class
-    - 
+  
+    1. constructor s1 (shape)
+    2. constructor s1 (sphere)
+    3. constructor s2 (shape)
+    4. constructor s2 (sphere)
+    5. destructor s1 (sphere)
+    6. destructor s1 (shape)
+    7. destructor s2 (shape)
+
   */
 TEST_CASE("Task 5.8", "Virtual destructor") {
   Color red{255, 0, 0};
