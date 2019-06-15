@@ -7,7 +7,7 @@
 #include "ray.hpp"
 #include "hitpoint.hpp"
 
-class Sphere : public virtual Shape {
+class Sphere : public Shape {
 
   private:
 

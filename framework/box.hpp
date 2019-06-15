@@ -5,7 +5,7 @@
 #include "color.hpp"
 #include "shape.hpp"
 
-class Box : public virtual Shape {
+class Box : public Shape {
 
   private:
   

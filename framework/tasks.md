@@ -1,10 +1,13 @@
 
+
 # Programmiersprachen 5
 
 ## Aufgabe 5.3
 
 - beim Erstellen des Sphere Objekts
---> ruft den Konstruktor der Basisklasse (Shape) zuerst auf, dann den Konstruktor der abgeleiteten Klasse (Sphere)
+- ruft den Konstruktor der Basisklasse (Shape) zuerst auf, dann den Konstruktor der abgeleiteten Klasse (Sphere)
+- wenn der eine Initialisierungsliste existiert, konstruktor der basisklasse wird am Anfang der Liste aufgerufen
+- Konstruktor der Basisklasse kann als Punkt in Liste (am Anfang) definiert werden e.g. Shape(), Shape(string name), ..
 
 ## Aufgabe 5.5
 
@@ -29,10 +32,20 @@
   - last smart pointer owning it is destroyed
   - last smart pointer owning it is assigned another pointer via = o. reset()
 - can own object while storing pointer to another
-  - for exammple, can be used to point to an object's member, while still owning the object
+  - for example, can be used to point to an object's member, while still owning the object
 
 *std::make_shared*
 - construct T object and wrap it in smart pointer
+
+`std::shared_ptr<Sphere> s1 = std::make_shared<Sphere>(position, 1.2f, red, "sphere0");`
+- static pointer -> static pointer
+  - in compilation-time known
+  - can use all methods of sphere
+
+`std::shared_ptr<Shape> s2 = std::make_shared<Sphere>(position, 1.2f, red, "sphere1");`
+- static pointer -> to dynamic object
+  - in run-time looks for Sphere object
+  - can only run methods of Sphere (but virtual methods overriden by sphere still work)
 
 ## Aufgabe 5.8
 
@@ -47,7 +60,12 @@
 8. destructor s2 (shape)
 
 on removing 'virtual' of base class 'shape' (and 'override' tags)
-destructor for sphere3 is called only once, since it's not linked with child class
+- destructor for sphere3 is called only once, since it's not linked with child class
+- because:
+  - shape -> sphere
+  - shape delete -> calls size_of for size of object 
+    - -> gets size of base class, because not virtual 
+    - -> only deletes base object 
 
 1. constructor s1 (shape)
 2. constructor s1 (sphere)

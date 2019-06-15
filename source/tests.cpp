@@ -51,8 +51,10 @@ TEST_CASE("Task 5.2", "Sphere, Box methods area(), volume()") {
 
 /*
   create sphere object
-    --> calls base class constructor (shape) first,
-        then constructor of sphere
+    - calls base class constructor (shape) first, then constructor of sphere
+    - if there's an initializing list, constructor of base class is 
+        called at beginning of list
+    - can be defined as point in list as well e.g. Shape(), Shape(string name),..
  */
 TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
@@ -197,7 +199,7 @@ TEST_CASE("intersect_ray_sphere", "[intersect]") {
       - last smart pointer owning it is destroyed
       - last smart pointer owning it is assigned another pointer via = o. reset()
     - can own object while storing pointer to another
-      - for exammple, can be used to point to an object's member, while still owning the object
+      - for example, can be used to point to an object's member, while still owning the object
 
   std::make_shared
     - construct T object and wrap it in smart pointer
@@ -209,8 +211,21 @@ TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
   glm::vec3 position{0.0f, 0.0f, 0.0f};
   std::shared_ptr<Sphere> s1 = 
     std::make_shared<Sphere>(position, 1.2f, red, "sphere0");
+  /* 
+    static pointer -> static pointer
+      - in compilation-time known
+      - can use all methods of sphere
+  */
+
   std::shared_ptr<Shape> s2 =
     std::make_shared<Sphere>(position, 1.2f, red, "sphere1");
+  /* 
+      static pointer -> to dynamic object
+       - in run-time looks for Sphere object
+       - can only run methods of Sphere 
+         (but virtual methods overriden by sphere still work) 
+  */
+
   s1->print(std::cout);
   s2->print(std::cout);
   // s1 and s2 have the same content (except for the name),
@@ -233,6 +248,11 @@ TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
   on removing 'virtual' of base class 'shape' (and 'override' tags)
     - destructor for sphere3 is called only once,
       since it's not linked with child class
+    - because:
+        shape -> sphere
+        shape delete -> calls size_of for size of object 
+            -> gets size of base class, because not virtual 
+            -> only deletes base object 
   
     1. constructor s1 (shape)
     2. constructor s1 (sphere)
