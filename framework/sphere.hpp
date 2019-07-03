@@ -34,13 +34,13 @@ class Sphere : public Shape {
         std::cout << "Created sphere " + name_ << std::endl;
       }
 
-    Sphere(glm::vec3 middle, float radius, Color color) :
-      Shape(color), middle_(middle), radius_(radius) {
+    Sphere(glm::vec3 middle, float radius, std::shared_ptr<Material> material) :
+      Shape(material), middle_(middle), radius_(radius) {
         std::cout << "Created sphere " + name_ << std::endl;
       }
 
-    Sphere(glm::vec3 middle, float radius, Color color, std::string name) :
-      Shape(name, color), middle_(middle), radius_(radius) {
+    Sphere(glm::vec3 middle, float radius, std::shared_ptr<Material> material, std::string name) :
+      Shape(name, material), middle_(middle), radius_(radius) {
         std::cout << "Created sphere " + name_ << std::endl;
       }
 
@@ -54,8 +54,6 @@ class Sphere : public Shape {
     // getter
     glm::vec3 get_middle() const {return middle_;}
     float get_radius() const {return radius_;}
-    Color get_color() const {return color_;}
-    std::string get_name() const {return name_;}
  
 };
 

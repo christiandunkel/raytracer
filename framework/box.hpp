@@ -28,13 +28,13 @@ class Box : public Shape {
         std::cout << "Created box " + name_ << std::endl;
       }
 
-    Box(glm::vec3 min, glm::vec3 max, Color color) :
-      Shape(color), min_(min), max_(max) {
+    Box(glm::vec3 min, glm::vec3 max, std::shared_ptr<Material> material) :
+      Shape(material), min_(min), max_(max) {
         std::cout << "Created box " + name_ << std::endl;
       }
 
-    Box(glm::vec3 min, glm::vec3 max, Color color, std::string name) :
-      Shape(name, color), min_(min), max_(max) {
+    Box(glm::vec3 min, glm::vec3 max, std::shared_ptr<Material> material, std::string name) :
+      Shape(name, material), min_(min), max_(max) {
         std::cout << "Created box " + name_ << std::endl;
       }
     
@@ -49,9 +49,7 @@ class Box : public Shape {
     // getter
     glm::vec3 get_min() const {return min_;}
     glm::vec3 get_max() const {return max_;}
-    Color get_color() const {return color_;}
-    std::string get_name() const {return name_;}
- 
+
 };
 
 #endif // define BOX_HPP

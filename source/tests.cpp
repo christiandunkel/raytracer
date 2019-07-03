@@ -58,6 +58,10 @@ TEST_CASE("Task 5.2", "Sphere, Box methods area(), volume()") {
  */
 TEST_CASE("Task 5.3", "name_, color_ attributes") {
 
+  /*  DON'T TEST, excluded since task 6.3, 
+      since Color color_ has been replaced by Material material_
+
+
   // sphere
   Sphere s1;
   REQUIRE(s1.get_name() == "default");
@@ -94,7 +98,7 @@ TEST_CASE("Task 5.3", "name_, color_ attributes") {
   REQUIRE(b3.get_name() == "test");
   REQUIRE(b3.get_color().r == Approx(0.3f).epsilon(0.001));
   REQUIRE(b3.get_color().g == Approx(0.4f).epsilon(0.001));
-  REQUIRE(b3.get_color().b == Approx(0.5f).epsilon(0.001));
+  REQUIRE(b3.get_color().b == Approx(0.5f).epsilon(0.001));*/
 
 }
 
@@ -207,10 +211,23 @@ TEST_CASE("intersect_ray_sphere", "[intersect]") {
 */
 
 TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
-  Color red{255, 0, 0};
+
+  /*
+   * red plastic definition:
+   * http://devernay.free.fr/cours/opengl/materials.html
+   */
+
+  std::shared_ptr<Material> red_plastic(new Material{
+    "red_plastic",
+    Color{0.0f, 0.0f, 0.0f},
+    Color{0.5f, 0.0f, 0.0f}, // red diffuse color
+    Color{0.7f, 0.6f, 0.6f},
+    0.25f * 128.0f // multiply with 128, because standards
+  });
+
   glm::vec3 position{0.0f, 0.0f, 0.0f};
   std::shared_ptr<Sphere> s1 = 
-    std::make_shared<Sphere>(position, 1.2f, red, "sphere0");
+    std::make_shared<Sphere>(position, 1.2f, red_plastic, "sphere0");
   /* 
     static pointer -> static pointer
       - in compilation-time known
@@ -218,7 +235,7 @@ TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
   */
 
   std::shared_ptr<Shape> s2 =
-    std::make_shared<Sphere>(position, 1.2f, red, "sphere1");
+    std::make_shared<Sphere>(position, 1.2f, red_plastic, "sphere1");
   /* 
       static pointer -> to dynamic object
        - in run-time looks for Sphere object
@@ -264,11 +281,24 @@ TEST_CASE("Task 5.7", "Static vs. Dynamic Type of a variable") {
 
   */
 TEST_CASE("Task 5.8", "Virtual destructor") {
-  Color red{255, 0, 0};
+
+  /*
+   * red plastic definition:
+   * http://devernay.free.fr/cours/opengl/materials.html
+   */
+
+  std::shared_ptr<Material> red_plastic(new Material{
+    "red_plastic",
+    Color{0.0f, 0.0f, 0.0f},
+    Color{0.5f, 0.0f, 0.0f}, // red diffuse color
+    Color{0.7f, 0.6f, 0.6f},
+    0.25f * 128.0f // multiply with 128, because standards
+  });
+
   glm::vec3 position{0.0f, 0.0f, 0.0f};
 
-  Sphere* s1 = new Sphere{position, 1.2f, red, "sphere2"};
-  Shape* s2 = new Sphere{position, 1.2f, red, "sphere3"};
+  Sphere* s1 = new Sphere{position, 1.2f, red_plastic, "sphere2"};
+  Shape* s2 = new Sphere{position, 1.2f, red_plastic, "sphere3"};
 
   s1->print(std::cout);
   s2->print(std::cout);
@@ -294,11 +324,9 @@ TEST_CASE("Task 6.3", "Box intersect()") {
   Hitpoint h1 = b1.intersect(r1, 4.0f);
   REQUIRE(h1.has_hit_ == true);
 
-  std::cout << h1.intersection_.x << std::endl;
-  std::cout << h1.intersection_.y << std::endl;
-  std::cout << h1.intersection_.z << std::endl;
-
   REQUIRE(h1.intersection_ == glm::vec3(0.0f, 2.0f, 0.0f));
+
+
 
   // ray goes sideways -> misses
   Ray r2{

@@ -29,17 +29,20 @@ float Sphere::volume() const {
 
 // print sphere object
 std::ostream& Sphere::print(std::ostream& os) const {
-  os << "{\"sphere\":{\n" <<
-            "   name: " << name_ << ",\n" <<
-            "   middle: {" << 
-                    middle_.x << "," <<
-                    middle_.y << "," <<
-                    middle_.z << 
-            "},\n" << 
-            "   radius: " << radius_ << ",\n" <<
-            "   color: " << color_ <<
-        "}}" << std::endl;
+
+  std::string middle_point = "[" +
+    std::to_string(middle_.x) + ", " + 
+    std::to_string(middle_.y) + ", " + 
+    std::to_string(middle_.z) +
+  "]"; 
+
+  os << std::endl << "Sphere:" << std::endl <<
+    "\tMiddle Point: " << middle_point << std::endl <<
+    "\tRadius: " << radius_ << std::endl;
+    Shape::print(os);
+
   return os;
+
 }
 
 // test if a ray intersects with the sphere
@@ -64,7 +67,7 @@ Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
   }
 
   h.name_ = name_;
-  h.color_ = color_;
+  h.color_ = material_->kd_;
   h.ray_direction_ = ray.direction_;
 
   return h;

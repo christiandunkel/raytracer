@@ -5,31 +5,34 @@
 #include "color.hpp"
 #include "ray.hpp"
 #include "hitpoint.hpp"
+#include "material.hpp"
 
 class Shape {
 
   protected:
 
     std::string name_;
-    Color color_;
+    std::shared_ptr<Material> material_;
 
     Shape() :
-      name_("default"), color_(Color(1.0f, 1.0f, 1.0f)) {
+      name_("default") {
         std::cout << "Created shape " + name_ << std::endl;
+        material_ = std::make_shared<Material>();
       }
 
     Shape(std::string name) :
-      name_(name), color_(Color(1.0f, 1.0f, 1.0f)) {
+      name_(name) {
+        std::cout << "Created shape " + name_ << std::endl;
+        material_ = std::make_shared<Material>();
+      }
+
+    Shape(std::shared_ptr<Material> material) :
+      name_("default"), material_(material) {
         std::cout << "Created shape " + name_ << std::endl;
       }
 
-    Shape(Color color) :
-      name_("default"), color_(color) {
-        std::cout << "Created shape " + name_ << std::endl;
-      }
-
-    Shape(std::string name, Color color) :
-      name_(name), color_(color) {
+    Shape(std::string name, std::shared_ptr<Material> material) :
+      name_(name), material_(material) {
         std::cout << "Created shape " + name_ << std::endl;
       }
   
@@ -42,6 +45,14 @@ class Shape {
 
     virtual std::ostream& print(std::ostream& os) const;
     virtual ~Shape();
+
+    std::string get_name() const {
+      return name_;
+    }
+
+    std::shared_ptr<Material> get_material() const {
+      return material_;
+    }
  
 };
 

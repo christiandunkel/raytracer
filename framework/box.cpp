@@ -24,20 +24,24 @@ float Box::volume() const {
 
 // print box object
 std::ostream& Box::print(std::ostream& os) const {
-  os << "{\"sphere\":{\n" <<
-            "   name: " << name_ << ",\n" <<
-            "   min: {" << 
-                    min_.x << "," <<
-                    min_.y << "," <<
-                    min_.z << 
-            "},\n" << 
-            "   max: {" << 
-                    max_.x << "," <<
-                    max_.y << "," <<
-                    max_.z << 
-            "},\n" << 
-            "   color: " << color_ <<
-        "}}" << std::endl;
+
+  std::string min_point = "[" + 
+      std::to_string(min_.x) + ", " + 
+      std::to_string(min_.y) + ", " + 
+      std::to_string(min_.z) + 
+    "]";
+
+  std::string max_point = "[" + 
+      std::to_string(max_.x) + ", " + 
+      std::to_string(max_.y) + ", " + 
+      std::to_string(max_.z) + 
+    "]";
+
+  os << std::endl << "Box:" << std::endl <<
+        "Min Point: " << min_point << std::endl <<
+        "Max Point: " << max_point << std::endl;
+        Shape::print(os);
+
   return os;
 }
 
@@ -47,7 +51,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
 
   // member variables of box object
   hitpoint.name_ = name_;
-  hitpoint.color_ = color_;
+  hitpoint.color_ = material_->kd_;
   hitpoint.ray_direction_ = ray.direction_;
 
   float tmin = (min_.x - ray.origin_.x) / ray.direction_.x; 

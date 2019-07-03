@@ -6,10 +6,11 @@ Shape::~Shape() {
 
 // print shape object
 std::ostream& Shape::print(std::ostream& os) const {
-  os << "{\"shape\":{\n" <<
-            "   name: " << name_ << ",\n" << 
-            "   color: " << color_ << 
-        "}}" << std::endl;
+  
+  os << "Shape:" << std::endl <<
+        "\tName: " << name_ << std::endl;
+        material_->print(os);
+  
   return os;
 }
 
