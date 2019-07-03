@@ -40,3 +40,75 @@ std::ostream& Box::print(std::ostream& os) const {
         "}}" << std::endl;
   return os;
 }
+
+Hitpoint Box::intersect(Ray const &ray, float distance) const {
+
+  Hitpoint hitpoint;
+
+  // member variables of box object
+  hitpoint.name_ = name_;
+  hitpoint.color_ = color_;
+  hitpoint.ray_direction_ = ray.direction_;
+
+  float tmin = (min_.x - ray.origin_.x) / ray.direction_.x; 
+  float tmax = (max_.x - ray.origin_.x) / ray.direction_.x; 
+
+  if (tmin > tmax) {
+    std::swap(tmin, tmax);
+  } 
+
+  float tymin = (min_.y - ray.origin_.y) / ray.direction_.y;
+  float tymax = (max_.y - ray.origin_.y) / ray.direction_.y;
+
+  if (tymin > tymax) {
+    std::swap(tymin, tymax); 
+  }
+
+  if (tmin > tymax || tymin > tmax) {
+    hitpoint.has_hit_ = false;
+  }
+  else {
+
+    if (tymin > tmin) {
+      tmin = tymin;
+    }  
+
+    if (tymax < tmax) { 
+      tmax = tymax;
+    }
+
+    float tzmin = (min_.z - ray.origin_.z) / ray.direction_.z; 
+    float tzmax = (max_.z - ray.origin_.z) / ray.direction_.z; 
+
+    if (tzmin > tzmax) {
+      std::swap(tzmin, tzmax); 
+    }
+
+    if (tmin > tzmax || tzmin > tmax) { 
+      hitpoint.has_hit_ = false;
+    }
+    else {
+
+      if (tzmin > tmin) { 
+        tmin = tzmin;
+      }
+
+      if (tzmax < tmax) {
+        tmax = tzmax;
+      }
+
+      hitpoint.has_hit_ = true;
+      hitpoint.intersection_ = glm::vec3{
+        tmin * ray.direction_.x + ray.origin_.x, 
+        tmin * ray.direction_.y + ray.origin_.y, 
+        tmin * ray.direction_.z + ray.origin_.z
+      };
+      hitpoint.distance_ = glm::distance(ray.origin_, hitpoint.intersection_);
+
+    }
+
+  }
+
+  return hitpoint;
+
+}

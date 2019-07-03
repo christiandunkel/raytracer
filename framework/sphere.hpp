@@ -2,10 +2,8 @@
 #define SPHERE_HPP
 #include <glm/vec3.hpp>
 
-#include "color.hpp"
 #include "shape.hpp"
 #include "ray.hpp"
-#include "hitpoint.hpp"
 
 class Sphere : public Shape {
 
@@ -48,10 +46,10 @@ class Sphere : public Shape {
 
     ~Sphere() override;
 
-    virtual float area() const override;
-    virtual float volume() const override;
+    float area() const override;
+    float volume() const override;
     std::ostream& Sphere::print(std::ostream& os) const override;
-    Hitpoint intersect(Ray const& ray, float distance) const;
+    Hitpoint intersect(Ray const& ray, float distance) const override;
 
     // getter
     glm::vec3 get_middle() const {return middle_;}

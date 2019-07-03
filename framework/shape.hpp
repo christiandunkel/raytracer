@@ -3,6 +3,8 @@
 #include <string>
 
 #include "color.hpp"
+#include "ray.hpp"
+#include "hitpoint.hpp"
 
 class Shape {
 
@@ -33,6 +35,8 @@ class Shape {
   
     virtual float area() const = 0;
     virtual float volume() const = 0;
+
+    virtual Hitpoint intersect(Ray const &ray, float distance) const = 0;
 
   public:
 

@@ -2,7 +2,6 @@
 #define BOX_HPP
 #include <glm/vec3.hpp>
 
-#include "color.hpp"
 #include "shape.hpp"
 
 class Box : public Shape {
@@ -41,9 +40,11 @@ class Box : public Shape {
     
     ~Box() override;
 
-    virtual float area() const override;
-    virtual float volume() const override;
+    float area() const override;
+    float volume() const override;
     std::ostream& Box::print(std::ostream& os) const override;
+
+    Hitpoint intersect(Ray const &ray, float distance) const override;
 
     // getter
     glm::vec3 get_min() const {return min_;}

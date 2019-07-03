@@ -276,3 +276,36 @@ TEST_CASE("Task 5.8", "Virtual destructor") {
   delete s1;
   delete s2;
 }
+
+
+
+TEST_CASE("Task 6.3", "Box intersect()") {
+
+  // box vertically, directly above 0/0/0
+  // ray goes vertically upwards -> hits
+  Box b1(
+    glm::vec3(-1.0f, 2.0f, -1.0f),
+    glm::vec3(1.0f, 4.0f, 1.0f)
+  );
+  Ray r1{
+    glm::vec3(0.0f, 0.0f, 0.0f),
+    glm::vec3(0.0f, 1.0f, 0.0f)
+  };
+  Hitpoint h1 = b1.intersect(r1, 4.0f);
+  REQUIRE(h1.has_hit_ == true);
+
+  std::cout << h1.intersection_.x << std::endl;
+  std::cout << h1.intersection_.y << std::endl;
+  std::cout << h1.intersection_.z << std::endl;
+
+  REQUIRE(h1.intersection_ == glm::vec3(0.0f, 2.0f, 0.0f));
+
+  // ray goes sideways -> misses
+  Ray r2{
+    glm::vec3(0.0f, 0.0f, 0.0f),
+    glm::vec3(1.0f, 0.0f, 0.0f)
+  };
+  Hitpoint h2 = b1.intersect(r2, 4.0f);
+  REQUIRE(h2.has_hit_ == false);
+
+}
