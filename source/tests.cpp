@@ -382,7 +382,7 @@ TEST_CASE("Task 6.5", "") {
 
   sdfs.parse("resource/materials_test.sdf");
 
-  REQUIRE(sdfs.get_material_vec().size() == 4);
+  REQUIRE(sdfs.material_vec_.size() == 4);
 
   // BEST CASE: 1
   // AVERAGE CASE: n/2
