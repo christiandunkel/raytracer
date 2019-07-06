@@ -48,8 +48,8 @@ void SdfManager::parse(std::string const& file_path) {
       if (parts.at(1) == "material") {
 
         // remove "define material"
-        parts.erase(parts.begin());
-        parts.erase(parts.begin() + 1);
+        parts.erase(parts.begin()); // removes "define"
+        parts.erase(parts.begin()); // removes "material"
 
         // material must have 11 (name, 3 colors, one float) values
         if (parts.size() != 11) {
@@ -62,7 +62,7 @@ void SdfManager::parse(std::string const& file_path) {
           }
         }
 
-        std::cout << "SDFManager: Found material in " << file_path << "." << std::endl;
+        std::cout << "SDFManager: Found material '" + parts.at(0) + "' in " << file_path << "." << std::endl;
 
         std::shared_ptr<Material> material = std::make_shared<Material>();
 
@@ -122,7 +122,11 @@ std::shared_ptr<Material> SdfManager::find_material_in_set(std::string const& na
 
 std::shared_ptr<Material> SdfManager::find_material_in_map(std::string const& name) const {
 
+  auto it = material_map_.find(name);
 
+  if (it->second != nullptr) {
+    return it->second;
+  }
 
   return nullptr;
 }

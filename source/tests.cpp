@@ -380,5 +380,63 @@ TEST_CASE("Task 6.4", "Material DTO") {
 TEST_CASE("Task 6.5", "") {
   SdfManager sdfs;
 
-  sdfs.parse("resource/materials.sdf");
+  sdfs.parse("resource/materials_test.sdf");
+
+  REQUIRE(sdfs.get_material_vec().size() == 4);
+
+  // BEST CASE: 1
+  // AVERAGE CASE: n/2
+  // WORST CASE: n
+  // linear time
+
+  auto red_material = sdfs.find_material_in_vec("red");
+
+  REQUIRE(red_material->name_ == "red");
+  REQUIRE(red_material->ka_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(red_material->ka_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(red_material->ka_.b == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(red_material->kd_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(red_material->kd_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(red_material->kd_.b == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(red_material->ks_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(red_material->ks_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(red_material->ks_.b == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(red_material->m_ == Approx(20.0f).epsilon(0.001));
+
+  auto green_material = sdfs.find_material_in_set("green");
+
+  REQUIRE(green_material->name_ == "green");
+  REQUIRE(green_material->ka_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(green_material->ka_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(green_material->ka_.b == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(green_material->kd_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(green_material->kd_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(green_material->kd_.b == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(green_material->ks_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(green_material->ks_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(green_material->ks_.b == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(green_material->m_ == Approx(50.0f).epsilon(0.001));
+
+  auto blue_material = sdfs.find_material_in_map("blue");
+
+  REQUIRE(blue_material->name_ == "blue");
+  REQUIRE(blue_material->ka_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(blue_material->ka_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(blue_material->ka_.b == Approx(1.0f).epsilon(0.001));
+
+  REQUIRE(blue_material->kd_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(blue_material->kd_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(blue_material->kd_.b == Approx(1.0f).epsilon(0.001));
+
+  REQUIRE(blue_material->ks_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(blue_material->ks_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(blue_material->ks_.b == Approx(1.0f).epsilon(0.001));
+
+  REQUIRE(blue_material->m_ == Approx(10.0f).epsilon(0.001));
 }
