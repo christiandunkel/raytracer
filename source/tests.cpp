@@ -7,6 +7,7 @@
 #include "sphere.hpp"
 #include "box.hpp"
 #include "ray.hpp"
+#include "sdfManager.hpp"
 
 int main(int argc, char *argv[]) {
   return Catch::Session().run(argc, argv);
@@ -336,4 +337,48 @@ TEST_CASE("Task 6.3", "Box intersect()") {
   Hitpoint h2 = b1.intersect(r2, 4.0f);
   REQUIRE(h2.has_hit_ == false);
 
+}
+
+TEST_CASE("Task 6.4", "Material DTO") {
+  Material m1;
+  
+  REQUIRE(m1.name_ == "");
+
+  REQUIRE(m1.ka_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m1.ka_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m1.ka_.b == Approx(1.0f).epsilon(0.001));
+
+  REQUIRE(m1.kd_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m1.kd_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m1.kd_.b == Approx(1.0f).epsilon(0.001));
+
+  REQUIRE(m1.ks_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m1.ks_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m1.ks_.b == Approx(1.0f).epsilon(0.001));
+
+  REQUIRE(m1.m_ == Approx(0.0f).epsilon(0.001));
+
+  Material m2{"Material2", {0.5f, 1.0f, 0.2f}, {1.0f, 0.1f, 1.0f}, {1.0f, 1.0f, 0.5f}, 5.0f};
+  
+  REQUIRE(m2.name_ == "Material2");
+
+  REQUIRE(m2.ka_.r == Approx(0.5f).epsilon(0.001));
+  REQUIRE(m2.ka_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m2.ka_.b == Approx(0.2f).epsilon(0.001));
+
+  REQUIRE(m2.kd_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m2.kd_.g == Approx(0.1f).epsilon(0.001));
+  REQUIRE(m2.kd_.b == Approx(1.0f).epsilon(0.001));
+
+  REQUIRE(m2.ks_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m2.ks_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(m2.ks_.b == Approx(0.5f).epsilon(0.001));
+
+  REQUIRE(m2.m_ == Approx(5.0f).epsilon(0.001));
+}
+
+TEST_CASE("Task 6.5", "") {
+  SdfManager sdfs;
+
+  sdfs.parse("resource/materials.sdf");
 }

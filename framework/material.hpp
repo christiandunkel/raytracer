@@ -2,6 +2,7 @@
 #define MATERIAL_HPP
 
 #include <string>
+#include <memory>
 #include "color.hpp"
 
 struct Material {
@@ -16,7 +17,7 @@ struct Material {
   // specular reflections exponent
   float m_ = 0.0f;
 
-  std::ostream& Material::print(std::ostream& os) const;
+  std::ostream& print(std::ostream& os) const;
 
 };
 

@@ -22,8 +22,8 @@ add_executable(tests
   ../framework/shape.cpp
   ../framework/sphere.cpp
   ../framework/box.cpp
+  ../framework/sdfManager.cpp
 )
 target_link_libraries(tests
   ${GLFW_LIBRARIES}
   )
-
