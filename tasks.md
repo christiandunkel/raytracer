@@ -94,39 +94,47 @@ on removing 'virtual' of base class 'shape' (and 'override' tags)
 
 ## Task 6.1
 
-**void raycast()<br />
-	for all pixels(x,y)<br />
-		image(x,y) = trace( compute_eye_ray(x,y) )**<br />
-<br />
+```c++
+void raycast()
+	for all pixels(x,y)
+		image(x,y) = trace( compute_eye_ray(x,y) )
+```
+
 → go through each pixel of image<br />
 → send out ray<br />
 → get pixel array<br />
 → convert to image and display<br />
-<br />
-**rgbColor trace(ray r)<br />
-for all objects o<br />
-	t = compute_intersection(r, o)<br />
-	if (t < closest_t)<br />
-		closest_t = t<br />
-		closest_o= o<br />
-	if (closest_o != 0)<br />
-		return shade(closest_o, r, closest_t)<br />
-	else<br />
-		return background_color**<br />
-<br />
+
+```c++
+rgbColor trace(ray r)
+	for all objects o
+		t = compute_intersection(r, o)
+		if (t < closest_t)
+			closest_t = t
+			closest_o= o
+		if (closest_o != 0)
+			return shade(closest_o, r, closest_t)
+		else
+			return background_color
+```
+
 → compute intersection for all objects<br />
 → if no object found: return background color<br />
 → if object(s) found: find closest object<br />
 → compute shade on pixel and return color<br />
-<br />
-**rgbColor shade(object o, ray r, double t)<br />
-	point x = r(t)<br />
-	// evaluate(Phong) illumination equation<br />
-	return color**<br />
-<br />
+
+```c++
+rgbColor shade(object o, ray r, double t)
+	point x = r(t)
+	// evaluate(Phong) illumination equation
+	return color
+```
+
 → send out ray from intersection to point light nodes<br />
 → compute lighting using Phong and ambient and point lights<br />
 → return light-influenced color for pixel<br />
+<br />
+<br />
 <br />
 **Missing: reflection**<br />
 → shootout rays from intersection with light reflection angle<br />
