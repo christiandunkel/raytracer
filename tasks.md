@@ -1,22 +1,21 @@
 
-
 # Programmiersprachen 5
 
-## Aufgabe 5.3
+## Task 5.3
 
 - beim Erstellen des Sphere Objekts
 - ruft den Konstruktor der Basisklasse (Shape) zuerst auf, dann den Konstruktor der abgeleiteten Klasse (Sphere)
 - wenn der eine Initialisierungsliste existiert, konstruktor der basisklasse wird am Anfang der Liste aufgerufen
 - Konstruktor der Basisklasse kann als Punkt in Liste (am Anfang) definiert werden e.g. Shape(), Shape(string name), ..
 
-## Aufgabe 5.5
+## Task 5.5
 
 *override*
 - stellt sicher, dass eine Funktion virtuell ist
 - *falls dies nicht zutrifft: compile error*
 - definiert, dass eine Klasse eine virtuelle Funktion seiner Basisklasse überschreibt (ersetzt)
 
-## Aufgabe 5.7
+## Task 5.7
 
 **dynamic variable** 
 - variable whose address is determined when the program is run
@@ -47,7 +46,7 @@
   - in run-time looks for Sphere object
   - can only run methods of Sphere (but virtual methods overriden by sphere still work)
 
-## Aufgabe 5.8
+## Task 5.8
 
 *order of constructor / destructor calls*
 1. constructor s1 (shape)
@@ -75,7 +74,7 @@ on removing 'virtual' of base class 'shape' (and 'override' tags)
 6. destructor s1 (shape)
 7. destructor s2 (shape)
 
-## Aufgabe 5.9
+## Task 5.9
 
 **Klassenhierarchie**
 - baumartige Struktur
@@ -92,3 +91,45 @@ on removing 'virtual' of base class 'shape' (and 'override' tags)
 - stellt alle Objekte eines Systems mit ihren Relationen (Ordnung, Komposition) dar
 - mehrere Objekte einer Klasse möglich
 - Objektname, Klassennamen, Klassenattribute mit zugewiesenen Werten, Relation zu anderen Objekten (Geschwister, Eltern, Kinder, usw..)
+
+## Task 6.1
+
+**void raycast()  
+	for all pixels(x,y)
+		image(x,y) = trace( compute_eye_ray(x,y) )**
+
+→ go through each pixel of image
+→ send out ray
+→ get pixel array
+→ convert to image and display
+
+**rgbColor trace(ray r)
+for all objects o
+	t = compute_intersection(r, o)
+	if (t < closest_t) 
+		closest_t = t
+		closest_o= o
+	if (closest_o != 0)
+		return shade(closest_o, r, closest_t)
+	else
+		return background_color**
+
+→ compute intersection for all objects
+→ if no object found: return background color
+→ if object(s) found: find closest object
+→ compute shade on pixel and return color
+
+**rgbColor shade(object o, ray r, double t)
+	point x = r(t)
+	// evaluate(Phong) illumination equation
+	return color**
+
+→ send out ray from intersection to point light nodes
+→ compute lighting using Phong and ambient and point lights
+→ return light-influenced color for pixel
+
+**Missing: reflection**
+→ shootout rays from intersection with light reflection angle
+→ if ray hits object, return object color →  send new ray (infinitely)
+→ if ray reaches max depth, return background color
+→ use calculated distance and apply color with a factor to first object
