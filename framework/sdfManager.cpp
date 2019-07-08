@@ -5,7 +5,7 @@
 #include <fstream>
 #include <ctype.h>
 
-bool is_number(const std::string& s) {
+bool SdfManager::is_number(const std::string& s) {
 
   std::string::const_iterator it = s.begin();
 

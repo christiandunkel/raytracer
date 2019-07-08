@@ -16,6 +16,7 @@ class SdfManager {
   private:
 
     bool file_exists(std::string const& file_path);
+    bool is_number(const std::string& s);
 
 };
 
