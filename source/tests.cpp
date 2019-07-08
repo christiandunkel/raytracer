@@ -380,16 +380,19 @@ TEST_CASE("Task 6.4", "Material DTO") {
 TEST_CASE("Task 6.5", "") {
   SdfManager sdfs;
 
-  sdfs.parse("resource/materials_test.sdf");
+  std::unique_ptr<Scene> scene_nullptr = sdfs.parse("non_existing_path/file_name.nope");
+  REQUIRE(scene_nullptr == nullptr);
 
-  REQUIRE(sdfs.material_vec_.size() == 4);
+  std::unique_ptr<Scene> scene = sdfs.parse("resource/materials_test.sdf");
+
+  REQUIRE(scene->material_vec_.size() == 4);
 
   // BEST CASE: 1
   // AVERAGE CASE: n/2
   // WORST CASE: n
   // linear time
 
-  auto red_material = sdfs.find_material_in_vec("red");
+  auto red_material = scene->find_material_in_vec("red");
 
   REQUIRE(red_material->name_ == "red");
   REQUIRE(red_material->ka_.r == Approx(1.0f).epsilon(0.001));
@@ -406,7 +409,13 @@ TEST_CASE("Task 6.5", "") {
 
   REQUIRE(red_material->m_ == Approx(20.0f).epsilon(0.001));
 
-  auto green_material = sdfs.find_material_in_set("green");
+  // BEST CASE: 1
+  // AVERAGE CASE: O(log(n) * k)
+  // WORST CASE: O(log(n) * k)
+  // k = time complexity of comparing two elements
+  // logarithmic time (Red-Black Tree by default)
+
+  auto green_material = scene->find_material_in_set("green");
 
   REQUIRE(green_material->name_ == "green");
   REQUIRE(green_material->ka_.r == Approx(0.0f).epsilon(0.001));
@@ -423,7 +432,13 @@ TEST_CASE("Task 6.5", "") {
 
   REQUIRE(green_material->m_ == Approx(50.0f).epsilon(0.001));
 
-  auto blue_material = sdfs.find_material_in_map("blue");
+  // BEST CASE: 1
+  // AVERAGE CASE: O(log(n) * k)
+  // WORST CASE: O(log(n) * k)
+  // k = time complexity of comparing two elements
+  // logarithmic time (Red-Black Tree by default)
+
+  auto blue_material = scene->find_material_in_map("blue");
 
   REQUIRE(blue_material->name_ == "blue");
   REQUIRE(blue_material->ka_.r == Approx(0.0f).epsilon(0.001));

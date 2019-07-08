@@ -16,16 +16,23 @@ bool is_number(const std::string& s) {
   return !s.empty() && it == s.end();
 }
 
-void SdfManager::parse(std::string const& file_path) {
+SdfManager::SdfManager(std::string const& file_path) {
+  parse(file_path);
+}
+
+std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
   if (!file_exists(file_path)) {
     std::cout << "File " << file_path << " wasn't found." << std::endl;
-    return;
+    return nullptr;
   }
 
   std::ifstream file(file_path);
 
   if (file.is_open()) {
+
+    std::unique_ptr<Scene> res = std::make_unique<Scene>();
+
     std::string line;
     while (getline(file, line)) {
 
@@ -74,59 +81,26 @@ void SdfManager::parse(std::string const& file_path) {
 
         material->m_ = stof(parts.at(10));
 
-        material_vec_.push_back(material);
-        material_set_.emplace(material);
-        material_map_.emplace(std::make_pair(material->name_, material));
+        res->material_vec_.push_back(material);
+        res->material_set_.emplace(material);
+        res->material_map_.emplace(std::make_pair(material->name_, material));
       }
 
 
 
     }
     file.close();
+
+    return res;
   }
   else {
     std::cout << "File " << file_path << " couldn't be opened." << std::endl;
   }
 
+  return nullptr;
 }
 
 bool SdfManager::file_exists(std::string const& file_path) {
   struct stat buffer;
   return (stat (file_path.c_str(), &buffer) == 0);
-}
-
-std::shared_ptr<Material> SdfManager::find_material_in_vec(std::string const& name) const {
-
-  for (auto it : material_vec_) {
-
-    if (it->name_ == name) {
-      return it;
-    }
-  }
-
-  return nullptr;
-}
-
-std::shared_ptr<Material> SdfManager::find_material_in_set(std::string const& name) const {
-
-  auto it = find_if(material_set_.begin(), material_set_.end(), [&](std::shared_ptr<Material> m) {
-    return m->name_ == name;
-  });
-
-  if (*it != nullptr) {
-    return *it;
-  }
-
-  return nullptr;
-}
-
-std::shared_ptr<Material> SdfManager::find_material_in_map(std::string const& name) const {
-
-  auto it = material_map_.find(name);
-
-  if (it->second != nullptr) {
-    return it->second;
-  }
-
-  return nullptr;
 }

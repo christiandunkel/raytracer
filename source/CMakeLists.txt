@@ -23,6 +23,7 @@ add_executable(tests
   ../framework/sphere.cpp
   ../framework/box.cpp
   ../framework/sdfManager.cpp
+  ../framework/scene.cpp
 )
 target_link_libraries(tests
   ${GLFW_LIBRARIES}

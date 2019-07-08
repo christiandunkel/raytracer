@@ -2,29 +2,20 @@
 #define SDFMANAGER_HPP
 
 #include "material.hpp"
-
-#include <memory>
-#include <vector>
-#include <set>
-#include <map>
+#include "scene.hpp"
 
 class SdfManager {
 
   public:
 
-    std::vector<std::shared_ptr<Material>> material_vec_;
-    std::set<std::shared_ptr<Material>> material_set_;
-    std::map<std::string, std::shared_ptr<Material>> material_map_;
-
     SdfManager() = default;
+    SdfManager(std::string const& file_path);
+
+    std::unique_ptr<Scene> parse(std::string const& file_path);
+
+  private:
 
     bool file_exists(std::string const& file_path);
-
-    void parse(std::string const& file_path);
-
-    std::shared_ptr<Material> find_material_in_vec(std::string const& name) const;
-    std::shared_ptr<Material> find_material_in_set(std::string const& name) const;
-    std::shared_ptr<Material> find_material_in_map(std::string const& name) const;
 
 };
 
