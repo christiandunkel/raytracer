@@ -6,6 +6,7 @@
 
 #include "sphere.hpp"
 #include "box.hpp"
+#include "triangle.hpp"
 #include "ray.hpp"
 #include "sdfManager.hpp"
 
@@ -13,7 +14,7 @@ int main(int argc, char *argv[]) {
   return Catch::Session().run(argc, argv);
 }
 
-TEST_CASE("Task 5.2", "Sphere, Box methods area(), volume()") {
+TEST_CASE("Task 5.2", "Sphere, Box, Triangle methods area(), volume()") {
 
   // sphere
   Sphere s1;
@@ -46,6 +47,15 @@ TEST_CASE("Task 5.2", "Sphere, Box methods area(), volume()") {
   REQUIRE(b2.get_max() == glm::vec3(2.0f, 2.0f, 2.0f));
   REQUIRE(b2.area() == Approx(6.0f).epsilon(0.001));
   REQUIRE(b2.volume() == Approx(1.0f).epsilon(0.001));
+
+  // triangle
+  Triangle t1;
+  REQUIRE(t1.area() == Approx(0.0f).epsilon(0.001));
+  
+  Triangle t2(glm::vec3(1.0f, 1.0f, 0.0f),
+              glm::vec3(-2.0f, 4.0f, 1.0f),
+              glm::vec3(-2.0f, -2.0f, 2.0f));
+  REQUIRE(t2.area() == Approx(10.17f).epsilon(0.001));
 
 }
 
@@ -161,6 +171,9 @@ TEST_CASE ("Task 5.6", "Ray, intersection()") {
   REQUIRE(h2.color_.b == 1.0f);
   REQUIRE(h2.intersection_ == glm::vec3(0.0f, 0.0f, 0.0f)); // default hitpoint value
   REQUIRE(h2.ray_direction_ == glm::vec3(0.0f, 0.0f, -1.0f));
+
+  Triangle t1;
+  t1.intersect(r1, 4.0f);
 
 }
 

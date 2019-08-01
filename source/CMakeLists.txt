@@ -22,6 +22,7 @@ add_executable(tests
   ../framework/shape.cpp
   ../framework/sphere.cpp
   ../framework/box.cpp
+  ../framework/triangle.cpp
   ../framework/sdfManager.cpp
   ../framework/scene.cpp
 )

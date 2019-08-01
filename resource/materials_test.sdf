@@ -4,4 +4,10 @@ define material blue 0 0 1 0 0 1 0 0 1 10
 define Test dd
 define define define
 define material white 1 1 1 1 1 1 1 1 1 10
-LOLOLOL
+define shape box rbottom -100 -80 -200 100 80 -100 red
+define shape sphere bsphere 0 0 -100 50 blue
+LOLOLOL 
+THIS LINE WILL BE IGNORED
+define THIS LINE TOO
+define camera eye 45.0
+render eye image.ppm 480 320

@@ -14,28 +14,28 @@ class Box : public Shape {
   public:
 
     Box() :
-      min_(glm::vec3(0.0f, 0.0f, 0.0f)), max_(glm::vec3(0.0f, 0.0f, 0.0f)) {
-        std::cout << "Created box " + name_ << std::endl;
+      min_(glm::vec3(0.0f)), max_(glm::vec3(0.0f)) {
+        std::cout << "Created box " << name_ << std::endl;
       }
 
     Box(std::string name) :
-      Shape(name), min_(glm::vec3(0.0f, 0.0f, 0.0f)), max_(glm::vec3(0.0f, 0.0f, 0.0f)) {
-        std::cout << "Created box " + name_ << std::endl;
+      Shape(name), min_(glm::vec3(0.0f)), max_(glm::vec3(0.0f)) {
+        std::cout << "Created box " << name_ << std::endl;
       }
 
     Box(glm::vec3 min, glm::vec3 max) :
       min_(min), max_(max) {
-        std::cout << "Created box " + name_ << std::endl;
+        std::cout << "Created box " << name_ << std::endl;
       }
 
     Box(glm::vec3 min, glm::vec3 max, std::shared_ptr<Material> material) :
       Shape(material), min_(min), max_(max) {
-        std::cout << "Created box " + name_ << std::endl;
+        std::cout << "Created box " << name_ << std::endl;
       }
 
     Box(glm::vec3 min, glm::vec3 max, std::shared_ptr<Material> material, std::string name) :
       Shape(name, material), min_(min), max_(max) {
-        std::cout << "Created box " + name_ << std::endl;
+        std::cout << "Created box " << name_ << std::endl;
       }
     
     ~Box() override;

@@ -15,33 +15,33 @@ class Sphere : public Shape {
   public:
 
     Sphere() :
-      middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {
-        std::cout << "Created sphere " + name_ << std::endl;
+      middle_(glm::vec3(0.0f)), radius_(0.0f) {
+        std::cout << "Created sphere " << name_ << std::endl;
       }
 
     Sphere(std::string name) :
-      Shape(name), middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(0.0f) {
-        std::cout << "Created sphere " + name_ << std::endl;
+      Shape(name), middle_(glm::vec3(0.0f)), radius_(0.0f) {
+        std::cout << "Created sphere " << name_ << std::endl;
       }
 
     Sphere(float radius) :
-      middle_(glm::vec3(0.0f, 0.0f, 0.0f)), radius_(radius) {
-        std::cout << "Created sphere " + name_ << std::endl;
+      middle_(glm::vec3(0.0f)), radius_(radius) {
+        std::cout << "Created sphere " << name_ << std::endl;
       }
 
     Sphere(glm::vec3 middle, float radius) :
-      Shape(), middle_(middle), radius_(radius) {
-        std::cout << "Created sphere " + name_ << std::endl;
+      middle_(middle), radius_(radius) {
+        std::cout << "Created sphere " << name_ << std::endl;
       }
 
     Sphere(glm::vec3 middle, float radius, std::shared_ptr<Material> material) :
       Shape(material), middle_(middle), radius_(radius) {
-        std::cout << "Created sphere " + name_ << std::endl;
+        std::cout << "Created sphere " << name_ << std::endl;
       }
 
     Sphere(glm::vec3 middle, float radius, std::shared_ptr<Material> material, std::string name) :
       Shape(name, material), middle_(middle), radius_(radius) {
-        std::cout << "Created sphere " + name_ << std::endl;
+        std::cout << "Created sphere " << name_ << std::endl;
       }
 
     ~Sphere() override;

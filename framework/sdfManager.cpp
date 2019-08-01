@@ -1,4 +1,6 @@
 #include "sdfManager.hpp"
+#include "box.hpp"
+#include "sphere.hpp"
 
 #include <regex>
 #include <sys/stat.h>
@@ -34,7 +36,7 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
   // look up file at path, check if it exists
   if (!file_exists(file_path)) {
-    std::cout << "File " << file_path << " wasn't found." << std::endl;
+    std::cout << "SdfManager: File '" << file_path << "' wasn't found." << std::endl;
     return nullptr;
   }
 
@@ -85,7 +87,7 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
         parse_render(file_path, scene, parts);
       }
       else {
-        std::cout << "Given type '" << parts.at(0) << " doesn't exist." << std::endl;
+        std::cout << "SdfManager: Given type '" << parts.at(0) << "' doesn't exist." << std::endl;
       }
 
     }
@@ -95,7 +97,7 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
   }
   else {
-    std::cout << "File " << file_path << " couldn't be opened." << std::endl;
+    std::cout << "SdfManager: File '" << file_path << "' couldn't be opened." << std::endl;
   }
 
   return nullptr;
@@ -118,7 +120,7 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
     }
   }
 
-  std::cout << "SDFManager: Found material '" + values.at(0) + "' in " << file_path << "." << std::endl;
+  std::cout << "SdfManager: Found material '" + values.at(0) + "' in " << file_path << "." << std::endl;
 
   // create new material and fill it with values
   std::shared_ptr<Material> material = std::make_shared<Material>();
@@ -136,6 +138,28 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
 }
 
 void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
+
+  // remove "shape" from beginning of string
+  values.erase(values.begin());
+
+  std::shared_ptr<Shape> shape;
+
+  if (values.at(0) == "box") {
+
+    shape = std::make_shared<Box>();
+
+  }
+  else if (values.at(0) == "sphere") {
+
+
+
+  }
+  else if (values.at(0) == "triangle") {
+
+  }
+  else {
+    std::cout << "SdfManager: Shape type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;
+  }
 
 }
 
