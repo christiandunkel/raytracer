@@ -1,7 +1,10 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
+#include "shape.hpp"
 #include "material.hpp"
+#include "light.hpp"
+#include "camera.hpp"
 
 #include <memory>
 #include <vector>
@@ -11,6 +14,10 @@
 class Scene {
 
   public:
+
+    std::vector<std::shared_ptr<Shape>> shape_vec_;
+    std::vector<std::shared_ptr<Light>> light_vec_;
+    std::map<std::string, std::shared_ptr<Camera>> camera_map_;
 
     std::vector<std::shared_ptr<Material>> material_vec_;
     std::set<std::shared_ptr<Material>> material_set_;
