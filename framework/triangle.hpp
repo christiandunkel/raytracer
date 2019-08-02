@@ -32,11 +32,15 @@ class Triangle : public Shape {
     float volume() const override;
     std::ostream& print(std::ostream& os) const override;
 
-    Hitpoint intersect(Ray const &ray, float distance) const override;
+    Hitpoint intersect(Ray const &ray, float distance = 0.0f) const override;
 
     glm::vec3 get_a() const {return a_;}
     glm::vec3 get_b() const {return b_;}
     glm::vec3 get_c() const {return c_;}
+
+    void set_a(glm::vec3 const& a);
+    void set_b(glm::vec3 const& b);
+    void set_c(glm::vec3 const& c);
 
 };
 

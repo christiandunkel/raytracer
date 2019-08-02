@@ -1,6 +1,7 @@
 #include "triangle.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/epsilon.hpp>
 #include <glm/gtx/intersect.hpp>
@@ -50,10 +51,10 @@ Hitpoint Triangle::intersect(Ray const &ray, float distance) const {
 
   Hitpoint h;
 
-  glm::vec2 bary_pos(0.0f);
-  
+  glm::vec2 bary_pos(0);
+
   // TODO: fix intersection method throwing errors
-  //h.has_hit_ = glm::intersectRayTriangle(ray.origin_, ray.direction_, a_, b_, c_, bary_pos, distance);
+  h.has_hit_ = glm::intersectRayTriangle(ray.origin_, ray.direction_, a_, b_, c_, bary_pos, distance);
 
   if (h.has_hit_) {
 
@@ -73,4 +74,16 @@ Hitpoint Triangle::intersect(Ray const &ray, float distance) const {
 
   return h;
 
+}
+
+void Triangle::set_a(glm::vec3 const& a) {
+  a_ = a;
+}
+
+void Triangle::set_b(glm::vec3 const& b) {
+  b_ = b;
+}
+
+void Triangle::set_c(glm::vec3 const& c) {
+  c_ = c;
 }
