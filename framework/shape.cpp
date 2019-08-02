@@ -17,3 +17,11 @@ std::ostream& Shape::print(std::ostream& os) const {
 std::ostream& operator <<(std::ostream& os, Shape const& s) {
   return s.print(os);
 }
+
+void Shape::set_name(std::string const& name) {
+  name_ = name;
+}
+
+void Shape::set_material(std::shared_ptr<Material> material) {
+  material_ = material; 
+}

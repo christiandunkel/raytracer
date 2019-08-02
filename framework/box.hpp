@@ -50,6 +50,9 @@ class Box : public Shape {
     glm::vec3 get_min() const {return min_;}
     glm::vec3 get_max() const {return max_;}
 
+    void set_min(glm::vec3 const& vec);
+    void set_max(glm::vec3 const& vec);
+
 };
 
 #endif // define BOX_HPP

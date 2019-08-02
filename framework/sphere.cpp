@@ -73,3 +73,11 @@ Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
   return h;
 
 }
+
+void Sphere::set_middle(glm::vec3 const& middle) {
+  middle_ = middle;
+}
+
+void Sphere::set_radius(float radius) {
+  radius_ = radius;
+}

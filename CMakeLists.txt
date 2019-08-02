@@ -57,7 +57,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/${NANOVG_DIRECTORY}/example/Robot
 set(CATCH_DIRECTORY catch-1.5)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${CATCH_DIRECTORY})
 
-set(GLM_DIRECTORY glm-0.9.5.3)
+set(GLM_DIRECTORY glm)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLM_DIRECTORY})
 
 ################################

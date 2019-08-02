@@ -1,6 +1,7 @@
 #include "sdfManager.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
+#include "triangle.hpp"
 
 #include <regex>
 #include <sys/stat.h>
@@ -147,20 +148,42 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
   if (values.at(0) == "box") {
 
     shape = std::make_shared<Box>();
+    shape->set_name(values.at(1));
 
+    std::shared_ptr<Box> box_ptr = std::static_pointer_cast<Box>(shape);
+    box_ptr->set_min(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
+    box_ptr->set_max(glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7))));
+    box_ptr->set_material(scene->find_material_in_map(values.at(8)));
   }
   else if (values.at(0) == "sphere") {
 
+    shape = std::make_shared<Sphere>();
+    shape->set_name(values.at(1));
 
+    std::shared_ptr<Sphere> sphere_ptr = std::static_pointer_cast<Sphere>(shape);
+    sphere_ptr->set_middle(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
+    sphere_ptr->set_radius(stof(values.at(5)));
+    sphere_ptr->set_material(scene->find_material_in_map(values.at(6)));
 
   }
   else if (values.at(0) == "triangle") {
 
+    shape = std::make_shared<Triangle>();
+    shape->set_name(values.at(1));
+
+    std::shared_ptr<Triangle> triangle_ptr = std::static_pointer_cast<Triangle>(shape);
+    triangle_ptr->set_a(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
+    triangle_ptr->set_b(glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7))));
+    triangle_ptr->set_c(glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10))));
+
+    triangle_ptr->set_material(scene->find_material_in_map(values.at(11)));
   }
   else {
     std::cout << "SdfManager: Shape type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;
+    return;
   }
 
+  scene->shape_vec_.push_back(shape);
 }
 
 void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {

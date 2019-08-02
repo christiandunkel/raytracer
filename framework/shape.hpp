@@ -35,7 +35,7 @@ class Shape {
       name_(name), material_(material) {
         std::cout << "Created shape " + name_ << std::endl;
       }
-  
+
     virtual float area() const = 0;
     virtual float volume() const = 0;
 
@@ -53,7 +53,10 @@ class Shape {
     std::shared_ptr<Material> get_material() const {
       return material_;
     }
- 
+
+    void set_name(std::string const& name);
+    void set_material(std::shared_ptr<Material> material); 
+
 };
 
 std::ostream& operator <<(std::ostream& os, Shape const& s);

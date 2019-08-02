@@ -116,3 +116,11 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   return hitpoint;
 
 }
+
+void Box::set_min(glm::vec3 const& vec) {
+  min_ = vec;
+}
+
+void Box::set_max(glm::vec3 const& vec) {
+  max_ = vec;
+}

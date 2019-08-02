@@ -2,6 +2,18 @@
 
 #include <algorithm>
 
+std::shared_ptr<Shape> Scene::find_shape(std::string const& name) const {
+
+  for (auto it : shape_vec_) {
+
+    if (it->get_name() == name) {
+      return it;
+    }
+  }
+
+  return nullptr;
+}
+
 std::shared_ptr<Material> Scene::find_material_in_vec(std::string const& name) const {
 
   for (auto it : material_vec_) {

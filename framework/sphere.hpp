@@ -54,7 +54,10 @@ class Sphere : public Shape {
     // getter
     glm::vec3 get_middle() const {return middle_;}
     float get_radius() const {return radius_;}
- 
+
+    void set_middle(glm::vec3 const& middle);
+    void set_radius(float radius);
+
 };
 
 #endif // define SPHERE_HPP

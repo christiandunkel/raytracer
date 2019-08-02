@@ -155,7 +155,6 @@ TEST_CASE ("Task 5.6", "Ray, intersection()") {
   REQUIRE(h1.intersection_ == glm::vec3(0.0f, 0.0f, 4.0f));
   REQUIRE(h1.ray_direction_ == glm::vec3(0.0f, 0.0f, 1.0f));
 
-
   // test if ray intersects with sphere (2)
   Sphere s2(glm::vec3(5.0f, 5.0f, 5.0f), 1.0f);
   Ray r2{
@@ -172,8 +171,15 @@ TEST_CASE ("Task 5.6", "Ray, intersection()") {
   REQUIRE(h2.intersection_ == glm::vec3(0.0f, 0.0f, 0.0f)); // default hitpoint value
   REQUIRE(h2.ray_direction_ == glm::vec3(0.0f, 0.0f, -1.0f));
 
-  Triangle t1;
-  t1.intersect(r1, 4.0f);
+  Triangle t1(
+    glm::vec3(0.0f, 0.0f, 2.0f),
+    glm::vec3(2.0f, 0.0f, 2.0f),
+    glm::vec3(0.0f, 2.0f, 2.0f)
+  );
+
+  Hitpoint h3 = t1.intersect(r1);
+  REQUIRE(h3.has_hit_ == true);
+  REQUIRE(h3.distance_ == 2.0f);
 
 }
 
@@ -467,4 +473,54 @@ TEST_CASE("Task 6.5", "") {
   REQUIRE(blue_material->ks_.b == Approx(1.0f).epsilon(0.001));
 
   REQUIRE(blue_material->m_ == Approx(10.0f).epsilon(0.001));
+
+  auto box_rbottom = scene->find_shape("rbottom");
+  auto box = std::static_pointer_cast<Box>(box_rbottom);
+
+  REQUIRE(box->get_name() == "rbottom");
+  REQUIRE(box->get_min().x == Approx(-100.0f).epsilon(0.001));
+  REQUIRE(box->get_min().y == Approx(-80.0f).epsilon(0.001));
+  REQUIRE(box->get_min().z == Approx(-200.0f).epsilon(0.001));
+
+  REQUIRE(box->get_max().x == Approx(100.0f).epsilon(0.001));
+  REQUIRE(box->get_max().y == Approx(80.0f).epsilon(0.001));
+  REQUIRE(box->get_max().z == Approx(-100.0f).epsilon(0.001));
+
+  REQUIRE(box->get_material()->kd_.r == Approx(1.0f).epsilon(0.001));
+  REQUIRE(box->get_material()->kd_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(box->get_material()->kd_.b == Approx(0.0f).epsilon(0.001));
+
+  auto sphere_rbottom = scene->find_shape("bsphere");
+  auto sphere = std::static_pointer_cast<Sphere>(sphere_rbottom);
+
+  REQUIRE(sphere->get_name() == "bsphere");
+  REQUIRE(sphere->get_middle().x == Approx(0.0f).epsilon(0.001));
+  REQUIRE(sphere->get_middle().y == Approx(0.0f).epsilon(0.001));
+  REQUIRE(sphere->get_middle().z == Approx(-100.0f).epsilon(0.001));
+
+  REQUIRE(sphere->get_radius() == Approx(50.0f).epsilon(0.001));
+
+  REQUIRE(sphere->get_material()->kd_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(sphere->get_material()->kd_.g == Approx(0.0f).epsilon(0.001));
+  REQUIRE(sphere->get_material()->kd_.b == Approx(1.0f).epsilon(0.001));
+
+  auto triangle_rbottom = scene->find_shape("btriangle");
+  auto triangle = std::static_pointer_cast<Triangle>(triangle_rbottom);
+
+  REQUIRE(triangle->get_name() == "btriangle");
+  REQUIRE(triangle->get_a().x == Approx(-100.0f).epsilon(0.001));
+  REQUIRE(triangle->get_a().y == Approx(-80.0f).epsilon(0.001));
+  REQUIRE(triangle->get_a().z == Approx(-200.0f).epsilon(0.001));
+
+  REQUIRE(triangle->get_b().x == Approx(100.0f).epsilon(0.001));
+  REQUIRE(triangle->get_b().y == Approx(80.0f).epsilon(0.001));
+  REQUIRE(triangle->get_b().z == Approx(-100.0f).epsilon(0.001));
+
+  REQUIRE(triangle->get_c().x == Approx(0.0f).epsilon(0.001));
+  REQUIRE(triangle->get_c().y == Approx(0.0f).epsilon(0.001));
+  REQUIRE(triangle->get_c().z == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(triangle->get_material()->kd_.r == Approx(0.0f).epsilon(0.001));
+  REQUIRE(triangle->get_material()->kd_.g == Approx(1.0f).epsilon(0.001));
+  REQUIRE(triangle->get_material()->kd_.b == Approx(0.0f).epsilon(0.001));
 }
