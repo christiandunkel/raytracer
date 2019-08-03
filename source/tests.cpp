@@ -474,6 +474,7 @@ TEST_CASE("Task 6.5", "") {
 
   REQUIRE(blue_material->m_ == Approx(10.0f).epsilon(0.001));
 
+  // box
   auto box_rbottom = scene->find_shape("rbottom");
   auto box = std::static_pointer_cast<Box>(box_rbottom);
 
@@ -490,6 +491,7 @@ TEST_CASE("Task 6.5", "") {
   REQUIRE(box->get_material()->kd_.g == Approx(0.0f).epsilon(0.001));
   REQUIRE(box->get_material()->kd_.b == Approx(0.0f).epsilon(0.001));
 
+  // sphere
   auto sphere_rbottom = scene->find_shape("bsphere");
   auto sphere = std::static_pointer_cast<Sphere>(sphere_rbottom);
 
@@ -504,6 +506,7 @@ TEST_CASE("Task 6.5", "") {
   REQUIRE(sphere->get_material()->kd_.g == Approx(0.0f).epsilon(0.001));
   REQUIRE(sphere->get_material()->kd_.b == Approx(1.0f).epsilon(0.001));
 
+  // triangle
   auto triangle_rbottom = scene->find_shape("btriangle");
   auto triangle = std::static_pointer_cast<Triangle>(triangle_rbottom);
 
@@ -523,4 +526,43 @@ TEST_CASE("Task 6.5", "") {
   REQUIRE(triangle->get_material()->kd_.r == Approx(0.0f).epsilon(0.001));
   REQUIRE(triangle->get_material()->kd_.g == Approx(1.0f).epsilon(0.001));
   REQUIRE(triangle->get_material()->kd_.b == Approx(0.0f).epsilon(0.001));
+
+  // diffuse point light
+  auto light_sun = scene->find_light("sun");
+  auto sun = std::static_pointer_cast<DiffusePointLight>(light_sun);
+
+  REQUIRE(sun->pos_.x == Approx(1000.0f).epsilon(0.001));
+  REQUIRE(sun->pos_.y == Approx(700.0f).epsilon(0.001));
+  REQUIRE(sun->pos_.z == Approx(0.0f).epsilon(0.001));
+
+  REQUIRE(sun->color_.r == Approx(0.2f).epsilon(0.001));
+  REQUIRE(sun->color_.g == Approx(0.2f).epsilon(0.001));
+  REQUIRE(sun->color_.b == Approx(0.2f).epsilon(0.001));
+
+  REQUIRE(sun->intensity_ == Approx(100.0f).epsilon(0.001));
+
+  // ambient light
+  auto light_ambient = scene->find_light("ambient1");
+  auto ambient = std::static_pointer_cast<AmbientLight>(light_ambient);
+
+  REQUIRE(ambient->color_.r == Approx(0.3f).epsilon(0.001));
+  REQUIRE(ambient->color_.g == Approx(0.2f).epsilon(0.001));
+  REQUIRE(ambient->color_.b == Approx(0.6f).epsilon(0.001));
+
+  REQUIRE(ambient->intensity_ == Approx(5.0f).epsilon(0.001));
+
+  // camera without position
+  auto c1 = scene->find_camera("eye");
+
+  REQUIRE(c1->name_ == "eye");
+  REQUIRE(c1->fov_ == Approx(45.0f).epsilon(0.001));
+
+  // camera with position
+  auto c2 = scene->find_camera("eye2");
+
+  REQUIRE(c2->name_ == "eye2");
+  REQUIRE(c2->fov_ == Approx(45.0f).epsilon(0.001));
+  REQUIRE(c2->pos_.x == Approx(0.0f).epsilon(0.001));
+  REQUIRE(c2->pos_.y == Approx(0.0f).epsilon(0.001));
+  REQUIRE(c2->pos_.z == Approx(-3.0f).epsilon(0.001));
 }

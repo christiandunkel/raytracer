@@ -14,6 +14,30 @@ std::shared_ptr<Shape> Scene::find_shape(std::string const& name) const {
   return nullptr;
 }
 
+std::shared_ptr<Light> Scene::find_light(std::string const& name) const {
+
+  for (auto it : light_vec_) {
+
+    if (it->name_ == name) {
+      return it;
+    }
+  }
+
+  return nullptr;
+}
+
+std::shared_ptr<Camera> Scene::find_camera(std::string const& name) const {
+
+  auto it = camera_map_.find(name);
+
+  if (it->second != nullptr) {
+    return it->second;
+  }
+
+  return nullptr;
+
+}
+
 std::shared_ptr<Material> Scene::find_material_in_vec(std::string const& name) const {
 
   for (auto it : material_vec_) {

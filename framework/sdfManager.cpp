@@ -188,10 +188,65 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
 
 void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
+  // remove "light" from beginning of string
+  values.erase(values.begin());
+
+  std::shared_ptr<Light> light;
+
+  // diffuse point light
+  if (values.size() == 8) {
+
+    light = std::make_shared<DiffusePointLight>();
+    light->name_ = values.at(0);
+
+    std::shared_ptr<DiffusePointLight> point_light_ptr = std::static_pointer_cast<DiffusePointLight>(light);
+    point_light_ptr->pos_ = glm::vec3(stof(values.at(1)), stof(values.at(2)), stof(values.at(3)));
+    point_light_ptr->color_ = Color(stof(values.at(4)), stof(values.at(5)), stof(values.at(6)));
+    point_light_ptr->intensity_ = stof(values.at(7));
+  }
+  // ambient light
+  else if (values.size() == 5) {
+
+    light = std::make_shared<AmbientLight>();
+    light->name_ = values.at(0);
+
+    std::shared_ptr<AmbientLight> point_light_ptr = std::static_pointer_cast<AmbientLight>(light);
+    point_light_ptr->color_ = Color(stof(values.at(1)), stof(values.at(2)), stof(values.at(3)));
+    point_light_ptr->intensity_ = stof(values.at(4));
+
+  }
+  else {
+    std::cout << "SdfManager: Light type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;
+    return;
+  }
+
+  scene->light_vec_.push_back(light);
 }
 
 void SdfManager::parse_camera(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
+  // remove "camera" from beginning of string
+  values.erase(values.begin());
+
+  std::shared_ptr<Camera> camera = std::make_shared<Camera>();
+
+  // camera without position
+  if (values.size() == 2) {
+
+    camera->name_ = values.at(0);
+    camera->fov_ = stof(values.at(1));
+
+  }
+  // camera with position
+  else if (values.size() == 5) {
+
+    camera->name_ = values.at(0);
+    camera->fov_ = stof(values.at(1));
+    camera->pos_ = glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4)));
+
+  }
+
+  scene->camera_map_.emplace(std::make_pair(camera->name_, camera));
 }
 
 void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {

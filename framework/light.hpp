@@ -5,22 +5,54 @@
 #include <string>
 #include <glm/vec3.hpp>
 
-struct Light {
+class Light {
 
-  std::string name_;
+  public:
+
+    Light() = default;
+
+    Light(std::string const& name) :
+      name_(name) {}
+
+    virtual ~Light() = default;
+
+    std::string name_;
 
 };
 
-struct AmbientLight : public Light {
+class AmbientLight : public Light {
 
-  Color color_;
-  float intensity_;
+  public:
+
+    AmbientLight() :
+      color_(1.0f, 1.0f, 1.0f) {}
+
+    AmbientLight(Color const& color, float intensity) :
+      color_(color), intensity_(intensity) {}
+
+    AmbientLight(std::string const& name, Color const& color, float intensity) :
+      Light(name), color_(color), intensity_(intensity) {}
+
+    virtual ~AmbientLight() = default;
+
+    Color color_;
+    float intensity_;
 
 };
 
-struct DiffusePointLight : public AmbientLight {
+class DiffusePointLight : public AmbientLight {
 
-  glm::vec3 pos_;
+  public:
+
+    DiffusePointLight() = default;
+
+    DiffusePointLight(glm::vec3 const& pos) :
+      pos_(pos) {}
+
+    DiffusePointLight(std::string const& name, Color const& color, float intensity, glm::vec3 const& pos) :
+      AmbientLight(name, color, intensity), pos_(pos) {}
+
+    glm::vec3 pos_;
 
 };
 

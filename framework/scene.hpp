@@ -26,6 +26,8 @@ class Scene {
     Scene() = default;
 
     std::shared_ptr<Shape> find_shape(std::string const& name) const;
+    std::shared_ptr<Light> find_light(std::string const& name) const;
+    std::shared_ptr<Camera> find_camera(std::string const& name) const;
 
     std::shared_ptr<Material> find_material_in_vec(std::string const& name) const;
     std::shared_ptr<Material> find_material_in_set(std::string const& name) const;
