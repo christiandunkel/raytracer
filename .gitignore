@@ -1,30 +1,29 @@
-# block vs/vsc content
+# no VS/VSC content
 .vs
 .vscode
 
-# Compiled Object files
+# no compiled object files
 *.slo
 *.lo
 *.o
 *.obj
 
-# Compiled Dynamic libraries
+# no compiled dynamic libraries
 *.so
 *.dylib
 *.dll
 
-# Compiled Static libraries
+# no compiled static libraries
 *.lai
 *.la
 *.a
 *.lib
 
-# Executables
+# no executables
 *.exe
 *.out
 *.app
 
-checkerboard.ppm
-
+# ignore build directories
 build
 cmake_out
