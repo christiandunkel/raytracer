@@ -1,5 +1,4 @@
 
-
 # Theoretical Tasks
 [Back to main page](../README.md)
 
@@ -74,7 +73,7 @@ A declaration gives the compiler the information, that a variable or function ex
 
 A `function signature` consists of a access modifier like *public* or *private*, possibly a *static* keyword, a return type, which may also be *void*, if nothing will be returned by the function, and a name. After that, the parameter variables are listed inside parenthesis with their type and local name each.
 
-![Showing three functions, including a main function, a sum function to add up two doubles, and a square function that multiplies a value with itself.](images/task_1_7.PNG)
+![Showing three functions, including a main function, a sum function to add up two doubles, and a square function that multiplies a value with itself.](images/task_1_7.png)
 ```cpp
 int var = 3; // global scope, valid in whole class
 
@@ -134,23 +133,39 @@ double j = i; // j equals 1.0
 - `const` is a keyword that declares a variable as constant, making it so that its content can only be read, but not changed.
 - `Scope` is the region inside the source code, where a variable is valid or *visible*, meaning it can be referenced.
 
-## Aufgabe 2.2
-*Include guards* ist eine Technik mit welcher das mehrfache Einbinden eines Headers unterbunden wird. Werden die Header, z.B. *Vec2.hpp*, zweimal eingebunden, wird es Compilation Errors geben, da hier z.B. die struct  Vec2 zweifach definiert werden würde.
+## Task 2.2
 
-## Aufgabe 2.7
-`struct` Konstrukte haben standardmäßig öffentliche Members und eignen sich als Datenstrukturen.
+> Explain the purpose of the so-called include guards in the partially given header 'vec2.hpp'. What happens if you do not use include guards and try to include the 'vec2.hpp' file twice? Why is that?
 
-`class` Konstrukte standardmäßig private Members haben, und diese nach Konvention auch nicht zu public umgeformt, und nur per *get* abgerufen werden sollten! 
+![A block of code showing the empty struct Vect2 with an include guard.](images/task_2_2.png)
 
-*Datentransferobjekte* oder auch *DTO* sind ein Entwurfsmuster, bei dem mehrere Daten / Methoden in einem Objekt gebündelt werden. Dann muss man das Objekt nur einmal aufrufen, um dann die Methoden zur Verfügung zu haben ohne weitere Fernzugriffe.
+`Include guards` are a technique with which the repeated integration of the same header is prevented. If the header, e.g. * Vec2.hpp*, would be included twice, it would result in compilation errors as the struct Vec2 would be defined twice in this case.
+
+## Task 2.7
+
+> Explain the difference between class and struct. What is a data transfer object (DTO)?
+
+`struct` constructs have have public members by default and are useful as data structures.
+
+`class` constructs have private members by default, and these should not be transformed to public by convention, and should only be retrieved by *get* methods!
+
+`Data transfer objects` or *DTOs* are a design pattern in which multiple data is bundled in one object. You only have public member variables, with as little member functions as possible and with no member functions that can modify the member variables.
 
 ## Aufgabe 2.9
-Nach dem C++ Standard existieren keine *Methoden*, obwohl dieser Begriff dennoch oft auswechselbar mit *Funktionen* verwendet wird.
-Man könnte mit einer Methode Funktionen beschreiben, die abhängig von einem Objekt sind, währenddessen Funktionen allgemein auch global und allgemein gültig sein können.
-Bei const-Member Methoden wird das Versprechen gegeben, dass das Objekt, auf dem sie aufgerufen werden, nicht verändert wird. Bei Funktionen die unabhängig von Objekten sind, bestimmt const je nach Anwendung über das Versprechen, das ein Rückgabewert oder Parameter nicht verändert werden darf.
 
-## Aufgabe 2.12
-Das *Überladen* von Funktionen, auch als *Overloading* bezeichnet, beschreibt das Definieren unterschiedlicher Funktionen mit gleichem Namen, aber unterschiedlichen Eingabeparametern. Hierbei wird beim Aufrufen die Funktion verwendet, die zu den Eingabeparametern passt. 
+> What is the difference between a method and a free function in the context of const correctness?
+
+According to the C ++ standard, there are no *methods*, although this term is often still used interchangeably with *functions*.  
+
+You could use the term '*method*' to describe functions that are dependent on an object, meaning they're part of the instance of a class or struct. The term '*functions*' could instead describe global, call-able constructs that aren't part of a class or struct.
+
+Let's take a look at them in terms of const correctness. With constant member methods, the promise is given that the object (instance) on which the methods are called will not be changed. For functions that are independent of objects, the *const* keyword determines, depending on the application, that a return value or parameter must not be changed.
+
+## Task  2.12
+
+> What does the term 'Overloading' mean in C++?
+
+*Overloading* functions describes defining different functions with the same name but different input parameters. When calling the function, the function that matches the given input parameters, is used.
 
 ## Aufgabe 3.1
 **Sequentielle Container** sind Container-Klassen, die Daten in einer Sequenz speichern. Hierbei wird entweder über einen numerischen Index, welcher die Stelle eines Wertes in der Sequenz beschreibt, oder durch das Wandern über andere Elemente auf den gesuchten Wert zugegriffen.
