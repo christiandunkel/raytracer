@@ -9,7 +9,8 @@ This page contains all answers to the theoretical tasks of assignment 1 to 7. Ta
 
 > In the following example, name types, variables and values. Explain the keyword const in this context. What is type conversion, and why can there be problems? Where do you see problems in the following program code?
 
-![A block of code showing the assignment of values to different variable types.](task_1_4.png)
+![A block of code showing the assignment of values to different variable types.](images/task_1_4.png)
+
 In the given code example, a bunch of values are assigned to different types of variables.
 
 ```cpp
@@ -73,7 +74,7 @@ A declaration gives the compiler the information, that a variable or function ex
 
 A `function signature` consists of a access modifier like *public* or *private*, possibly a *static* keyword, a return type, which may also be *void*, if nothing will be returned by the function, and a name. After that, the parameter variables are listed inside parenthesis with their type and local name each.
 
-![Showing three functions, including a main function, a sum function to add up two doubles, and a square function that multiplies a value with itself.](task_1_7.PNG)
+![Showing three functions, including a main function, a sum function to add up two doubles, and a square function that multiplies a value with itself.](images/task_1_7.PNG)
 ```cpp
 int var = 3; // global scope, valid in whole class
 
