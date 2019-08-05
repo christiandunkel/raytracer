@@ -1,107 +1,137 @@
 
+
 # Theoretical Tasks
 [Back to main page](../README.md)
 
 This page contains all answers to the theoretical tasks of assignment 1 to 7. Tasks without any theoretical questions are excluded from this page.
 
-## Aufgabe 1.3
-Die kleinstmögliche Zahl, die durch 1 bis 20 teilbar ist, ist `232792560`.
+## Task 1.4
 
-## Aufgabe 1.4
-**Allgemeiner Aufbau:**
- `Typ Name = Wert;`
+> In the following example, name types, variables and values. Explain the keyword const in this context. What is type conversion, and why can there be problems? Where do you see problems in the following program code?
 
-![Aufgabenstellung](aufgabe_1_4.PNG)
+![A block of code showing the assignment of values to different variable types.](task_1_4.png)
+In the given code example, a bunch of values are assigned to different types of variables.
 
- - int a = 9; `Ganzzahl` 
- - bool b = false; `Wahrheitswert` 
- - char c = 'a'; `Zeichentyp` 
- - double d = 1.3; `Fließkommazahl` 
- - int const five = 5; `nicht veränderbare Ganzzahl` 
- - double e = a/five; `ergibt 1.0, da erst Teilen von int, dann parse zu double` 
- - five = d; `nicht möglich, da Konstante`
+```cpp
+int a = 9; // whole number type
+bool b = false; // truth value type 
+char c = 'a'; // character type
+double d = 1.3; // floating point number
+int const five = 5; // unchangeable whole number type 
+double e = a/five; // equals 1.0, since integers are divided first, and only parsed to double afterwards 
+five = d; // not possible, since five is a constant
+```
 
-## Aufgabe 1.5
-`Initialisierung` Erst-Zuweisung eines Wertes, z.B. 
+## Task 1.5
 
-> *int a = 10;*
+> Explain the terms initialization and assignment in terms of variables and give an example each. What differences are there?
 
-`Zuweisung` Allgemeine Zuweisung eines Wertes, welches die Initialisierung sein, aber auch später stattfinden kann, z.B. 
+`Initialization` is the first assignment of a value to a variable, for example: 
 
-> *int b = 9; 
-> b = 10;*
+```cpp
+int a = 10;
+```
 
-**Unterschiede**
-Jede Initialisierung ist eine Zuweisung, aber nicht jede Zuweisung eine Initialisierung. Die Initialisierung findet nur statt wird der Variable zum ersten Mal ein Wert zugewiesen.
+`Assignment` is the general assignment of a value to a variable, which can but doesn't have to be the initialization. For example, both lines in the following code are assignments of values: 
 
-## Aufgabe 1.6
-`Deklaration` Man sagt dem Compiler, dass eine Funktion *(Signatur)*, Variable *(Typ und Name)*, Konstante oder Klasse existiert z.B.
+```cpp
+int b = 9; 
+b = 10;
+```
 
-> *int a;*
-> *void test();*
-> *class Test;*
+Every initialization is an assignment, but not every assignment is an initialization. The initialization only happens once, when the variable first gets a value assigned.
 
-`Definition` Macht die Details einer Entität bekannt, was bei Variablen dazu führt, dass Speicher reserviert wird.
+## Task 1.6
 
-> *a = 10;*
-> *void test() { /\*Inhalt\*/ }*
-> *class Test { /\*Inhalt\*/ };*
+> Explain the term 'declaration', also sometimes referred to as 'forward declaration', and 'definition', as well as give an example each. What differences are there? Give examples for 'declaration' and 'definition' in the context of functions, variables, and classes.
 
-**Unterschiede**
-Eine Deklaration gibt dem Compiler die Info, dass z.B. eine Variable oder Funktion existiert, während die Definition diesen dann einen Wert oder Inhalt zuordnet.
+`Declaration` means in C++, that you tell the compiler, the type and size of a given variable or constant. This also applies to class structures, where you declare the type (class/struct) and functions, where you declare the function signature with the type and size of all its parameters.
 
-## Aufgabe 1.7
-**Signatur:**
- `Rückgabetyp` *(oder void)* + `Name(Eingabeparameter)` 
+```cpp
+extern int a;
+void foo();
+int bar(int);
+class FooBar;
+struct BarFoo;
+```
 
-![Aufgabenstellung](aufgabe_1_7.PNG)
+`Definition` makes in addition to the declaration of type and size, also reserves space in the memory of the machine.
 
-> int var = 3; `global gültig`
-> 
-> **main()**
-> i `gütig in for-Schleife`
-> 
-> **square(int var)** 
-> var `lokal, nur gültig in square()`
-> 
-> **sum (double a, double b)** 
-> a `lokal, nur gültig in sum()` 
-> b `lokal, nur gültig in sum()`
+```cpp
+int a;
+int b = 10;
+int foo(int a) {return a;}
+class FooBar{int a;};
+struct BarFoo{int a;};
+```
 
-## Aufgabe 1.16
-- `C++` generische, imperative, objektorientierte, prozedurale, strukturierte, funktionale Programmiersprache; ursprünglich als Erweiterung von C gedacht
-- `Quellcode` Abfolge von Anweisungen in einer höheren Programmiersprache, die von einem Computer verarbeitet werden 
-- `Compiler` übersetzt Programmcode in Maschinensprache für den Prozessor 
-- `Linker` Anzahl mehrerer Objektdateien generiert von einem Compiler, kombiniert zu einem einzelnen Programm 
-- `Objektcode` Zwischenprodukt spezieller Art von Compilern; einzelne Module aus dem Quellcode werden zu maschinenlesbarem Code übersetzt und können dann von Linkern verbunden werden
-- `Ausführbare Datei` kann als ein Computerprogramm ausgeführt werden 
-- `main()` Startmethode eines C++ Programms 
-- `#include` fügt andere Dateien in einen Quellcode ein, deren Inhalt nun einfach im Programm mitverwendet werden kann
-- `Kommentar` werden nicht in Maschinensprache übersetzt und dienen als Hinweise, Beschreibungen und Erklärungen für das Verständnis der Programmierer 
-- `Header`  Dateien der Endung *.h* oder *.hpp*, welche Funktionen und Variablen deklarieren, welche dann in der *.cpp* definiert werden
-- `Programm` Serie von Anweisungen an einen Computer, damit dieser bestimmte Operationen ausführt
-- `Ausgabe` Anzeigen des Ergebnisses eines ausgeführten Programmes z.B. über ein Terminal
-- `std::cout` *std* ist Kurzform für standard; die Ausgabe-Methode *cout* ist im *std* namespace gespeichert; erzeugt einen Output im Terminal 
-- `std::cin` ermöglicht eine Eingabe über die Konsole 
-- `<<` Output-Operator
-- `>>` Input-Operator
-- `Funktion` Bezeichnung eines Programmkonstrukts; hilfreich zur Strukturierung des Quellcodes; darin vorhandener Code-Block kann über Methodenaufruf wiederverwendet werden
-- `Funktionssignatur` deklariert eine Funktion mit Typ der Rückgabe, Namen der Funktion und den Eingabeparametern
-- `Deklaration` macht eine Variable *(Datentyp + Name)* dem Compiler bekannt
-- `Definition` teilt einer Variable oder Konstante einen Wert zu, oder einer Klasse und Funktion den Inhalt
-- `Typ` gibt an von welchem Datentyp (Art) der Inhalt von einer Variable ist
-- `Typkonvertierung` ein Datentyp wird in einem Programm in einen anderen umgewandelt z.B. 
+A declaration gives the compiler the information, that a variable or function exists, while the definition then reserves memory on the machine.
 
-> *int i = 1;  
-> double j = i; // j = 1.0*
+## Task 1.7
 
-- `Variable` Charakteristik, Nummer oder Menge die erhöht oder verringert, verändert oder ausgetauscht werden kann, und mittels eines Namens im Programm referenziert werden kann
-- `Name` mittels diesem wird die Variable im Code referenziert und auf ihren Inhalt zugegriffen
-- `Wert` Inhalt einer Variable; ist einem Variablennamen zugeordnet ist 
-- `Initialisierung` Erst-Zuweisung eines Wertes an eine Variable, kann während der Deklaration oder später passieren
-- `Zuweisung` allgemeine Zuweisung eines Wertes, welches die Initialisierung sein, aber auch später stattfinden kann
-- `const` Keyword um eine Konstante zu deklarieren, die, wenn einmal erstellt, nur noch gelesen und nicht mehr verändert werden kann
-- `Gültigkeitsbereich` Bereich in dem eine Variable sichtbar ist und auf sie zugegriffen werden kann 
+> What is part of the signature of a function? Determine the scope of all variables in the following example.
+
+A `function signature` consists of a access modifier like *public* or *private*, possibly a *static* keyword, a return type, which may also be *void*, if nothing will be returned by the function, and a name. After that, the parameter variables are listed inside parenthesis with their type and local name each.
+
+![Showing three functions, including a main function, a sum function to add up two doubles, and a square function that multiplies a value with itself.](task_1_7.PNG)
+```cpp
+int var = 3; // global scope, valid in whole class
+
+double sum (double a, double b) {
+  // a and b are only valid locally inside this method
+}
+
+int square(int var) {
+  // var is only valid locally inside this method
+}
+
+int main() {
+  for (int i = 0; i != 100; ++i) {
+    // i is only valid inside loop
+  }
+}
+```
+
+## Task 1.16
+
+> Write down a definition for each term in the list.
+
+- `C++` is a generic, imperative, object-oriented, procedural, structured, functional programming language, that was originally intended as an extension of the C language.
+- `Source code` is the sequence of high-level language instructions processed by a computer.
+- `Compiler` translates program code into machine language for the processor.
+- `Linker` is a number of multiple object files generated by a compiler combined into a single program. 
+- `Object code` is a special intermediate product of compilers, consisting of individual modules from the source code that are translated to machine-readable code, and which can be linked by linkers.
+- `Executable file` can be executed as a program by a computer.
+- `main()` is the start method of a program written in the C++ language. 
+- `#include` includes the content of other files into the source code, which can then be used in the source code.
+- `Comments` won't be translated into machine language, and just serve as reminders, descriptions and explanations for the programmers looking at the source code. 
+- `Headers`  are files with the file ending *.h* or *.hpp*, which generally declare functions and variables, that can then be defined in the linked *.cpp* file(s).
+- `Programs` are series of commands to a computer for it to perform certain operations.
+- `Output` is the display of the results of an executed program, generally over a terminal.
+- `std::cout` is a method of the standard C++ library to output information into the terminal. 
+- `std::cin` is a method of the standard C++ library to receive user input from the terminal for usage in the program.
+- `<<` is the standard output operator.
+- `>>` is the standard input operator.
+- `Functions` are programming constructs helpful for structuring the source code, as they can be called using a method invocation. Their content can thus be executed multiple times in different contexts.
+- `Functions signatures` declare a function with their access modifier, possibly a static keyword, a return type, a name and input parameters.
+- `Declaration` makes a variable type and name, or function, class or struct known to the compiler.
+- `Definition` reserves space in the memory of the machine for a given declaration.
+- `Type` declares the kind of content of a variable or parameter.
+- `Typ conversion` describes the process of converting a variable of one type into another type, for example:
+
+
+```cpp
+int i = 1;  
+double j = i; // j equals 1.0
+```
+
+- `Variables` are a characteristic, number or quantity, that can be increased or decreased, changed or exchanged, and can be referenced by name inside the program.
+- `Name` is something by which variables, functions, classes, and similar are referenced inside the source code and by which one can access its content.
+- `Value` is the content of a variable, which is associated with a variable name, which can be accessed inside the program using this name.
+- `Initialization` is the first assignment of a value to a variable.
+- `Assignment` is the general assignment of a value to a variable, which can but doesn't have to be the initialization.
+- `const` is a keyword that declares a variable as constant, making it so that its content can only be read, but not changed.
+- `Scope` is the region inside the source code, where a variable is valid or *visible*, meaning it can be referenced.
 
 ## Aufgabe 2.2
 *Include guards* ist eine Technik mit welcher das mehrfache Einbinden eines Headers unterbunden wird. Werden die Header, z.B. *Vec2.hpp*, zweimal eingebunden, wird es Compilation Errors geben, da hier z.B. die struct  Vec2 zweifach definiert werden würde.
@@ -316,7 +346,7 @@ on removing 'virtual' of base class 'shape' (and 'override' tags)
 
 ## Task 6.1
 
-```c++
+```cpp
 void raycast()
 	for all pixels(x,y)
 		image(x,y) = trace( compute_eye_ray(x,y) )
@@ -327,7 +357,7 @@ void raycast()
 → get pixel array<br />
 → convert to image and display<br />
 
-```c++
+```cpp
 rgbColor trace(ray r)
 	for all objects o
 		t = compute_intersection(r, o)
@@ -345,7 +375,7 @@ rgbColor trace(ray r)
 → if object(s) found: find closest object<br />
 → compute shade on pixel and return color<br />
 
-```c++
+```cpp
 rgbColor shade(object o, ray r, double t)
 	point x = r(t)
 	// evaluate(Phong) illumination equation
