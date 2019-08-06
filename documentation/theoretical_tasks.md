@@ -151,7 +151,7 @@ double j = i; // j equals 1.0
 
 `Data transfer objects` or *DTOs* are a design pattern in which multiple data is bundled in one object. You only have public member variables, with as little member functions as possible and with no member functions that can modify the member variables.
 
-## Aufgabe 2.9
+## Task 2.9
 
 > What is the difference between a method and a free function in the context of const correctness?
 
