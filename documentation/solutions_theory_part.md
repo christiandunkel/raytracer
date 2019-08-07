@@ -330,6 +330,7 @@ This is the second line, and it creates a static pointer to a dynamic object. It
 > In what order are the constructors and destructors in the following example called?
 
 ![A block of code showing a sphere and a shape object being created and then both deleted afterwards.](images/task_5_8.png)
+
 At first, the constructor for the base class `Shape` will be called with the constructor of the derived class `Sphere` afterwards, each time a object (instance) is created. For the destructor it is the other way around, and the constructor of the derived class `Sphere` will be called first, followed by the constructor for the base class `Shape`.
 
 ### Order of constructor and destructor calls

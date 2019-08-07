@@ -1,11 +1,11 @@
 
 # Raytracer
 
-This **raytracer** for simple shapes was build over the summer semester 2019 in the course "*programming languages*" at the *Bauhaus University Weimar*. The class started with acquiring the basic of C++ before going into the more complex aspects of the language. The course culminated in this final project, creating a raytracer from scratch.
+This **raytracer** for simple shapes is the final mini project of the course "*programming languages*" in the summer semester of 2019 at the *Bauhaus University Weimar*. The class started with acquiring the basics of C++ before going into the more complex aspects of the language. The final mini project was made by teams consisting of two people each.
 
 ## What does it do?
 
-The program reads an *sdf* file that contains data about a scene. The scene consists of shapes, lights, cameras, and rendering information. The program will construct a scene from this information that contains the references to all the shapes, cameras, and lights. Using the rendering information, the raytracer will now generate a **Netpbm** image of the **P***ortable* **P***ix***m***ap*  format.
+The program reads an *sdf* file that contains data about a scene. The scene consists of shapes, lights, cameras, and rendering information. The program will construct a scene from this information that contains the references to all the shapes, cameras, and lights. Using the rendering information, the raytracer will now generate a **Netpbm** image of the **P**ortable **P**ix**M**ap format.
 
 ![A screenshot of an sdf file containing information about the materials and shapes in a scene.](documentation/images/raytracer_sdf_file.png)
 
@@ -20,3 +20,4 @@ Finally, a *ppm* picture with the defined dimensions will be generated from the 
 - [Styleguide](/documentation/styleguide_2019.pdf)
 - [Solutions (Theory Part)](/documentation/solutions_theory_part.md)
 - [UML Diagram](/documentation/raytracer_uml_diagram.png)
+- [Credits](/documentation/credits.md)
