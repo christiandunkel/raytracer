@@ -259,78 +259,81 @@ if (itr != test_map.end()) {
 
 A normal `iterator` or a constant iterator, or `const_iterator`, may be used to iterate over a container. Normal iterators allow changing the elements that they iterate over, whilst `const` iterators do not.
 
-## Aufgabe 4.8
+## Task 4.8
 
-**DEEP-COPY**: - copy values, objects will be traversed and their values copied as well
-**SHALLOW-COPY**: - copy only simple data types, copy references to objects / complex datatypes
+> Consider and describe how the compiler generates the copy constructor and what happens when it is executed. Note the differences between a shallow and a deep copy.
 
-**copy constructor is called when**:
+A `shallow copy` would only copy simple data types and put references for objects / complex data types. A `deep copy` would in contrast copy all content, including other objects referenced inside the object, and create copies of those as well.
+
+A `copy constructor` is called when 
 - an object is returned by value
-- an object of class is passed to a function by value
+- an object is passed to a function by value
 - an object is constructed based on another object of the same class
 - the compiler generates a temporary object
 
-**by default, C++ compiler creates its own default** copy constructor (shallow-copy)
+By default, the C++ compiler creates its own copy constructor, which produces shallow copies. If there is any pointers,  run-time allocation or a deep copy being required, a custom copy constructor is needed.
 
-**custom copy-constructor is needed**, if there are pointers or any runtime allocation, also allows for deep copy        
-
-**Why copy-constructor pass by value?** -> copy constructor is a function in its basic form
-that is always called when there is an argument pass by value ->
-if not using reference in copy constructor -> infinite loop
-
-## Aufgabe 4.14
-
-Move Constructor??
-auto l = List<int>{1,2,3,4,5} + List<int>{6,7,8,9};
+The default C++ copy constructor is a function in its basic form, and is always called when there is an argument pass by value. If one doesn't work with references when constructing one's own copy constructor, it would therefore end up always calling itself and get stuck in an infinite loop.
 
 ## Task 5.3
 
-- beim Erstellen des Sphere Objekts
-- ruft den Konstruktor der Basisklasse (Shape) zuerst auf, dann den Konstruktor der abgeleiteten Klasse (Sphere)
-- wenn der eine Initialisierungsliste existiert, konstruktor der basisklasse wird am Anfang der Liste aufgerufen
-- Konstruktor der Basisklasse kann als Punkt in Liste (am Anfang) definiert werden e.g. Shape(), Shape(string name), ..
+> The initialization of the base class takes place in the initialization list of the constructor of the derived class! Where is the constructor of the base class called?
+
+The constructor of the base class would be called if an object (instance) of the base class or a derived class is created. The constructor of the base class would be called first, then followed by the constructor of the derived class.
+
+If an initialization list is used in the constructor of the derived class, the constructor of the base class can be referenced at the beginning of this list, and values can be passed inside, as shown in the following example:
+
+```cpp
+Sphere(std::string name) :
+Shape(name), middle_(glm::vec3(0.0f)), radius_(0.0f)
+{}
+```
+
+In the example, the `Sphere` is derived from the base class `Shape`. It is initialized with a name variable, that it then passes on to the constructor of its base class in the initialization list.
 
 ## Task 5.5
 
-*override*
-- stellt sicher, dass eine Funktion virtuell ist
-- *falls dies nicht zutrifft: compile error*
-- definiert, dass eine Klasse eine virtuelle Funktion seiner Basisklasse überschreibt (ersetzt)
+> Explain the effect of the `override` keyword in the context of inheritance! What happens if you omit the keyword?
+
+The keyword `override` ensures that a function in the base class is virtual, and it that is not the case, throws a compile error. It pretty much declares, that a function overrides its virtual equivalent in the base class.
+
+As this keyword is only an indicator for the compiler and not a requirement when trying to override a virtual function, nothing will happen if it is omitted.
 
 ## Task 5.7
 
-**dynamic variable** 
-- variable whose address is determined when the program is run
+> Using the example, explain the terms `static type of a variable` and `dynamic type of a variable`.
 
-**static variable**
-- already known at compilation time, has memory reseved for it at compilation time
+A `dynamic variable` is a variable whose address is determined when the program is run, while a `static variable` is already known at compilation time, and has therefore memory reserved for itself at compilation time by the machine.
 
-*std::shared_ptr*
-- smart pointer
-- retains shared ownership of an object thrugh pointer
-- several smart pointers may own the same object
-- object is destroyed, when:
-  - last smart pointer owning it is destroyed
-  - last smart pointer owning it is assigned another pointer via = o. reset()
-- can own object while storing pointer to another
-  - for example, can be used to point to an object's member, while still owning the object
+> What are the dynamic and static types of variables s1 and s2?
 
-*std::make_shared*
-- construct T object and wrap it in smart pointer
+![A block of code showing two shared pointers pointing towards a Sphere object being created, with one of them being of type Sphere and one of type Shape.](images/task_5_7.png)
 
-`std::shared_ptr<Sphere> s1 = std::make_shared<Sphere>(position, 1.2f, red, "sphere0");`
-- static pointer -> static pointer
-  - in compilation-time known
-  - can use all functions of sphere
+In the example, for both variables `shared pointers` are used, which are `smart pointers` that retain the shared ownership of an object. Several smart pointers may own the same object, and the object is only destroyed when either the last smart pointer owning it is destroyed or the last smart pointer owning it is assigned another pointer via the function `reset()`. The shared pointer can own an object, while storing a pointer to another. For example, it can be used to point to an object's member, while still owning the object itself.
 
-`std::shared_ptr<Shape> s2 = std::make_shared<Sphere>(position, 1.2f, red, "sphere1");`
-- static pointer -> to dynamic object
-  - in run-time looks for Sphere object
-  - can only run functions of Sphere (but virtual functions overriden by sphere still work)
+Using `std::make_shared` an object of a given type is constructed and wrapped inside a smart pointer.
+
+```cpp
+std::shared_ptr<Sphere> s1 = std::make_shared<Sphere>(position, 1.2f, red, "sphere0");
+```
+
+The first line creates a static pointer to a static object, which is known at compilation time. This pointer can access all functions of the `Sphere` class.
+
+```cpp
+std::shared_ptr<Shape> s2 = std::make_shared<Sphere>(position, 1.2f, red, "sphere1");
+```
+
+This is the second line, and it creates a static pointer to a dynamic object. It looks in run time for the `Sphere` class, and can only run functions of the `Sphere` class itself, and none of the stand-alone functions of the base class `Shape`. Although, all virtual functions of the base class that were overridden will continue to work.
 
 ## Task 5.8
 
-*order of constructor / destructor calls*
+> In what order are the constructors and destructors in the following example called?
+
+![A block of code showing a sphere and a shape object being created and then both deleted afterwards.](images/task_5_8.png)
+At first, the constructor for the base class `Shape` will be called with the constructor of the derived class `Sphere` afterwards, each time a object (instance) is created. For the destructor it is the other way around, and the constructor of the derived class `Sphere` will be called first, followed by the constructor for the base class `Shape`.
+
+### Order of constructor and destructor calls
+
 1. constructor s1 (shape)
 2. constructor s1 (sphere)
 3. constructor s2 (shape)
@@ -340,13 +343,11 @@ auto l = List<int>{1,2,3,4,5} + List<int>{6,7,8,9};
 7. destructor s2 (sphere)
 8. destructor s2 (shape)
 
-on removing 'virtual' of base class 'shape' (and 'override' tags)
-- destructor for sphere3 is called only once, since it's not linked with child class
-- because:
-  - shape -> sphere
-  - shape delete -> calls size_of for size of object 
-    - -> gets size of base class, because not virtual 
-    - -> only deletes base object 
+>  Remove the keyword `virtual` from the destructor of the base class, test again and explain the difference.
+
+On removing the keyword `virtual` from the destructor of the base class `Shape`, including all `override` tags in the derived class, the destructor for the second sphere is only called once, since it's not linked with child class. That is because, the object's type is `Shape`, but it points to a `Sphere` instance. If `delete` is called on the object, the compiler looks up `size_of` for the size of the object, but only receives the size of the base class `Shape`, because of the missing keyword. Therefore, it will call only one destructor, which is the only one it knows, being the destructor of the base class `Shape`.
+
+### Order of constructor and destructor calls
 
 1. constructor s1 (shape)
 2. constructor s1 (sphere)
@@ -358,23 +359,21 @@ on removing 'virtual' of base class 'shape' (and 'override' tags)
 
 ## Task 5.9
 
-**Klassenhierarchie**
-- baumartige Struktur
-- ist Beziehung zwischen Klassen dar (Basisklasse und abgeleitete Klassen)
+> Explain the differences between `class hierarchy` and `object hierarchy`, as well as `class diagram` and `object diagram`.
 
-**Objekthierarchie**
-- Relationen (Ordnung, Komposition) der Objekte in einem System (Geschwister, Eltern, Kinder, usw..)
+The `class hierarchy` is a tree-like structure, that displays the relations between the given classes in the program. For example, which class acts as the base class of which classes, and what classes are derived from it.
 
-**Klassendiagramm**
-- zeigt statische Struktur eines Systems in Diagram Form
-- allgemein: Klassennamen, Attribute, Relation zwischen Klassen
+The `object hierarchy` describes the relations between specific objects in a system, for example, their order and composition, and if they're parents, children and siblings.
 
-**Objektdiagramm**
-- stellt alle Objekte eines Systems mit ihren Relationen (Ordnung, Komposition) dar
-- mehrere Objekte einer Klasse möglich
-- Objektname, Klassennamen, Klassenattribute mit zugewiesenen Werten, Relation zu anderen Objekten (Geschwister, Eltern, Kinder, usw..)
+The `class diagram` displays the class hierarchy of a system using a diagram, which may include the class names, attributes, functions, accessibility, and their relations between each other.
+
+The `object diagram` displays the object hierarchy of a system using a diagram. It shows the specific objects with their names, belonging class, attributes and values, and relations to other specific objects. Multiple objects of the same instance can be displayed.
 
 ## Task 6.1
+
+> Explain the ray-tracing algorithm presented in the exercise.  Draw an example of beam paths in the given sketch.
+
+![An illustration of a camera shooting out a ray towards a rectangle, which reflects and hits a circle, and two lights shooting rays at the intersection.](images/raytracer_illustration.png)
 
 ```cpp
 void raycast()
@@ -382,10 +381,7 @@ void raycast()
 		image(x,y) = trace( compute_eye_ray(x,y) )
 ```
 
-→ go through each pixel of image<br />
-→ send out ray<br />
-→ get pixel array<br />
-→ convert to image and display<br />
+The function goes through each pixel of the image and sends out a ray. It gets a color for the given pixel and returns a pixel array, which will then later be converted to an image and displayed.
 
 ```cpp
 rgbColor trace(ray r)
@@ -400,26 +396,15 @@ rgbColor trace(ray r)
 			return background_color
 ```
 
-→ compute intersection for all objects<br />
-→ if no object found: return background color<br />
-→ if object(s) found: find closest object<br />
-→ compute shade on pixel and return color<br />
+This function will compute the intersection of the rays with all objects. If no object is found within the path of the ray, it will return the background color. Otherwise, it will look at the first object the ray hits on its path. It will compute the shade at the intersection and return the calculated final color.
 
 ```cpp
 rgbColor shade(object o, ray r, double t)
 	point x = r(t)
-	// evaluate(Phong) illumination equation
+	// evaluate (Phong) illumination equation
 	return color
 ```
 
-→ send out ray from intersection to point light nodes<br />
-→ compute lighting using Phong and ambient and point lights<br />
-→ return light-influenced color for pixel<br />
-<br />
-<br />
-<br />
-**Missing: reflection**<br />
-→ shootout rays from intersection with light reflection angle<br />
-→ if ray hits object, return object color →  send new ray (infinitely)<br />
-→ if ray reaches max depth, return background color<br />
-→ use calculated distance and apply color with a factor to first object
+With this function, the raytracer will send out another ray from the intersection point to all point lights, and check if there are objects in the path. It may also be the other way around, with all point lights sending out a ray towards the intersection. It will compute lighting using the Phong model using the point lights and the ambient light. After that, the shading-corrected color for the pixel will be returned.
+
+Missing in the algorithm is the aspect of reflection. To realize a simple reflection, one would need to shoot out rays from each intersection point using the light reflection angle. If the second ray hits another object, the object's color would be returned, and a new ray would be send out (up until a certain hard-coded limit). If a non-primary ray reaches the max depth without hitting an object, it would return the background color. With each new ray, the returned colors would have less and less influence on the original pixel color. One would also have to look at the distance that each of the non-primary rays traveled to adjust their influence on the original pixel color.
