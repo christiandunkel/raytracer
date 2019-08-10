@@ -22,25 +22,27 @@ bool Renderer::is_valid() {
 
 void Renderer::render() {
 
-  std::size_t const checker_pattern_size = 20;
-
-  for (unsigned y = 0; y < height_; y++) {
+  for (unsigned y = 1; y <= height_; y++) {
     for (unsigned x = 0; x < width_; x++) {
 
-      Pixel p(x,y);
+      Pixel p(x, y);
 
-      if ( ((x/checker_pattern_size)%2) != ((y/checker_pattern_size)%2)) {
-        p.color = Color(0.0, 1.0, float(x)/height_);
-      } 
-      else {
-        p.color = Color(1.0, 0.0, float(y)/width_);
-      }
+      p.color = color_buffer_.at(x*y);
 
       write(p);
+
     }
   }
 
-  ppm_.save(filename_);
+  // generate a sub folder with date & time as name
+  time_t _tm =time(NULL );
+  struct tm * curtime = localtime ( &_tm );
+  std::string time = asctime(curtime);
+  std::replace(time.begin(), time.end(), ':', '-');
+
+  std::cout << time << std::endl;
+
+  ppm_.save("output/" + time + " " + filename_);
 
 }
 

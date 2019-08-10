@@ -10,28 +10,45 @@
 
 int main(int argc, char* argv[]) {
 
+  // load scene from sdf file
   SdfManager manager;
   std::unique_ptr<Scene> scene = manager.parse("./resource/materials_test.sdf");
-  //Renderer renderer;
 
-  /*
+  // get first renderer
+  int renderer_index = 0;
+  Renderer* renderer = &scene->renderer_vec_.at(renderer_index);
+  int renderer_num = scene->renderer_vec_.size();
 
   //create separate thread to see updates of pixels while rendering
-  std::thread render_thread([&renderer]() {renderer.render();});
+  std::thread render_thread([&renderer]() {renderer->render();});
 
-  Window window{{image_width, image_height}};
+  Window window{{renderer->get_width(), renderer->get_height()}};
 
   while (!window.should_close()) {
+
     if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       window.close();
     }
-    window.show(renderer.get_color_buffer());
+    else if (window.get_key(GLFW_KEY_SPACE) == GLFW_PRESS) {
+
+      if  (renderer_index >= renderer_num) {
+        // last renderer reached, close
+        window.close();
+      }
+      else {
+        renderer_index++;
+        renderer = &scene->renderer_vec_.at(renderer_index);
+      }
+      
+    }
+
+    window.show(renderer->get_color_buffer());
+
   }
 
   //"join" threads, i.e. synchronize main thread with render_thread
   render_thread.join();
-  return 0;
 
-  */
+  return 0;
 
 }

@@ -37,6 +37,18 @@ class Renderer {
       return color_buffer_;
     }
 
+    inline std::string const get_filename() const {
+      return filename_;
+    }
+
+    inline unsigned int const get_width() const {
+      return width_;
+    }
+
+    inline unsigned int const get_height() const {
+      return height_;
+    }
+
 };
 
 #endif // RENDERER_HPP
