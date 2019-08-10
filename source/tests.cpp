@@ -404,14 +404,12 @@ TEST_CASE("Task 6.5", "") {
 
   std::unique_ptr<Scene> scene = sdfs.parse("resource/materials_test.sdf");
 
-  REQUIRE(scene->material_vec_.size() == 4);
-
   // BEST CASE: 1
   // AVERAGE CASE: n/2
   // WORST CASE: n
   // linear time
 
-  auto red_material = scene->find_material_in_vec("red");
+  auto red_material = scene->find_material("red");
 
   REQUIRE(red_material->name_ == "red");
   REQUIRE(red_material->ka_.r == Approx(1.0f).epsilon(0.001));
@@ -434,7 +432,7 @@ TEST_CASE("Task 6.5", "") {
   // k = time complexity of comparing two elements
   // logarithmic time (Red-Black Tree by default)
 
-  auto green_material = scene->find_material_in_set("green");
+  auto green_material = scene->find_material("green");
 
   REQUIRE(green_material->name_ == "green");
   REQUIRE(green_material->ka_.r == Approx(0.0f).epsilon(0.001));
@@ -457,7 +455,7 @@ TEST_CASE("Task 6.5", "") {
   // k = time complexity of comparing two elements
   // logarithmic time (Red-Black Tree by default)
 
-  auto blue_material = scene->find_material_in_map("blue");
+  auto blue_material = scene->find_material("blue");
 
   REQUIRE(blue_material->name_ == "blue");
   REQUIRE(blue_material->ka_.r == Approx(0.0f).epsilon(0.001));

@@ -132,8 +132,6 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
   material->m_ = stof(values.at(10));
 
   // push material into containers
-  scene->material_vec_.push_back(material);
-  scene->material_set_.emplace(material);
   scene->material_map_.emplace(std::make_pair(material->name_, material));
 
 }
@@ -153,7 +151,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     std::shared_ptr<Box> box_ptr = std::static_pointer_cast<Box>(shape);
     box_ptr->set_min(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     box_ptr->set_max(glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7))));
-    box_ptr->set_material(scene->find_material_in_map(values.at(8)));
+    box_ptr->set_material(scene->find_material(values.at(8)));
   }
   else if (values.at(0) == "sphere") {
 
@@ -163,7 +161,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     std::shared_ptr<Sphere> sphere_ptr = std::static_pointer_cast<Sphere>(shape);
     sphere_ptr->set_middle(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     sphere_ptr->set_radius(stof(values.at(5)));
-    sphere_ptr->set_material(scene->find_material_in_map(values.at(6)));
+    sphere_ptr->set_material(scene->find_material(values.at(6)));
 
   }
   else if (values.at(0) == "triangle") {
@@ -176,7 +174,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     triangle_ptr->set_b(glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7))));
     triangle_ptr->set_c(glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10))));
 
-    triangle_ptr->set_material(scene->find_material_in_map(values.at(11)));
+    triangle_ptr->set_material(scene->find_material(values.at(11)));
   }
   else {
     std::cout << "SdfManager: Shape type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;

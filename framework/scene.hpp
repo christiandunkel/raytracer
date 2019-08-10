@@ -18,9 +18,6 @@ class Scene {
     std::vector<std::shared_ptr<Shape>> shape_vec_;
     std::vector<std::shared_ptr<Light>> light_vec_;
     std::map<std::string, std::shared_ptr<Camera>> camera_map_;
-
-    std::vector<std::shared_ptr<Material>> material_vec_;
-    std::set<std::shared_ptr<Material>> material_set_;
     std::map<std::string, std::shared_ptr<Material>> material_map_;
 
     Scene() = default;
@@ -28,10 +25,7 @@ class Scene {
     std::shared_ptr<Shape> find_shape(std::string const& name) const;
     std::shared_ptr<Light> find_light(std::string const& name) const;
     std::shared_ptr<Camera> find_camera(std::string const& name) const;
-
-    std::shared_ptr<Material> find_material_in_vec(std::string const& name) const;
-    std::shared_ptr<Material> find_material_in_set(std::string const& name) const;
-    std::shared_ptr<Material> find_material_in_map(std::string const& name) const;
+    std::shared_ptr<Material> find_material(std::string const& name) const;
 };
 
 #endif // SDFMANAGER_HPP
