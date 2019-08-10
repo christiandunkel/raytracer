@@ -9,7 +9,6 @@ class SdfManager {
   public:
 
     SdfManager() = default;
-    SdfManager(std::string const& file_path);
 
     std::unique_ptr<Scene> parse(std::string const& file_path);
 

@@ -15,5 +15,5 @@ render eye image.ppm 480 320
 LOLOLOL
 THIS LINE WILL BE IGNORED
 define THIS LINE TOO
-define camera eye 45.0
-render eye image.ppm 480 320
+define camera eye3 45.0
+render eye2 image 480 320

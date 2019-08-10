@@ -15,20 +15,6 @@
 #include <cmath>
 #include <algorithm>
 
-PpmWriter::PpmWriter(std::size_t w, std::size_t h, std::string const& file)
-  : file_(file),
-    width_(w),
-    height_(h) {
-  data_.resize(w * h * (sizeof(Color)/sizeof(float)));
-}
-
-PpmWriter::PpmWriter(std::size_t w, std::size_t h)
-  : file_("untitled.ppm"),
-    width_(w),
-    height_(h) {
-  data_.resize(w*h*(sizeof(Color)/sizeof(float)));
-}
-
 void
 PpmWriter::write(Pixel const& p)
 {

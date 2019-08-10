@@ -1,43 +1,42 @@
-// -----------------------------------------------------------------------------
-// Copyright  : (C) 2014-2017 Andreas-C. Bernstein
-// License    : MIT (see the file LICENSE)
-// Maintainer : Andreas-C. Bernstein <andreas.bernstein@uni-weimar.de>
-// Stability  : experimental
-//
-// Renderer
-// -----------------------------------------------------------------------------
-
-#ifndef BUW_RENDERER_HPP
-#define BUW_RENDERER_HPP
+#ifndef RENDERER_HPP
+#define RENDERER_HPP
 
 #include "color.hpp"
 #include "pixel.hpp"
 #include "ppmwriter.hpp"
+#include "camera.hpp"
 #include <string>
+#include <memory>
 #include <glm/glm.hpp>
 
 class Renderer {
 
-private:
+  private:
 
-  unsigned width_;
-  unsigned height_;
-  std::vector<Color> color_buffer_;
-  std::string filename_;
-  PpmWriter ppm_;
+    PpmWriter ppm_;
+    std::shared_ptr<Camera> cam_;
 
-public:
+    std::string filename_;
+    std::vector<Color> color_buffer_;
 
-  Renderer(unsigned w, unsigned h, std::string const& file);
+    unsigned int width_;
+    unsigned int height_;
 
-  void render();
-  void write(Pixel const& p);
+  public:
 
-  inline std::vector<Color> const& color_buffer() const
-  {
-    return color_buffer_;
-  }
+    Renderer() = default;
+
+    Renderer(std::string const& file, std::shared_ptr<Camera> cam, unsigned int w, unsigned int h) : 
+      ppm_(w, h), cam_(cam), filename_(file), color_buffer_(w * h, Color{0.0, 0.0, 0.0}), width_(w), height_(h) {}
+
+    bool is_valid();
+    void render();
+    void write(Pixel const& p);
+
+    inline std::vector<Color> const& get_color_buffer() const {
+      return color_buffer_;
+    }
 
 };
 
-#endif // #ifndef BUW_RENDERER_HPP
+#endif // RENDERER_HPP

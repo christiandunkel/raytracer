@@ -8,11 +8,6 @@
 #include <fstream>
 #include <ctype.h>
 
-// on construction of object, parse given sdf file
-SdfManager::SdfManager(std::string const& file_path) {
-  parse(file_path);
-}
-
 // test if file exists at given path
 bool SdfManager::file_exists(std::string const& file_path) {
   struct stat buffer;
@@ -53,9 +48,9 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
     std::string line;
     while (getline(file, line)) {
 
-      // only use lines starting with "define"
-      std::regex REGEX_define ("^define .*");
-      if (!std::regex_match(line, REGEX_define)) {
+      // only use lines starting with "define", "render" or "transform"
+      std::regex REGEX_valid ("^(define|render|transform) .*");
+      if (!std::regex_match(line, REGEX_valid)) {
         continue;
       }
 
@@ -69,26 +64,36 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
         continue;
       }
 
-      // remove "define" from beginning of string
-      parts.erase(parts.begin());
+      // detect type of command in current line of sdf file
+      if (parts.at(0) == "define") {
 
-      if (parts.at(0) == "material") {
-        parse_material(file_path, scene, parts);
+        // remove "define" from beginning of string
+        parts.erase(parts.begin());
+
+        if (parts.at(0) == "material") {
+          parse_material(file_path, scene, parts);
+        }
+        else if (parts.at(0) == "shape") {
+          parse_shape(file_path, scene, parts);
+        }
+        else if (parts.at(0) == "light") {
+          parse_light(file_path, scene, parts);
+        }
+        else if (parts.at(0) == "camera") {
+          parse_camera(file_path, scene, parts);
+        }
+        else {
+          std::cout << "SdfManager: Given type '" << parts.at(0) << "' doesn't exist." << std::endl;
+        }
+
       }
-      else if (parts.at(0) == "shape") {
-        parse_shape(file_path, scene, parts);
-      }
-      else if (parts.at(0) == "light") {
-        parse_light(file_path, scene, parts);
-      }
-      else if (parts.at(0) == "camera") {
-        parse_camera(file_path, scene, parts);
+      else if (parts.at(0) == "transform") {
+        
       }
       else if (parts.at(0) == "render") {
+        // remove "render" from beginning of string
+        parts.erase(parts.begin());
         parse_render(file_path, scene, parts);
-      }
-      else {
-        std::cout << "SdfManager: Given type '" << parts.at(0) << "' doesn't exist." << std::endl;
       }
 
     }
@@ -249,4 +254,22 @@ void SdfManager::parse_camera(std::string const& file_path, std::unique_ptr<Scen
 
 void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
+  // find camera
+  std::shared_ptr<Camera> cam = scene->find_camera(values.at(0));
+
+  if (cam == nullptr) {
+    std::cout << "SdfManager: Camera '" + values.at(0) + "' used by renderer in " << file_path << " doesn't exist (yet)." << std::endl;
+    return;
+  }
+
+  std::istringstream width_str(values.at(2));
+  unsigned int width;
+  width_str >> width;
+
+  std::istringstream height_str(values.at(3));
+  unsigned int height;
+  height_str >> height;
+
+  Renderer renderer{values.at(1), cam, width, height};
+  scene->renderer_vec_.push_back(renderer);
 }

@@ -9,6 +9,7 @@
 #include "triangle.hpp"
 #include "ray.hpp"
 #include "sdfManager.hpp"
+#include "renderer.hpp"
 
 int main(int argc, char *argv[]) {
   return Catch::Session().run(argc, argv);
@@ -563,4 +564,12 @@ TEST_CASE("Task 6.5", "") {
   REQUIRE(c2->pos_.x == Approx(0.0f).epsilon(0.001));
   REQUIRE(c2->pos_.y == Approx(0.0f).epsilon(0.001));
   REQUIRE(c2->pos_.z == Approx(-3.0f).epsilon(0.001));
+
+  auto r1 = scene->renderer_vec_.at(0);
+
+  REQUIRE(r1.is_valid() == true);
+
+  auto r2 = scene->renderer_vec_.at(1);
+
+  REQUIRE(r2.is_valid() == false);
 }
