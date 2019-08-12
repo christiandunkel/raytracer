@@ -63,6 +63,7 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
       if (parts.size() < 3) {
         continue;
       }
+      
 
       // detect type of command in current line of sdf file
       if (parts.at(0) == "define") {
@@ -167,7 +168,6 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     sphere_ptr->set_middle(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     sphere_ptr->set_radius(stof(values.at(5)));
     sphere_ptr->set_material(scene->find_material(values.at(6)));
-
   }
   else if (values.at(0) == "triangle") {
 

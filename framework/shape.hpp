@@ -39,12 +39,12 @@ class Shape {
     virtual float area() const = 0;
     virtual float volume() const = 0;
 
-    virtual Hitpoint intersect(Ray const &ray, float distance) const = 0;
-
   public:
 
     virtual std::ostream& print(std::ostream& os) const;
     virtual ~Shape();
+
+    virtual Hitpoint intersect(Ray const &ray, float distance) const = 0;
 
     std::string get_name() const {
       return name_;

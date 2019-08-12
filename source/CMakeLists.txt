@@ -21,6 +21,7 @@ add_executable(tests
   ../framework/renderer.cpp
   ../framework/pixel.cpp
   ../framework/ppmwriter.cpp
+  ../framework/camera.cpp
 )
 target_link_libraries(tests
   ${GLFW_LIBRARIES}

@@ -12,11 +12,18 @@ int main(int argc, char* argv[]) {
 
   // load scene from sdf file
   SdfManager manager;
-  std::unique_ptr<Scene> scene = manager.parse("./resource/materials_test.sdf");
+  std::unique_ptr<Scene> scene = manager.parse("./resource/simple_scene.sdf");
 
   // get first renderer
   int renderer_index = 0;
   Renderer* renderer = &scene->renderer_vec_.at(renderer_index);
+
+  // set first camera
+  renderer->set_camera(scene->camera_map_.begin()->second);
+
+  // set shapes
+  renderer->set_shapes(scene->shape_vec_);
+
   int renderer_num = scene->renderer_vec_.size();
 
   //create separate thread to see updates of pixels while rendering
@@ -39,7 +46,7 @@ int main(int argc, char* argv[]) {
         renderer_index++;
         renderer = &scene->renderer_vec_.at(renderer_index);
       }
-      
+
     }
 
     window.show(renderer->get_color_buffer());

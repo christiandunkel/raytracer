@@ -5,6 +5,8 @@
 #include "pixel.hpp"
 #include "ppmwriter.hpp"
 #include "camera.hpp"
+#include "shape.hpp"
+
 #include <string>
 #include <memory>
 #include <glm/glm.hpp>
@@ -15,6 +17,7 @@ class Renderer {
 
     PpmWriter ppm_;
     std::shared_ptr<Camera> cam_;
+    std::vector<std::shared_ptr<Shape>> shapes_;
 
     std::string filename_;
     std::vector<Color> color_buffer_;
@@ -49,6 +52,13 @@ class Renderer {
       return height_;
     }
 
+    void set_camera(std::shared_ptr<Camera> camera);
+    void set_shapes(std::vector<std::shared_ptr<Shape>> const& shapes);
+
+  private:
+
+    Color trace(Ray const& ray);
+    Color shade(std::shared_ptr<Shape> shape, Ray const& ray, float distance);
 };
 
 #endif // RENDERER_HPP

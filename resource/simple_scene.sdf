@@ -1,0 +1,11 @@
+define material red 1 0 0 1 0 0 1 0 0 20
+define material green 0 1 0 0 1 0 0 1 0 50
+define material blue 0 0 1 0 0 1 0 0 1 10
+
+define shape sphere bsphere -15 0 -100 10 blue
+define shape triangle btriangle 20 -20 -100 20 5 -100 5 20 -100 green
+define shape box rbottom 0 0 -100 -20 -20 -200 red
+
+define camera eye 45.0
+
+render eye image.ppm 600 500
