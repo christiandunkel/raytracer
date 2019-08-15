@@ -63,6 +63,8 @@ public:
   int get_key(int key) const;
   int get_mouse_button(int button) const;
 
+  void handle_events();
+
   // current window size
   glm::ivec2 window_size() const;
 

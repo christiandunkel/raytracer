@@ -16,10 +16,15 @@ struct Hitpoint {
   Color color_{1.0f, 1.0f, 1.0f}; // color of object hit
   
   // 3d point at which ray and sphere intersected
-  glm::vec3 intersection_{0.0f, 0.0f, 0.0f};
+  glm::vec3 intersection_ = glm::vec3(0.0f);
+
+  // surface normal at intersection
+  glm::vec3 normal_ = glm::vec3(0.0f);
 
   // direction in which the ray was shot
   glm::vec3 ray_direction_{0.0f, 0.0f, 1.0f};
+
+  void transform(glm::mat4 const& mat, glm::mat4 const& trans);
  
 };
 

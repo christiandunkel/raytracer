@@ -48,30 +48,34 @@ std::ostream& Sphere::print(std::ostream& os) const {
 // test if a ray intersects with the sphere
 Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
 
+  glm::mat4 world_transform_inv_ = glm::inverse(world_transform_);
+  glm::mat4 world_transform_inv_trans = glm::transpose(world_transform_inv_);
+
+  Ray ray_trans = ray.transform(world_transform_inv_);
+  ray_trans.direction_ = glm::normalize(ray_trans.direction_);
+
   Hitpoint h;
 
-  h.has_hit_ = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, pow(radius_, 2), distance);
+  h.has_hit_ = glm::intersectRaySphere(ray_trans.origin_, ray_trans.direction_, middle_, pow(radius_, 2), distance);
 
   if (h.has_hit_) {
     // 3d point at which ray and sphere intersected
-    glm::vec3 intersection_position;
-    glm::vec3 intersection_normal;
-    glm::intersectRaySphere(
-      ray.origin_, ray.direction_, middle_, pow(radius_, 2), 
-      intersection_position, intersection_normal
-    );
-    h.intersection_ = intersection_position;
+    h.intersection_ = ray_trans.origin_ + ray_trans.direction_ * distance;
+
+    // calculate surface normal
+    h.normal_ = glm::normalize(h.intersection_ - middle_);
 
     // distance at which the intersection took place
-    h.distance_ = glm::distance(ray.origin_, intersection_position);
+    h.distance_ = glm::distance(ray_trans.origin_, h.intersection_);
+
+    h.name_ = name_;
+    h.color_ = material_->kd_;
+    h.ray_direction_ = ray_trans.direction_;
+
+    h.transform(world_transform_, world_transform_inv_trans);
   }
 
-  h.name_ = name_;
-  h.color_ = material_->kd_;
-  h.ray_direction_ = ray.direction_;
-
   return h;
-
 }
 
 void Sphere::set_middle(glm::vec3 const& middle) {

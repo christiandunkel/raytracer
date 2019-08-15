@@ -14,25 +14,27 @@ class Shape {
     std::string name_;
     std::shared_ptr<Material> material_;
 
+    glm::mat4 world_transform_;
+
     Shape() :
-      name_("default") {
+      name_("default"), world_transform_(glm::mat4(1.0f)) {
         std::cout << "Created shape " + name_ << std::endl;
         material_ = std::make_shared<Material>();
       }
 
     Shape(std::string name) :
-      name_(name) {
+      name_(name), world_transform_(glm::mat4(1.0f)) {
         std::cout << "Created shape " + name_ << std::endl;
         material_ = std::make_shared<Material>();
       }
 
     Shape(std::shared_ptr<Material> material) :
-      name_("default"), material_(material) {
+      name_("default"), material_(material), world_transform_(glm::mat4(1.0f)) {
         std::cout << "Created shape " + name_ << std::endl;
       }
 
     Shape(std::string name, std::shared_ptr<Material> material) :
-      name_(name), material_(material) {
+      name_(name), material_(material), world_transform_(glm::mat4(1.0f)) {
         std::cout << "Created shape " + name_ << std::endl;
       }
 
@@ -44,7 +46,7 @@ class Shape {
     virtual std::ostream& print(std::ostream& os) const;
     virtual ~Shape();
 
-    virtual Hitpoint intersect(Ray const &ray, float distance) const = 0;
+    virtual Hitpoint intersect(Ray const &ray, float distance = 0.0f) const = 0;
 
     std::string get_name() const {
       return name_;

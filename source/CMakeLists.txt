@@ -22,6 +22,8 @@ add_executable(tests
   ../framework/pixel.cpp
   ../framework/ppmwriter.cpp
   ../framework/camera.cpp
+  ../framework/ray.cpp
+  ../framework/hitpoint.cpp
 )
 target_link_libraries(tests
   ${GLFW_LIBRARIES}

@@ -1,11 +1,10 @@
+define camera eye 20.0
+
+define light sun 200 1000 200 .2 .2 .2 1
+#define light sun2 -200 300 -200 .6 .0 .1 1
+
 define material red 1 0 0 1 0 0 1 0 0 20
-define material green 0 1 0 0 1 0 0 1 0 50
-define material blue 0 0 1 0 0 1 0 0 1 10
 
-define shape sphere bsphere -15 0 -100 10 blue
-define shape triangle btriangle 20 -20 -100 20 5 -100 5 20 -100 green
-define shape box rbottom 0 0 -100 -20 -20 -200 red
+define shape sphere sphere1 0 0 0 40 red
 
-define camera eye 45.0
-
-render eye image.ppm 600 500
+render eye image.ppm 600 600

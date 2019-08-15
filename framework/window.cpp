@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 
 #include "window.hpp"
+#include "camera.hpp"
 #include <utility>
 #include <cstring>
 #include <iostream>
@@ -190,6 +191,57 @@ void Window::update()
 
   // Calculate pixel ration for hi-dpi devices.
   float pxRatio = float(frame_buffer_size_.x) / float(window_size_.x);
+}
+
+#include <iostream>
+
+void Window::handle_events()
+{
+  if (get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    close();
+  }
+
+  if (get_key(GLFW_KEY_W) == GLFW_PRESS) {
+    key_w = true;
+  }
+  else {
+    key_w = false;
+  }
+
+  if (get_key(GLFW_KEY_A) == GLFW_PRESS) {
+    key_a = true;
+  }
+  else {
+    key_a = false;
+  }
+
+  if (get_key(GLFW_KEY_S) == GLFW_PRESS) {
+    key_s = true;
+  }
+  else {
+    key_s = false;
+  }
+
+  if (get_key(GLFW_KEY_D) == GLFW_PRESS) {
+    key_d = true;
+  }
+  else {
+    key_d = false;
+  }
+
+  if (get_key(GLFW_KEY_C) == GLFW_PRESS) {
+    key_c = true;
+  }
+  else {
+    key_c = false;
+  }
+
+  if (get_key(GLFW_KEY_SPACE) == GLFW_PRESS) {
+    key_space = true;
+  }
+  else {
+    key_space = false;
+  }
 }
 
 glm::ivec2 Window::window_size() const

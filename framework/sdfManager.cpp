@@ -270,6 +270,12 @@ void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scen
   unsigned int height;
   height_str >> height;
 
+  cam->set_screen_dimensions(width, height);
+
   Renderer renderer{values.at(1), cam, width, height};
+
+  renderer.lights_ = std::make_shared<std::vector<std::shared_ptr<Light>>>(scene->light_vec_);
+  renderer.shapes_ = std::make_shared<std::vector<std::shared_ptr<Shape>>>(scene->shape_vec_);
+
   scene->renderer_vec_.push_back(renderer);
 }

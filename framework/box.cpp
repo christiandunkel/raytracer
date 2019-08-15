@@ -1,5 +1,7 @@
 #include "box.hpp"
 
+#include <catch.hpp>
+
 Box::~Box() {
   std::cout << "Destroyed box " + name_ << std::endl;
 }
@@ -108,6 +110,14 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
         tmin * ray.direction_.z + ray.origin_.z
       };
       hitpoint.distance_ = glm::distance(ray.origin_, hitpoint.intersection_);
+
+      	//calc normvector
+        if(hitpoint.intersection_.x == Approx(min_.x)) {hitpoint.normal_ = {-1.0f, 0.0f, 0.0f};}
+        else if (hitpoint.intersection_.x == Approx(max_.x)) {hitpoint.normal_ = {1.0f, 0.0f, 0.0f};}
+        else if (hitpoint.intersection_.y == Approx(min_.y)) {hitpoint.normal_ = {0.0f, -1.0f, 0.0f};}
+        else if (hitpoint.intersection_.y == Approx(max_.y)) {hitpoint.normal_ = {0.0f, 1.0f, 0.0f};}
+        else if (hitpoint.intersection_.z == Approx(min_.z)) {hitpoint.normal_ = {0.0f, 0.0f, -1.0f};}
+        else if (hitpoint.intersection_.z == Approx(max_.z)) {hitpoint.normal_ = {0.0f, 0.0f, 1.0f};}
 
     }
 
