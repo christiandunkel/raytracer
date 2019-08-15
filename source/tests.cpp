@@ -165,12 +165,12 @@ TEST_CASE ("Task 5.6", "Ray, intersection()") {
   Hitpoint h2 = s2.intersect(r2, 4.0f);
   REQUIRE(h2.has_hit_ == false);
   REQUIRE(h2.distance_ == Approx(-1.0f).epsilon(0.001)); // error -> returns -1f
-  REQUIRE(h2.name_ == "default");
+  REQUIRE(h2.name_ == "");
   REQUIRE(h2.color_.r == 1.0f);
   REQUIRE(h2.color_.g == 1.0f);
   REQUIRE(h2.color_.b == 1.0f);
   REQUIRE(h2.intersection_ == glm::vec3(0.0f, 0.0f, 0.0f)); // default hitpoint value
-  REQUIRE(h2.ray_direction_ == glm::vec3(0.0f, 0.0f, -1.0f));
+  REQUIRE(h2.ray_direction_ == glm::vec3(0.0f, 0.0f, 1.0f));
 
   Triangle t1(
     glm::vec3(0.0f, 0.0f, 2.0f),

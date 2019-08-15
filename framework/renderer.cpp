@@ -6,8 +6,7 @@
 #include "triangle.hpp"
 
 #include <regex>
-
-Color scene_ambient = Color(0.2f, 0.2f, 0.2f);
+#include <limits>
 
 // check if the given renderer instance is valid
 bool Renderer::is_valid() {
@@ -86,28 +85,25 @@ void Renderer::write(Pixel const& p) {
 
 Color Renderer::trace(Ray const& ray) {
 
-  Color color = scene_ambient;
+  Color color = Color(0.2f, 0.2f, 0.2f);
 
   // check for intersections with all existing objects
-  float closest_d = 0.0f;
-  std::shared_ptr<Shape> closest_s = nullptr;
+  Hitpoint hp = find_intersection(ray);
 
-  Hitpoint hp;
+  std::shared_ptr<Shape> hit_shape = nullptr;
 
-  for (auto const shape : *shapes_) {
-
-    hp = shape->intersect(ray, closest_d);
-
-    if (hp.distance_ > closest_d) {
-      closest_d = hp.distance_;
-      closest_s = shape;
+  // find shape that has been hit by a ray
+  for (auto const shape : (*shapes_)) {
+    
+    if (shape->get_name() == hp.name_) {
+      hit_shape = shape;
     }
   }
 
-  if (closest_s != nullptr) {
+  if (hit_shape != nullptr) {
 
-    std::shared_ptr<Material> material = closest_s->get_material();
-
+    std::shared_ptr<Material> material = hit_shape->get_material();
+    
     // iterate over all existing light sources
     for (auto const light : *lights_) {
 
@@ -122,39 +118,25 @@ Color Renderer::trace(Ray const& ray) {
         // ray starting at the light's origin
         Ray light_ray{hp.intersection_ + light_direction, light_direction};
 
-        Hitpoint hp_light;
-
-        // check for intersection with current light
-        float closest_d = 0.0f;
-        std::shared_ptr<Shape> closest_s = nullptr;
-
-        for (auto const shape : *shapes_) {
-
-          hp_light = shape->intersect(light_ray, closest_d);
-
-          if (hp.distance_ > closest_d) {
-            closest_d = hp.distance_;
-            closest_s = shape;
-          }
-        }
+        Hitpoint hp_light = find_intersection(light_ray);
 
         // ambient
         Color ambient{0.0f, 0.0f, 0.0f};
 
         static float ambient_intensity = 0.05f;
 
-        ambient.r = ambient_intensity * material->ka_.r * scene_ambient.r;
-        ambient.g = ambient_intensity * material->ka_.g * scene_ambient.g;
-        ambient.b = ambient_intensity * material->ka_.b * scene_ambient.b;
+        ambient.r = ambient_intensity * material->ka_.r;
+        ambient.g = ambient_intensity * material->ka_.g;
+        ambient.b = ambient_intensity * material->ka_.b;
 
         // diffuse
         Color diffuse{0.0f, 0.0f, 0.0f};
 
         float diff = glm::max(glm::dot(hp.normal_, light_direction), 0.0f);
 
-        diffuse.r = diff * closest_s->get_material()->kd_.r;
-        diffuse.g = diff * closest_s->get_material()->kd_.g;
-        diffuse.b = diff * closest_s->get_material()->kd_.b;
+        diffuse.r = diff * hit_shape->get_material()->kd_.r;
+        diffuse.g = diff * hit_shape->get_material()->kd_.g;
+        diffuse.b = diff * hit_shape->get_material()->kd_.b;
 
         // specular
         Color specular{0.0f, 0.0f, 0.0f};
@@ -185,4 +167,27 @@ Color Renderer::trace(Ray const& ray) {
   }
 
   return color;
+}
+
+Hitpoint Renderer::find_intersection(Ray const& ray) {
+
+  Hitpoint first_hit;
+  first_hit.distance_ = std::numeric_limits<float>::max();
+
+  for(auto const shape : *shapes_){
+
+    Hitpoint hit = shape->intersect(ray);
+
+    if (hit.has_hit_) {
+
+      hit.distance_ = glm::distance(hit.intersection_, ray.origin_);
+
+      if (first_hit.distance_ > hit.distance_) {
+        first_hit = hit;
+      }
+    }
+
+  }
+
+  return first_hit;
 }
