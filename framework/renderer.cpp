@@ -182,6 +182,11 @@ Color Renderer::trace(Ray const& ray) {
       }
     }
   }
+/*
+  else {
+    return Color(0.2f, 0.2f, 0.2f);
+  }
+*/
 
   return color;
 }
