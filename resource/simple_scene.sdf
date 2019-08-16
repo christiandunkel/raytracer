@@ -12,6 +12,6 @@ define material blue 0 0 1 0 0 1 0 0 1 10
 define shape sphere sphere1 .12 .1 1 .1 green
 define shape sphere sphere2 -0.12 .1 1 .1 red
 #define shape box table -0.4 -0.5 1.0 .4 -0.11 -0.2 blue
-#define shape box bbox -0.1 -0.2 1.5 .1 -0.12 1.0 red
+define shape box bbox -0.1 -0.2 1.5 .1 -0.12 1.0 red
 
 render eye image.ppm 600 600

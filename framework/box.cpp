@@ -53,82 +53,85 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
 
   Ray ray_trans = ray.transform(glm::inverse(world_transform_));
 
-  // member variables of box object
-  hitpoint.name_ = name_;
-  hitpoint.color_ = material_->kd_;
-  hitpoint.ray_direction_ = ray_trans.direction_;
+  distance = -1.0f;
 
-  float tmin = (min_.x - ray_trans.origin_.x) / ray_trans.direction_.x; 
-  float tmax = (max_.x - ray_trans.origin_.x) / ray_trans.direction_.x; 
+  float tmin = (min_.x - ray_trans.origin_.x) / ray_trans.direction_.x;
+  float tmax = (max_.x - ray_trans.origin_.x) / ray_trans.direction_.x;
+  float tfar = std::max(tmin, tmax);
+  float tnear = std::min(tmin, tmax);
 
-  if (tmin > tmax) {
-    std::swap(tmin, tmax);
+  tmin = (min_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
+  tmax = (max_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
+
+  if (ray_trans.direction_.x == Approx(0.0f)){
+
+    tfar = std::max(tmin, tmax);
+    tnear = std::min(tmin, tmax);
   } 
+  else {
 
-  float tymin = (min_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
-  float tymax = (max_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
-
-  if (tymin > tymax) {
-    std::swap(tymin, tymax); 
+    tnear = std::max(tnear, std::min(tmin, tmax));
+    tfar = std::min(tfar, std::max(tmin, tmax));
+  }
+  
+  if (tnear > tfar) {
+    return hitpoint;
   }
 
-  if (tmin > tymax || tymin > tmax) {
-    hitpoint.has_hit_ = false;
+  tmin = (min_.z - ray_trans.origin_.z) / ray_trans.direction_.z;
+  tmax = (max_.z - ray_trans.origin_.z) / ray_trans.direction_.z;
+
+  if (ray_trans.direction_.x == Approx(0.0f) && ray_trans.direction_.y == Approx(0.0f)) {
+
+    tfar = std::max(tmin, tmax);
+    tnear = std::min(tmin, tmax);
   }
   else {
 
-    if (tymin > tmin) {
-      tmin = tymin;
-    }  
-
-    if (tymax < tmax) { 
-      tmax = tymax;
-    }
-
-    float tzmin = (min_.z - ray_trans.origin_.z) / ray_trans.direction_.z; 
-    float tzmax = (max_.z - ray_trans.origin_.z) / ray_trans.direction_.z; 
-
-    if (tzmin > tzmax) {
-      std::swap(tzmin, tzmax); 
-    }
-
-    if (tmin > tzmax || tzmin > tmax) { 
-      hitpoint.has_hit_ = false;
-    }
-    else {
-
-      if (tzmin > tmin) { 
-        tmin = tzmin;
-      }
-
-      if (tzmax < tmax) {
-        tmax = tzmax;
-      }
-
-      hitpoint.has_hit_ = true;
-      hitpoint.intersection_ = glm::vec3{
-        tmin * ray_trans.direction_.x + ray_trans.origin_.x, 
-        tmin * ray_trans.direction_.y + ray_trans.origin_.y, 
-        tmin * ray_trans.direction_.z + ray_trans.origin_.z
-      };
-      hitpoint.distance_ = glm::distance(ray_trans.origin_, hitpoint.intersection_);
-
-      	//calc normvector
-        if(hitpoint.intersection_.x == Approx(min_.x)) {hitpoint.normal_ = {-1.0f, 0.0f, 0.0f};}
-        else if (hitpoint.intersection_.x == Approx(max_.x)) {hitpoint.normal_ = {1.0f, 0.0f, 0.0f};}
-        else if (hitpoint.intersection_.y == Approx(min_.y)) {hitpoint.normal_ = {0.0f, -1.0f, 0.0f};}
-        else if (hitpoint.intersection_.y == Approx(max_.y)) {hitpoint.normal_ = {0.0f, 1.0f, 0.0f};}
-        else if (hitpoint.intersection_.z == Approx(min_.z)) {hitpoint.normal_ = {0.0f, 0.0f, -1.0f};}
-        else if (hitpoint.intersection_.z == Approx(max_.z)) {hitpoint.normal_ = {0.0f, 0.0f, 1.0f};}
-
-    }
-
+    tnear = std::max(tnear, std::min(tmin, tmax));
+    tfar = std::min(tfar, std::max(tmin, tmax));
   }
+  
+  if (tnear > tfar) {
+    return hitpoint;
+  }
+
+  if (tnear < 0.0f && tfar < 0.0f) {
+    return hitpoint;
+  }
+
+  hitpoint.distance_ = tnear * sqrt(ray_trans.direction_.x * ray_trans.direction_.x + ray_trans.direction_.y * ray_trans.direction_.y + ray_trans.direction_.z * ray_trans.direction_.z);
+  hitpoint.intersection_ = ray_trans.origin_ + ray_trans.direction_ * tnear;
+
+  // calculate normal vector for the respective plane
+  if(hitpoint.intersection_.x == Approx(min_.x)) {
+    hitpoint.normal_ = {-1.0f, 0.0f, 0.0f};
+  }
+  else if (hitpoint.intersection_.x == Approx(max_.x)) {
+    hitpoint.normal_ = {1.0f, 0.0f, 0.0f};
+  }
+  else if (hitpoint.intersection_.y == Approx(min_.y)) {
+    hitpoint.normal_ = {0.0f, -1.0f, 0.0f};
+  }
+  else if (hitpoint.intersection_.y == Approx(max_.y)) {
+    hitpoint.normal_ = {0.0f, 1.0f, 0.0f};
+  }
+  else if (hitpoint.intersection_.z == Approx(min_.z)) {
+    hitpoint.normal_ = {0.0f, 0.0f, -1.0f};
+  }
+  else if (hitpoint.intersection_.z == Approx(max_.z)) {
+    hitpoint.normal_ = {0.0f, 0.0f, 1.0f};
+  }
+
+  hitpoint.has_hit_ = true;
+  hitpoint.distance_ = distance;
+  hitpoint.color_ = material_->kd_;
+  hitpoint.name_ = name_;
 
   hitpoint.transform(world_transform_);
   return hitpoint;
-
 }
+
 
 void Box::set_min(glm::vec3 const& vec) {
   min_ = vec;
