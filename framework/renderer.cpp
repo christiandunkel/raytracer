@@ -105,6 +105,7 @@ Color Renderer::trace(Ray const& ray) {
     add refraction and mirroring
     update triangle and box intersection methods
     add transformation to parser
+    add all camera members to sdf parser
   */
 
   if (hit_shape != nullptr) {
@@ -187,6 +188,11 @@ Color Renderer::trace(Ray const& ray) {
     return Color(0.2f, 0.2f, 0.2f);
   }
 */
+
+  // apply tone mapping
+  color.r = color.r / (color.r + 1);
+  color.g = color.g / (color.g + 1);
+  color.b = color.b / (color.b + 1);
 
   return color;
 }

@@ -51,7 +51,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
 
   Hitpoint hitpoint;
 
-  Ray ray_trans = ray.transform(glm::inverse(world_transform_));
+  Ray ray_trans = ray.transform(world_transform_inv_);
 
   distance = -1.0f;
 

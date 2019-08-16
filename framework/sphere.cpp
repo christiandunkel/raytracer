@@ -49,7 +49,7 @@ std::ostream& Sphere::print(std::ostream& os) const {
 // test if a ray intersects with the sphere
 Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
 
-  Ray ray_trans = ray.transform(glm::inverse(world_transform_));
+  Ray ray_trans = ray.transform(world_transform_inv_);
   ray_trans.direction_ = glm::normalize(ray_trans.direction_);
 
   Hitpoint h;
