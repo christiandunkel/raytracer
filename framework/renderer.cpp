@@ -103,7 +103,7 @@ Color Renderer::trace(Ray const& ray) {
   /*
   TODO:
     add refraction and mirroring
-    update triangle and box intersection methods (if necessary)
+    update triangle and box intersection methods
     add transformation to parser
   */
 
@@ -163,6 +163,7 @@ Color Renderer::trace(Ray const& ray) {
           color += ambient + diffuse + specular;
         }
         else {
+          // in shadow
           color += ambient;
         }
       }

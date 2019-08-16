@@ -24,8 +24,8 @@ struct Hitpoint {
   // direction in which the ray was shot
   glm::vec3 ray_direction_{0.0f, 0.0f, 1.0f};
 
-  void transform(glm::mat4 const& mat, glm::mat4 const& trans);
- 
+  void transform(glm::mat4 const& mat);
+
 };
 
 #endif // define HITPOINT_HPP

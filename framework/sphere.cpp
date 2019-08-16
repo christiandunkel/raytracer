@@ -1,7 +1,8 @@
+#include "sphere.hpp"
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
-#include "sphere.hpp"
 
 Sphere::~Sphere() {
   std::cout << "Destroyed sphere " + name_ << std::endl;
@@ -48,10 +49,7 @@ std::ostream& Sphere::print(std::ostream& os) const {
 // test if a ray intersects with the sphere
 Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
 
-  glm::mat4 world_transform_inv_ = glm::inverse(world_transform_);
-  glm::mat4 world_transform_inv_trans = glm::transpose(world_transform_inv_);
-
-  Ray ray_trans = ray.transform(world_transform_inv_);
+  Ray ray_trans = ray.transform(glm::inverse(world_transform_));
   ray_trans.direction_ = glm::normalize(ray_trans.direction_);
 
   Hitpoint h;
@@ -72,8 +70,9 @@ Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
     h.color_ = material_->kd_;
     h.ray_direction_ = ray_trans.direction_;
 
-    h.transform(world_transform_, world_transform_inv_trans);
   }
+
+  h.transform(world_transform_);
 
   return h;
 }

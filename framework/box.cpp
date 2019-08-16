@@ -51,20 +51,22 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
 
   Hitpoint hitpoint;
 
+  Ray ray_trans = ray.transform(glm::inverse(world_transform_));
+
   // member variables of box object
   hitpoint.name_ = name_;
   hitpoint.color_ = material_->kd_;
-  hitpoint.ray_direction_ = ray.direction_;
+  hitpoint.ray_direction_ = ray_trans.direction_;
 
-  float tmin = (min_.x - ray.origin_.x) / ray.direction_.x; 
-  float tmax = (max_.x - ray.origin_.x) / ray.direction_.x; 
+  float tmin = (min_.x - ray_trans.origin_.x) / ray_trans.direction_.x; 
+  float tmax = (max_.x - ray_trans.origin_.x) / ray_trans.direction_.x; 
 
   if (tmin > tmax) {
     std::swap(tmin, tmax);
   } 
 
-  float tymin = (min_.y - ray.origin_.y) / ray.direction_.y;
-  float tymax = (max_.y - ray.origin_.y) / ray.direction_.y;
+  float tymin = (min_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
+  float tymax = (max_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
 
   if (tymin > tymax) {
     std::swap(tymin, tymax); 
@@ -83,8 +85,8 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
       tmax = tymax;
     }
 
-    float tzmin = (min_.z - ray.origin_.z) / ray.direction_.z; 
-    float tzmax = (max_.z - ray.origin_.z) / ray.direction_.z; 
+    float tzmin = (min_.z - ray_trans.origin_.z) / ray_trans.direction_.z; 
+    float tzmax = (max_.z - ray_trans.origin_.z) / ray_trans.direction_.z; 
 
     if (tzmin > tzmax) {
       std::swap(tzmin, tzmax); 
@@ -105,11 +107,11 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
 
       hitpoint.has_hit_ = true;
       hitpoint.intersection_ = glm::vec3{
-        tmin * ray.direction_.x + ray.origin_.x, 
-        tmin * ray.direction_.y + ray.origin_.y, 
-        tmin * ray.direction_.z + ray.origin_.z
+        tmin * ray_trans.direction_.x + ray_trans.origin_.x, 
+        tmin * ray_trans.direction_.y + ray_trans.origin_.y, 
+        tmin * ray_trans.direction_.z + ray_trans.origin_.z
       };
-      hitpoint.distance_ = glm::distance(ray.origin_, hitpoint.intersection_);
+      hitpoint.distance_ = glm::distance(ray_trans.origin_, hitpoint.intersection_);
 
       	//calc normvector
         if(hitpoint.intersection_.x == Approx(min_.x)) {hitpoint.normal_ = {-1.0f, 0.0f, 0.0f};}
@@ -123,6 +125,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
 
   }
 
+  hitpoint.transform(world_transform_);
   return hitpoint;
 
 }
