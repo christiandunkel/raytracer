@@ -100,10 +100,19 @@ Color Renderer::trace(Ray const& ray) {
     }
   }
 
+  /*
+  TODO:
+    add refraction and mirroring
+    update triangle and box intersection methods (if necessary)
+    add transformation to parser
+  */
+
   if (hit_shape != nullptr) {
 
     std::shared_ptr<Material> material = hit_shape->get_material();
-    
+
+    static float attenuation = 1.0f;
+
     // iterate over all existing light sources
     for (auto const light : *lights_) {
 
@@ -121,47 +130,54 @@ Color Renderer::trace(Ray const& ray) {
         Hitpoint hp_light = find_intersection(light_ray);
 
         // ambient
-        Color ambient{0.0f, 0.0f, 0.0f};
-
-        static float ambient_intensity = 0.05f;
-
-        ambient.r = ambient_intensity * material->ka_.r;
-        ambient.g = ambient_intensity * material->ka_.g;
-        ambient.b = ambient_intensity * material->ka_.b;
+        static float ambient_intensity = point_light_ptr->intensity_;
+        Color ambient = ambient_intensity * material->ka_ * point_light_ptr->color_;
 
         // diffuse
-        Color diffuse{0.0f, 0.0f, 0.0f};
-
         float diff = glm::max(glm::dot(hp.normal_, light_direction), 0.0f);
-
-        diffuse.r = diff * hit_shape->get_material()->kd_.r;
-        diffuse.g = diff * hit_shape->get_material()->kd_.g;
-        diffuse.b = diff * hit_shape->get_material()->kd_.b;
+        Color diffuse = diff * material->kd_;
 
         // specular
-        Color specular{0.0f, 0.0f, 0.0f};
-
         glm::vec3 view_direction = glm::normalize(cam_->pos_ -hp.intersection_);
         glm::vec3 reflection_direction = glm::reflect(-light_direction, hp.normal_);
 
         glm::vec3 halfway_direction = glm::normalize(light_direction + view_direction);
-        float spec = glm::pow(glm::max(glm::dot(hp.normal_, halfway_direction), 0.0f), 32.0f);
+        float spec = pow(glm::max(glm::dot(hp.normal_, halfway_direction), 0.0f), material->m_);
 
-        specular.r = spec * material->ks_.r;
-        specular.g = spec * material->ks_.g;
-        specular.b = spec * material->ks_.b;
+        Color specular = spec * material->ks_ ;
+
+        // light attenuation
+        const float light_constant = 1.0f;
+        static float light_linear = 0.09f;
+        static float light_quadratic = 0.032f;
+
+        float light_distance = glm::length(point_light_ptr->pos_ - hp.intersection_);
+        attenuation = 1.0f / (light_constant + light_linear * light_distance + light_quadratic * pow(light_distance, 2));
+
+        ambient *= attenuation;
+        diffuse *= attenuation;
+        specular *= attenuation;
 
         if (!hp_light.has_hit_) {
           // combine all colors
-          color.r = ambient.r + diffuse.r + specular.r;
-          color.g = ambient.g + diffuse.g + specular.g;
-          color.b = ambient.b + diffuse.b + specular.b;
+          color += ambient + diffuse + specular;
         }
         else {
-          color.r = ambient.r;
-          color.g = ambient.g;
-          color.b = ambient.b;
+          color += ambient;
         }
+      }
+      else if (dynamic_cast<AmbientLight*>(light.get())) {
+
+        // cast light pointer to AmbientLight pointer
+        auto ambient_light_ptr = std::static_pointer_cast<AmbientLight>(light);
+
+        // ambient
+        static float ambient_intensity = ambient_light_ptr->intensity_;
+        Color ambient = ambient_intensity * material->ka_ * ambient_light_ptr->color_;
+        ambient *= attenuation;
+
+        // only add ambient to final color
+        color += ambient;
       }
     }
   }

@@ -39,8 +39,8 @@ class Camera {
   public:
 
     Camera() :
-      pos_(glm::vec3(0.0f, 300.0f, 300.0f)),
-      front_(glm::vec3(0.0f, -1.0f, -1.0f)),
+      pos_(glm::vec3(0.0f, 0.1f, 3.0f)),
+      front_(glm::vec3(0.0f, -0.05f, -1.0f)),
       sensitivity_(0.06f),
       fov_(20.0f),
       world_up_(glm::vec3(0.0f, 1.0f, 0.0f)),
