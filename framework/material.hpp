@@ -17,6 +17,9 @@ struct Material {
   // specular reflections exponent
   float m_ = 0.0f;
 
+  // reflection coefficient
+  float r_ = 0.0f; 
+
   std::ostream& print(std::ostream& os) const;
 
 };

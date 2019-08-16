@@ -17,8 +17,8 @@ bool SdfManager::file_exists(std::string const& file_path) {
 }
 
 // test if given string can be converted to a number
-bool SdfManager::is_number(const std::string& s) {
-
+bool SdfManager::is_number(std::string const& s) {
+/*
   std::string::const_iterator it = s.begin();
 
   while (it != s.end() && std::isdigit(*it)) {
@@ -26,7 +26,12 @@ bool SdfManager::is_number(const std::string& s) {
   }
 
   return !s.empty() && it == s.end();
+*/
+  std::istringstream iss(s);
+  float f;
+  iss >> std::noskipws >> f;
 
+  return iss.eof() && !iss.fail();
 }
 
 // parse sdf file, convert data to objects and return scene
@@ -117,15 +122,15 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
   // remove "material" from beginning of string
   values.erase(values.begin());
 
-  // material must have 11 (name, 3 colors (3x3=9), one float) values
-  if (values.size() != 11) {
+  // material must have 12 (name, 3 colors (3x3=9), two floats) values
+  if (values.size() != 12) {
     return;
   }
 
   // test if all values after name are numbers
   for (size_t i = 1; i < values.size(); i++) {
     if (!is_number(values.at(i))) {
-      return;  
+      return;
     }
   }
 
@@ -138,6 +143,7 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
   material->kd_ = {stof(values.at(4)), stof(values.at(5)), stof(values.at(6))};
   material->ks_ = {stof(values.at(7)), stof(values.at(8)), stof(values.at(9))};
   material->m_ = stof(values.at(10));
+  material->r_ = stof(values.at(11));
 
   // push material into containers
   scene->material_map_.emplace(std::make_pair(material->name_, material));
@@ -242,13 +248,14 @@ void SdfManager::parse_camera(std::string const& file_path, std::unique_ptr<Scen
     camera->fov_ = stof(values.at(1));
 
   }
-  // camera with position
-  else if (values.size() == 5) {
+  // camera with all parameters
+  else if (values.size() == 11) {
 
     camera->name_ = values.at(0);
     camera->fov_ = stof(values.at(1));
     camera->pos_ = glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4)));
-
+    camera->front_ = glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7)));
+    camera->world_up_ = glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10)));
   }
 
   scene->camera_map_.emplace(std::make_pair(camera->name_, camera));
