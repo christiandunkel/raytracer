@@ -17,13 +17,13 @@ class Camera {
     std::string name_;
     glm::vec3 pos_;
     glm::vec3 front_;
+    glm::vec3 world_up_;
 
     float sensitivity_;
     float fov_;
 
   private:
 
-    glm::vec3 world_up_;
     glm::vec3 up_;
     glm::vec3 right_;
 
@@ -40,8 +40,8 @@ class Camera {
   public:
 
     Camera() :
-      pos_(glm::vec3(0.0f, 0.1f, 3.0f)),
-      front_(glm::vec3(0.0f, -0.05f, -1.0f)),
+      pos_(glm::vec3(0.0f, 0.0f, 100.0f)),
+      front_(glm::vec3(0.0f, 0.0f, -1.0f)),
       sensitivity_(0.06f),
       fov_(20.0f),
       world_up_(glm::vec3(0.0f, 1.0f, 0.0f)),
@@ -49,8 +49,8 @@ class Camera {
       pitch_(0.0f),
       screen_distance(0.0f) {
 
-        float rad = (fov_ * static_cast<float>(M_PI)) / 360.0f;
-        screen_distance = 0.5f / (tan(rad));
+        float rad = fov_ * static_cast<float>(M_PI) / 360.0f;
+        screen_distance = 0.5f / tan(rad);
 
         update_vectors();
       }

@@ -10,7 +10,7 @@ define shape triangle btriangle -100 -80 -200 100 80 -100 0 0 0 green
 define light sun 1000 700 0 .2 .2 .2 100
 define light ambient1 .3 0.2 .6 5
 define camera eye 45.0
-define camera eye2 45.0 0 0 -3 
+define camera eye2 45.0 400 200 0 0 -1 0 1 0
 render eye image.ppm 480 320
 LOLOLOL
 THIS LINE WILL BE IGNORED

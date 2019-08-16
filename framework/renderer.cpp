@@ -35,6 +35,8 @@ void Renderer::render() {
   for (unsigned y = 0; y < height_; y++) {
     for (unsigned x = 0; x < width_; x++) {
 
+      recursion_limit = 10;
+
       Pixel p(x, y);
 
       float x_f = static_cast<float>(x);
@@ -85,7 +87,9 @@ void Renderer::write(Pixel const& p) {
 
 Color Renderer::trace(Ray const& ray) {
 
-  Color color = Color(0.2f, 0.2f, 0.2f);
+  Color color;
+
+  recursion_limit--;
 
   // check for intersections with all existing objects
   Hitpoint hp = find_intersection(ray);
@@ -102,6 +106,8 @@ Color Renderer::trace(Ray const& ray) {
 
   /*
   TODO:
+    fix tests
+    find out why there were no shadows in own scene
     add refraction and mirroring
     update triangle and box intersection methods
     add transformation to parser
@@ -145,14 +151,14 @@ Color Renderer::trace(Ray const& ray) {
         glm::vec3 halfway_direction = glm::normalize(light_direction + view_direction);
         float spec = pow(glm::max(glm::dot(hp.normal_, halfway_direction), 0.0f), material->m_);
 
-        Color specular = spec * material->ks_ ;
+        Color specular = spec * material->ks_;
 
         // light attenuation
         const float light_constant = 1.0f;
         static float light_linear = 0.09f;
         static float light_quadratic = 0.032f;
 
-        float light_distance = glm::length(point_light_ptr->pos_ - hp.intersection_);
+        float light_distance = glm::length(glm::normalize(point_light_ptr->pos_ - hp.intersection_));
         attenuation = 1.0f / (light_constant + light_linear * light_distance + light_quadratic * pow(light_distance, 2));
 
         ambient *= attenuation;
@@ -182,17 +188,35 @@ Color Renderer::trace(Ray const& ray) {
         color += ambient;
       }
     }
+
+    // reflection
+    if (recursion_limit > 0) {
+
+      if (hit_shape->get_material()->r_ != 0.0f) {
+
+        glm::vec3 reflection = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
+        Color color_reflected = trace(Ray{hp.intersection_+ reflection, reflection});
+
+        color +=  hit_shape->get_material()->r_ * color_reflected;
+      }
+    }
+
   }
-/*
   else {
+    // return background color
     return Color(0.2f, 0.2f, 0.2f);
   }
-*/
 
   // apply tone mapping
   color.r = color.r / (color.r + 1);
   color.g = color.g / (color.g + 1);
   color.b = color.b / (color.b + 1);
+
+  // perform gamma correction
+  const float gamma = 2.2f;
+
+  glm::vec3 gamma_corrected = pow(glm::vec3(color.r, color.g, color.b), glm::vec3(1.0 / gamma));
+  color = Color{gamma_corrected.x, gamma_corrected.y, gamma_corrected.z};
 
   return color;
 }

@@ -32,6 +32,8 @@ class Renderer {
     unsigned int width_;
     unsigned int height_;
 
+    int recursion_limit;
+
   public:
 
     Renderer() = default;

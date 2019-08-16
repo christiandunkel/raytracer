@@ -1,6 +1,13 @@
 #include "box.hpp"
 
-#include <catch.hpp>
+#include <limits>
+
+const int precision = 10;
+
+// returns true if both values are indentical considering a given precision
+bool float_comparison(float a, float b, int precision) {
+  return std::abs(a - b) <= std::numeric_limits<float>::epsilon() * std::abs(a + b) * precision || std::abs(a - b) < std::numeric_limits<float>::min();
+}
 
 Box::~Box() {
   std::cout << "Destroyed box " + name_ << std::endl;
@@ -63,7 +70,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   tmin = (min_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
   tmax = (max_.y - ray_trans.origin_.y) / ray_trans.direction_.y;
 
-  if (ray_trans.direction_.x == Approx(0.0f)){
+  if (float_comparison(0.0f, ray_trans.direction_.x, precision)){
 
     tfar = std::max(tmin, tmax);
     tnear = std::min(tmin, tmax);
@@ -81,7 +88,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   tmin = (min_.z - ray_trans.origin_.z) / ray_trans.direction_.z;
   tmax = (max_.z - ray_trans.origin_.z) / ray_trans.direction_.z;
 
-  if (ray_trans.direction_.x == Approx(0.0f) && ray_trans.direction_.y == Approx(0.0f)) {
+  if (float_comparison(0.0f, ray_trans.direction_.x, precision) && float_comparison(ray_trans.direction_.y, 0.0f, precision)) {
 
     tfar = std::max(tmin, tmax);
     tnear = std::min(tmin, tmax);
@@ -100,26 +107,26 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
     return hitpoint;
   }
 
-  hitpoint.distance_ = tnear * sqrt(ray_trans.direction_.x * ray_trans.direction_.x + ray_trans.direction_.y * ray_trans.direction_.y + ray_trans.direction_.z * ray_trans.direction_.z);
   hitpoint.intersection_ = ray_trans.origin_ + ray_trans.direction_ * tnear;
+  hitpoint.distance_ = glm::distance(hitpoint.intersection_, ray_trans.origin_);
 
   // calculate normal vector for the respective plane
-  if(hitpoint.intersection_.x == Approx(min_.x)) {
+  if(float_comparison(hitpoint.intersection_.x, min_.x, precision)) {
     hitpoint.normal_ = {-1.0f, 0.0f, 0.0f};
   }
-  else if (hitpoint.intersection_.x == Approx(max_.x)) {
+  else if (float_comparison(hitpoint.intersection_.x, max_.x, precision)) {
     hitpoint.normal_ = {1.0f, 0.0f, 0.0f};
   }
-  else if (hitpoint.intersection_.y == Approx(min_.y)) {
+  else if (float_comparison(hitpoint.intersection_.y, min_.y, precision)) {
     hitpoint.normal_ = {0.0f, -1.0f, 0.0f};
   }
-  else if (hitpoint.intersection_.y == Approx(max_.y)) {
+  else if (float_comparison(hitpoint.intersection_.y, max_.y, precision)) {
     hitpoint.normal_ = {0.0f, 1.0f, 0.0f};
   }
-  else if (hitpoint.intersection_.z == Approx(min_.z)) {
+  else if (float_comparison(hitpoint.intersection_.z, min_.z, precision)) {
     hitpoint.normal_ = {0.0f, 0.0f, -1.0f};
   }
-  else if (hitpoint.intersection_.z == Approx(max_.z)) {
+  else if (float_comparison(hitpoint.intersection_.z, max_.z, precision)) {
     hitpoint.normal_ = {0.0f, 0.0f, 1.0f};
   }
 

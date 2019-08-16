@@ -556,14 +556,20 @@ TEST_CASE("Task 6.5", "") {
   REQUIRE(c1->name_ == "eye");
   REQUIRE(c1->fov_ == Approx(45.0f).epsilon(0.001));
 
-  // camera with position
+  // camera with all parameters
   auto c2 = scene->find_camera("eye2");
 
   REQUIRE(c2->name_ == "eye2");
   REQUIRE(c2->fov_ == Approx(45.0f).epsilon(0.001));
   REQUIRE(c2->pos_.x == Approx(0.0f).epsilon(0.001));
-  REQUIRE(c2->pos_.y == Approx(0.0f).epsilon(0.001));
-  REQUIRE(c2->pos_.z == Approx(-3.0f).epsilon(0.001));
+  REQUIRE(c2->pos_.y == Approx(400.0f).epsilon(0.001));
+  REQUIRE(c2->pos_.z == Approx(200.0f).epsilon(0.001));
+  REQUIRE(c2->front_.x == Approx(0.0f).epsilon(0.001));
+  REQUIRE(c2->front_.y == Approx(0.0f).epsilon(0.001));
+  REQUIRE(c2->front_.z == Approx(-1.0f).epsilon(0.001));
+  REQUIRE(c2->world_up_.x == Approx(0.0f).epsilon(0.001));
+  REQUIRE(c2->world_up_.y == Approx(1.0f).epsilon(0.001));
+  REQUIRE(c2->world_up_.z == Approx(0.0f).epsilon(0.001));
 
   auto r1 = scene->renderer_vec_.at(0);
 
