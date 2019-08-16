@@ -1,14 +1,5 @@
-// -----------------------------------------------------------------------------
-// Copyright  : (C) 2014-2017 Andreas-C. Bernstein
-// License    : MIT (see the file LICENSE)
-// Maintainer : Andreas-C. Bernstein <andreas.bernstein@uni-weimar.de>
-// Stability  : experimental
-//
-// Window
-// -----------------------------------------------------------------------------
-
-#ifndef BUW_WINDOW_HPP
-#define BUW_WINDOW_HPP
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
 #include "color.hpp"
 
@@ -24,63 +15,64 @@
 #include <string>
 
 struct GLFWwindow;
-class Window
-{
-public:
-  Window(glm::ivec2 const& window_size = {640, 480});
-  ~Window();
 
-  enum MouseButton
-  {
-    MOUSE_BUTTON_NONE   = 0,
-    MOUSE_BUTTON_LEFT   = (1 << 0),
-    MOUSE_BUTTON_RIGHT  = (1 << 1),
-    MOUSE_BUTTON_MIDDLE = (1 << 2)
-  };
+class Window {
 
-  enum KeyAction
-  {
-    KEY_PRESS   = GLFW_PRESS,
-    KEY_RELEASE = GLFW_RELEASE,
-    KEY_REPEAT  = GLFW_REPEAT
-  };
+  private:
+  
+    GLFWwindow*       window_;
+    glm::ivec2        window_size_;
+    glm::ivec2        frame_buffer_size_;
+    std::string const title_;
+    GLuint            vao_     = 0;
+    GLuint            program_ = 0;
+    GLuint            texture_ = 0;
 
+  public:
 
-  glm::vec2 mouse_position() const;
+    Window(glm::ivec2 const& window_size = {640, 480});
+    ~Window();
 
-  // is closed flag set
-  bool should_close() const;
+    enum MouseButton {
+      MOUSE_BUTTON_NONE   = 0,
+      MOUSE_BUTTON_LEFT   = (1 << 0),
+      MOUSE_BUTTON_RIGHT  = (1 << 1),
+      MOUSE_BUTTON_MIDDLE = (1 << 2)
+    };
 
-  // close window
-  void close();
+    enum KeyAction {
+      KEY_PRESS   = GLFW_PRESS,
+      KEY_RELEASE = GLFW_RELEASE,
+      KEY_REPEAT  = GLFW_REPEAT
+    };
 
-  // update window
-  void update();
+    glm::vec2 mouse_position() const;
 
-  // test if given key is pressed
-  // See here for key codes:
-  // http://www.glfw.org/docs/latest/group__keys.html
-  int get_key(int key) const;
-  int get_mouse_button(int button) const;
+    // is closed flag set
+    bool should_close() const;
 
-  void handle_events();
+    // close window
+    void close();
 
-  // current window size
-  glm::ivec2 window_size() const;
+    // update window
+    void update();
 
-  // time elapsed since GLFW was initialized
-  float get_time() const;
+    // test if given key is pressed 
+    // key codes: http://www.glfw.org/docs/latest/group__keys.html
+    int get_key(int key) const;
+    bool key_pressed(int key) const;
+    int get_mouse_button(int button) const;
 
-  void show(std::vector<Color> const& color_buffer);
+    void handle_events();
 
-private:
-  GLFWwindow*       window_;
-  glm::ivec2        window_size_;
-  glm::ivec2        frame_buffer_size_;
-  std::string const title_;
-  GLuint            vao_     = 0;
-  GLuint            program_ = 0;
-  GLuint            texture_ = 0;
+    // current window size
+    glm::ivec2 window_size() const;
+
+    // time elapsed since GLFW was initialized
+    float get_time() const;
+
+    void show(std::vector<Color> const& color_buffer);
+
 };
 
-#endif // define BUW_WINDOW_HPP
+#endif // WINDOW_HPP

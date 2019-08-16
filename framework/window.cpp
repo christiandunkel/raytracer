@@ -1,12 +1,3 @@
-// -----------------------------------------------------------------------------
-// Copyright  : (C) 2014-2017 Andreas-C. Bernstein
-// License    : MIT (see the file LICENSE)
-// Maintainer : Andreas-C. Bernstein <andreas.bernstein@uni-weimar.de>
-// Stability  : experimental
-//
-// Window
-// -----------------------------------------------------------------------------
-
 #include "window.hpp"
 #include "camera.hpp"
 #include <utility>
@@ -43,21 +34,18 @@ void main()
 )";
 
 namespace {
-void errorcb(int error, const char* desc)
-{
-  std::cerr << "GLFW error " << error << ": " << desc << std::endl;
-}
+  void errorcb(int error, const char* desc) {
+    std::cerr << "GLFW error " << error << ": " << desc << std::endl;
+  }
 }
 
-Window::Window(glm::ivec2 const& window_size)
-  : window_{nullptr}
-  , window_size_(window_size)
-  , frame_buffer_size_{window_size}
-  , title_("Raytracer")
-{
+Window::Window(glm::ivec2 const& window_size) : 
+  window_{nullptr}, window_size_(window_size), frame_buffer_size_{window_size}, title_("Raytracer") {
+  
   if (!glfwInit()) {
     throw "Could not init glfw";
   }
+
   glfwSetErrorCallback(errorcb);
   //glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 
@@ -71,6 +59,7 @@ Window::Window(glm::ivec2 const& window_size)
   glfwWindowHint(GLFW_RESIZABLE, 0);
 
   window_ = glfwCreateWindow(window_size_.x, window_size_.y, title_.c_str(), nullptr, nullptr);
+  
   if (!window_) {
     glfwTerminate();
     throw "Could not create window";
@@ -111,31 +100,37 @@ Window::Window(glm::ivec2 const& window_size)
   glCompileShader(vertex_shader);
   GLint result = GL_FALSE;
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result);
+
   if (result != GL_TRUE) {
     std::string log(1000, '*');
     glGetShaderInfoLog(vertex_shader, 1000, 0, (GLchar*)log.data());
     std::cout << "Error vertex shader: " << log;
     throw "Error glCompileShader vertex";
   }
+
   auto fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
   glShaderSource(fragment_shader, 1, &f_sh_source ,0);
   glCompileShader(fragment_shader);
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &result);
+
   if (result != GL_TRUE) {
     std::string log(1000, '*');
     glGetShaderInfoLog(fragment_shader, 1000, 0, (GLchar*)log.data());
     std::cout << "Error fragment shader: " << log;
     throw "Error glCompileShader fragment";
   }
+
   program_ = glCreateProgram();
   glAttachShader(program_, vertex_shader);
   glAttachShader(program_, fragment_shader);
   glLinkProgram(program_);
   glUseProgram(program_);
   GLint image_loc = glGetUniformLocation(program_, "image");
+
   if (image_loc != -1) {
     glUniform1i(image_loc, 0);
   }
+
   glGenTextures(1, &texture_);
   glBindTexture(GL_TEXTURE_2D, texture_);
   glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, window_size_.x, window_size_.y);
@@ -143,121 +138,89 @@ Window::Window(glm::ivec2 const& window_size)
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 }
 
-Window::~Window()
-{
+Window::~Window() {
   glDeleteVertexArrays(1, &vao_);
   glfwTerminate();
 }
 
-int Window::get_key(int key) const
-{
+int Window::get_key(int key) const {
   return glfwGetKey(window_, key);
 }
 
-int Window::get_mouse_button(int button) const
-{
+bool Window::key_pressed(int key) const {
+  return get_key(key) == GLFW_PRESS;
+}
+
+int Window::get_mouse_button(int button) const {
   return glfwGetMouseButton(window_, button);
 }
 
-bool Window::should_close() const
-{
+bool Window::should_close() const {
   return glfwWindowShouldClose(window_);
 }
 
-glm::vec2 Window::mouse_position() const
-{
-  double xpos=0.0;
-  double ypos=0.0f;
+glm::vec2 Window::mouse_position() const {
+
+  double xpos = 0.0f;
+  double ypos = 0.0f;
   glfwGetCursorPos(window_, &xpos, &ypos);
+
   return glm::vec2(float(xpos), float(ypos));
+
 }
 
-void Window::close()
-{
+void Window::close() {
   glfwSetWindowShouldClose(window_, GL_TRUE);
 }
 
-void Window::update()
-{
-  // End Frame
+void Window::update() {
+  
+  // end previous frame
   glfwSwapBuffers(window_);
   glfwPollEvents();
 
-  // Begin Frame
+  // begin new Frame
   glViewport(0, 0, frame_buffer_size_.x, frame_buffer_size_.y);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-  // Calculate pixel ration for hi-dpi devices.
+  // calculate pixel ration for hi-dpi devices
   float pxRatio = float(frame_buffer_size_.x) / float(window_size_.x);
+
 }
 
 #include <iostream>
 
-void Window::handle_events()
-{
-  if (get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+void Window::handle_events() {
+
+  // close window on pressing ESC
+  if (key_pressed(GLFW_KEY_ESCAPE)) {
     close();
   }
 
-  if (get_key(GLFW_KEY_W) == GLFW_PRESS) {
-    key_w = true;
-  }
-  else {
-    key_w = false;
-  }
+  key_w = key_pressed(GLFW_KEY_W);
+  key_a = key_pressed(GLFW_KEY_A);
+  key_s = key_pressed(GLFW_KEY_S);
+  key_d = key_pressed(GLFW_KEY_D);
+  key_c = key_pressed(GLFW_KEY_C);
+  key_space = key_pressed(GLFW_KEY_SPACE);
 
-  if (get_key(GLFW_KEY_A) == GLFW_PRESS) {
-    key_a = true;
-  }
-  else {
-    key_a = false;
-  }
-
-  if (get_key(GLFW_KEY_S) == GLFW_PRESS) {
-    key_s = true;
-  }
-  else {
-    key_s = false;
-  }
-
-  if (get_key(GLFW_KEY_D) == GLFW_PRESS) {
-    key_d = true;
-  }
-  else {
-    key_d = false;
-  }
-
-  if (get_key(GLFW_KEY_C) == GLFW_PRESS) {
-    key_c = true;
-  }
-  else {
-    key_c = false;
-  }
-
-  if (get_key(GLFW_KEY_SPACE) == GLFW_PRESS) {
-    key_space = true;
-  }
-  else {
-    key_space = false;
-  }
 }
 
-glm::ivec2 Window::window_size() const
-{
+glm::ivec2 Window::window_size() const {
   glm::ivec2 size(0);
   glfwGetFramebufferSize(window_, &size.x, &size.y);
   return size;
 }
 
-float Window::get_time() const
-{
+float Window::get_time() const {
   return float(glfwGetTime());
 }
 
-void Window::show(std::vector<Color> const& color_buffer)
-{
+void Window::show(std::vector<Color> const& color_buffer) {
+
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, window_size_.x, window_size_.y, GL_RGB, GL_FLOAT, color_buffer.data());
   glBindVertexArray(vao_);
   glUseProgram(program_);
@@ -267,4 +230,5 @@ void Window::show(std::vector<Color> const& color_buffer)
   glBindTexture(GL_TEXTURE_2D, 0);
   glUseProgram(0);
   update();
+
 }
