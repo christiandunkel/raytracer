@@ -3,7 +3,8 @@
 
 #include "ray.hpp"
 #include <string>
-
+#define _USE_MATH_DEFINES
+#include <math.h>
 #define GLM_EXPERIMENTAL_ENABLED
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -48,8 +49,8 @@ class Camera {
       pitch_(0.0f),
       screen_distance(0.0f) {
 
-        float rad = (fov_ * M_PI) / 360;
-        screen_distance = 0.5 / (tan(rad));
+        float rad = (fov_ * static_cast<float>(M_PI)) / 360.0f;
+        screen_distance = 0.5f / (tan(rad));
 
         update_vectors();
       }

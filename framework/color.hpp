@@ -28,6 +28,7 @@ struct Color
     r += other.r;
     g += other.g;
     b += other.b;
+    return *this;
   }
 
   Color& operator-(Color const& other)
@@ -35,6 +36,7 @@ struct Color
     r -= other.r;
     g -= other.g;
     b -= other.b;
+    return *this;
   }
 
   Color& operator*(float value)
@@ -42,6 +44,7 @@ struct Color
     r *= value;
     g *= value;
     b *= value;
+    return *this;
   }
 
   Color& operator/(float value)
@@ -49,6 +52,7 @@ struct Color
     r /= value;
     g /= value;
     b /= value;
+    return *this;
   }
 
   Color& operator+=(Color const& other)
@@ -72,6 +76,7 @@ struct Color
     r *= other.r;
     g *= other.g;
     b *= other.b;
+    return *this;
   }
 
   Color& operator*=(float value)
@@ -79,6 +84,7 @@ struct Color
     r *= value;
     g *= value;
     b *= value;
+    return *this;
   }
 
   Color& operator/=(float value)
@@ -86,6 +92,7 @@ struct Color
     r /= value;
     g /= value;
     b /= value;
+    return *this;
   }
 
   friend Color operator+(Color const& a, Color const& b)
@@ -127,7 +134,5 @@ struct Color
   float g;
   float b;
 };
-
-
 
 #endif //#define BUW_COLOR_HPP

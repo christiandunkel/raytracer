@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #include <fstream>
 #include <ctype.h>
+#include <cctype>
+#include <sstream>
 
 // test if file exists at given path
 bool SdfManager::file_exists(std::string const& file_path) {
