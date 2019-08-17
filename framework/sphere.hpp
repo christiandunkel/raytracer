@@ -48,6 +48,7 @@ class Sphere : public Shape {
 
     float area() const override;
     float volume() const override;
+
     std::ostream& print(std::ostream& os) const override;
     Hitpoint intersect(Ray const& ray, float distance) const override;
 

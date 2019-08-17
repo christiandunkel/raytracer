@@ -90,6 +90,9 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
         else if (parts.at(0) == "camera") {
           parse_camera(file_path, scene, parts);
         }
+        else if (parts.at(0) == "transform") {
+          parse_transform(file_path, scene, parts);
+        }
         else {
           std::cout << "SdfManager: Given type '" << parts.at(0) << "' doesn't exist." << std::endl;
         }
@@ -287,4 +290,32 @@ void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scen
   renderer.shapes_ = std::make_shared<std::vector<std::shared_ptr<Shape>>>(scene->shape_vec_);
 
   scene->renderer_vec_.push_back(renderer);
+}
+
+void SdfManager::parse_transform(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
+
+  // remove "transform" from beginning of string
+  values.erase(values.begin());
+
+  std::shared_ptr<Shape> shape = scene->find_shape(values.at(0));
+
+  if (shape != nullptr) {
+    
+    if (values.at(1) == "scale" && values.size() == 5) {
+      shape->scale(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
+    }
+    else if (values.at(1) == "rotate" && values.size() == 6) {
+      shape->rotate(stof(values.at(2)), glm::vec3(stof(values.at(3)), stof(values.at(4)), stof(values.at(5))));
+    }
+    else if (values.at(1) == "translate" && values.size() == 5) {
+      shape->translate(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
+    }
+    else {
+      return;
+    }
+  }
+  else {
+    std::cout << "SdfManager: Shape '" + values.at(0) + "' used by transform in " << file_path << " doesn't exist (yet)." << std::endl;
+    return;
+  }
 }

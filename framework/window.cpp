@@ -191,8 +191,6 @@ void Window::update() {
 
 }
 
-#include <iostream>
-
 void Window::handle_events() {
 
   // close window on pressing ESC

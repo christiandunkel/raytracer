@@ -10,7 +10,7 @@ struct Ray {
   glm::vec3 origin_{0.0f, 0.0f, 0.0f};
   glm::vec3 direction_{0.0f, 0.0f, -1.0f};
 
-  Ray transform(glm::mat4 const& mat) const;
+  Ray to_local_space(glm::mat4 const& mat) const;
 };
 
 

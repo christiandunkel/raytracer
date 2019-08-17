@@ -56,9 +56,10 @@ std::ostream& Box::print(std::ostream& os) const {
 
 Hitpoint Box::intersect(Ray const &ray, float distance) const {
 
-  Hitpoint hitpoint;
+  Hitpoint hp;
 
-  Ray ray_trans = ray.transform(world_transform_inv_);
+  // transform ray to local space
+  Ray ray_trans = ray.to_local_space(world_transform_inv_);
 
   distance = -1.0f;
 
@@ -82,7 +83,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   }
   
   if (tnear > tfar) {
-    return hitpoint;
+    return hp;
   }
 
   tmin = (min_.z - ray_trans.origin_.z) / ray_trans.direction_.z;
@@ -100,43 +101,44 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   }
   
   if (tnear > tfar) {
-    return hitpoint;
+    return hp;
   }
 
   if (tnear < 0.0f && tfar < 0.0f) {
-    return hitpoint;
+    return hp;
   }
 
-  hitpoint.intersection_ = ray_trans.origin_ + ray_trans.direction_ * tnear;
-  hitpoint.distance_ = glm::distance(hitpoint.intersection_, ray_trans.origin_);
+  hp.intersection_ = ray_trans.origin_ + ray_trans.direction_ * tnear;
+  hp.distance_ = glm::distance(hp.intersection_, ray_trans.origin_);
 
   // calculate normal vector for the respective plane
-  if(float_comparison(hitpoint.intersection_.x, min_.x, precision)) {
-    hitpoint.normal_ = {-1.0f, 0.0f, 0.0f};
+  if(float_comparison(hp.intersection_.x, min_.x, precision)) {
+    hp.normal_ = {-1.0f, 0.0f, 0.0f};
   }
-  else if (float_comparison(hitpoint.intersection_.x, max_.x, precision)) {
-    hitpoint.normal_ = {1.0f, 0.0f, 0.0f};
+  else if (float_comparison(hp.intersection_.x, max_.x, precision)) {
+    hp.normal_ = {1.0f, 0.0f, 0.0f};
   }
-  else if (float_comparison(hitpoint.intersection_.y, min_.y, precision)) {
-    hitpoint.normal_ = {0.0f, -1.0f, 0.0f};
+  else if (float_comparison(hp.intersection_.y, min_.y, precision)) {
+    hp.normal_ = {0.0f, -1.0f, 0.0f};
   }
-  else if (float_comparison(hitpoint.intersection_.y, max_.y, precision)) {
-    hitpoint.normal_ = {0.0f, 1.0f, 0.0f};
+  else if (float_comparison(hp.intersection_.y, max_.y, precision)) {
+    hp.normal_ = {0.0f, 1.0f, 0.0f};
   }
-  else if (float_comparison(hitpoint.intersection_.z, min_.z, precision)) {
-    hitpoint.normal_ = {0.0f, 0.0f, -1.0f};
+  else if (float_comparison(hp.intersection_.z, min_.z, precision)) {
+    hp.normal_ = {0.0f, 0.0f, -1.0f};
   }
-  else if (float_comparison(hitpoint.intersection_.z, max_.z, precision)) {
-    hitpoint.normal_ = {0.0f, 0.0f, 1.0f};
+  else if (float_comparison(hp.intersection_.z, max_.z, precision)) {
+    hp.normal_ = {0.0f, 0.0f, 1.0f};
   }
 
-  hitpoint.has_hit_ = true;
-  hitpoint.distance_ = distance;
-  hitpoint.color_ = material_->kd_;
-  hitpoint.name_ = name_;
+  hp.has_hit_ = true;
+  hp.distance_ = distance;
+  hp.color_ = material_->kd_;
+  hp.name_ = name_;
 
-  hitpoint.transform(world_transform_);
-  return hitpoint;
+  // transform back to world space
+  hp.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
+  return hp;
 }
 
 

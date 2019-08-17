@@ -26,17 +26,31 @@ int main(int argc, char* argv[]) {
 
   Window window{{renderer->get_width(), renderer->get_height()}};
 
+  bool wait_after_event = false;
+
+  unsigned int counter = 0;
+
   while (!window.should_close()) {
 
-    //renderer->render();
+    // to avoid input spamming
+    counter++;
+
+    if (counter % 50 == 0) {
+      wait_after_event = false;
+
+      // reset counter to avoid overflow
+      counter = 0;
+    }
 
     if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       renderer->is_running = false;
       window.close();
     }
-    else if (window.get_key(GLFW_KEY_SPACE) == GLFW_PRESS) {
+    else if (window.get_key(GLFW_KEY_SPACE) == GLFW_PRESS && !wait_after_event) {
 
-      if  (renderer_index >= renderer_num) {
+      wait_after_event = true;
+
+      if  (renderer_index >= renderer_num - 1) {
         // last renderer reached, close
         window.close();
       }
