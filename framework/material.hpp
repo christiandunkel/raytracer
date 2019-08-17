@@ -20,6 +20,11 @@ struct Material {
   // reflection coefficient
   float r_ = 0.0f; 
 
+  float refraction_index_;
+
+  // transparency coeffiecient
+  float transparency_;
+
   std::ostream& print(std::ostream& os) const;
 
 };

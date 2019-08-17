@@ -24,6 +24,7 @@ add_executable(tests
   ../framework/camera.cpp
   ../framework/ray.cpp
   ../framework/hitpoint.cpp
+  ../framework/composite.cpp
 )
 target_link_libraries(tests
   ${GLFW_LIBRARIES}

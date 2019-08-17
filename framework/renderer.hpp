@@ -8,6 +8,7 @@
 #include "camera.hpp"
 #include "shape.hpp"
 #include "light.hpp"
+#include "composite.hpp"
 
 #include <string>
 #include <memory>
@@ -19,6 +20,7 @@ class Renderer {
 
     bool is_running;
     std::shared_ptr<Camera> cam_;
+    std::shared_ptr<Composite> root_;
     std::shared_ptr<std::vector<std::shared_ptr<Shape>>> shapes_;
     std::shared_ptr<std::vector<std::shared_ptr<Light>>> lights_;
     std::vector<Color> color_buffer_;

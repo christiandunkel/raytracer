@@ -20,8 +20,12 @@ int main(int argc, char* argv[]) {
 
   int renderer_num = scene->renderer_vec_.size();
 
+  // set root element in renderer
+  renderer->root_ = std::static_pointer_cast<Composite>(scene->root_);
+
   //create separate thread to see updates of pixels while rendering
   //std::thread render_thread([&renderer]() {renderer->render();});
+
   renderer->render();
 
   Window window{{renderer->get_width(), renderer->get_height()}};
@@ -57,13 +61,17 @@ int main(int argc, char* argv[]) {
       else {
         renderer_index++;
         renderer = &scene->renderer_vec_.at(renderer_index);
-      }
 
+        // do changes here (e.g. apply further transformations)
+
+        renderer->render();
+      }
     }
 
     window.handle_events();
 
     window.show(renderer->get_color_buffer());
+
   }
 
   //"join" threads, i.e. synchronize main thread with render_thread

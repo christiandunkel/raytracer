@@ -16,6 +16,8 @@ class Scene {
 
   public:
 
+    std::shared_ptr<Shape> root_;
+
     std::vector<std::shared_ptr<Shape>> shape_vec_;
     std::vector<std::shared_ptr<Light>> light_vec_;
     std::map<std::string, std::shared_ptr<Camera>> camera_map_;

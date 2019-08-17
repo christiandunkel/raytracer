@@ -49,9 +49,9 @@ class Shape {
 
     virtual Hitpoint intersect(Ray const &ray, float distance = 0.0f) const = 0;
 
-    void scale(glm::vec3 const& s);
-    void rotate(float angle, glm::vec3 const& axis);
-    void translate(glm::vec3 const& t);
+    virtual void scale(glm::vec3 const& s);
+    virtual void rotate(float angle, glm::vec3 const& axis);
+    virtual void translate(glm::vec3 const& t);
 
     std::string get_name() const {
       return name_;

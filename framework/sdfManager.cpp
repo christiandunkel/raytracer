@@ -2,6 +2,7 @@
 #include "box.hpp"
 #include "sphere.hpp"
 #include "triangle.hpp"
+#include "composite.hpp"
 
 #include <regex>
 #include <sys/stat.h>
@@ -125,8 +126,8 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
   // remove "material" from beginning of string
   values.erase(values.begin());
 
-  // material must have 12 (name, 3 colors (3x3=9), two floats) values
-  if (values.size() != 12) {
+  // material must have 14 (name, 3 colors (3x3=9), 4 floats) values
+  if (values.size() != 14) {
     return;
   }
 
@@ -147,6 +148,8 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
   material->ks_ = {stof(values.at(7)), stof(values.at(8)), stof(values.at(9))};
   material->m_ = stof(values.at(10));
   material->r_ = stof(values.at(11));
+  material->refraction_index_ = stof(values.at(12));
+  material->transparency_ = stof(values.at(13));
 
   // push material into containers
   scene->material_map_.emplace(std::make_pair(material->name_, material));
@@ -191,6 +194,34 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     triangle_ptr->set_c(glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10))));
 
     triangle_ptr->set_material(scene->find_material(values.at(11)));
+  }
+  else if (values.at(0) == "composite") {
+
+    // return if composite has no children
+    if (values.size() <= 2) {
+      return;
+    }
+
+    shape = std::make_shared<Composite>();
+    shape->set_name(values.at(1));
+
+    std::shared_ptr<Composite> composite_ptr = std::static_pointer_cast<Composite>(shape);
+
+    for (size_t i = 2; i < values.size(); i++) {
+
+      std::shared_ptr<Shape> temp = scene->find_shape(values.at(i));
+
+      if (temp != nullptr) {
+        composite_ptr->add_child(temp);
+      }
+      else {
+        std::cout << "SdfManager: Shape '" + values.at(i) + "' in " << file_path << ", used by: '" << shape->get_name() << "' doesn't exist." << std::endl;
+      }
+    }
+
+    if (values.at(1) == "root") {
+      scene->root_ = shape;
+    }
   }
   else {
     std::cout << "SdfManager: Shape type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;
@@ -300,7 +331,7 @@ void SdfManager::parse_transform(std::string const& file_path, std::unique_ptr<S
   std::shared_ptr<Shape> shape = scene->find_shape(values.at(0));
 
   if (shape != nullptr) {
-    
+
     if (values.at(1) == "scale" && values.size() == 5) {
       shape->scale(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     }

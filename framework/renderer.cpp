@@ -64,7 +64,6 @@ void Renderer::render() {
 
   ppm_.save("output/" + time + " " + filename_);
 */
-
 }
 
 void Renderer::write(Pixel const& p) {
@@ -104,14 +103,14 @@ Color Renderer::trace(Ray const& ray) {
     }
   }
 
+  //hit_shape = iterate(hp.name_, root_);
+
   /*
   TODO:
     fix tests
-    find out why there were no shadows in own scene
-    add refraction and mirroring
-    update triangle and box intersection methods
-    add transformation to parser
-    add all camera members to sdf parser
+    add refraction
+    update triangle intersection methods
+    use root element to render
   */
 
   if (hit_shape != nullptr) {
@@ -189,18 +188,46 @@ Color Renderer::trace(Ray const& ray) {
       }
     }
 
-    // reflection
     if (recursion_limit > 0) {
 
-      if (hit_shape->get_material()->r_ != 0.0f) {
+      // refraction
+      if (material->transparency_ != 0.0f) {
+        /*
+        float cosi = glm::clamp(-1.0f, 1.0f, glm::dot(hp.normal_, ray.direction_));
+
+        float etai = 1.0f;
+        float etat = material->refraction_index_;
+
+        glm::vec3 n = hp.normal_;
+        if (cosi < 0) {
+          cosi = -cosi;
+        }
+        else {
+          std::swap(etai, etat);
+          n = -hp.normal_;
+        }
+
+        float eta = etai / etat;
+        float k = 1.0f - pow(eta, 2) * (1 - pow(cosi, 2));
+
+        if (k > 0) {
+
+          glm::vec3 temp = glm::normalize(eta * ray.direction_ + (eta * cosi - sqrtf(k)) * n);
+          Color refracted = trace(Ray{ray.origin_, temp});
+          color += refracted;
+        }
+        */
+      }
+
+      // reflection
+      if (material->r_ != 0.0f) {
 
         glm::vec3 reflection = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
         Color color_reflected = trace(Ray{hp.intersection_+ reflection, reflection});
 
-        color +=  hit_shape->get_material()->r_ * color_reflected;
+        color +=  material->r_ * color_reflected;
       }
     }
-
   }
   else {
     // return background color
