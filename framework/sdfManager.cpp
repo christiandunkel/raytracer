@@ -219,9 +219,8 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
       }
     }
 
-    if (values.at(1) == "root") {
-      scene->root_ = shape;
-    }
+    // last composite always has to be the root element
+    scene->root_ = shape;
   }
   else {
     std::cout << "SdfManager: Shape type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;
@@ -273,26 +272,21 @@ void SdfManager::parse_camera(std::string const& file_path, std::unique_ptr<Scen
   // remove "camera" from beginning of string
   values.erase(values.begin());
 
-  std::shared_ptr<Camera> camera = std::make_shared<Camera>();
-
-  // camera without position
-  if (values.size() == 2) {
-
-    camera->name_ = values.at(0);
-    camera->fov_ = stof(values.at(1));
-
-  }
   // camera with all parameters
-  else if (values.size() == 11) {
+  if (values.size() == 11) {
 
-    camera->name_ = values.at(0);
-    camera->fov_ = stof(values.at(1));
-    camera->pos_ = glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4)));
-    camera->front_ = glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7)));
-    camera->world_up_ = glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10)));
+    glm::vec3 pos = glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4)));
+    glm::vec3 front = glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7)));
+    glm::vec3 world_up = glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10)));
+
+    std::shared_ptr<Camera> camera = std::make_shared<Camera>(values.at(0), stof(values.at(1)), pos, front, world_up);
+
+    scene->camera_map_.emplace(std::make_pair(camera->name_, camera));
   }
-
-  scene->camera_map_.emplace(std::make_pair(camera->name_, camera));
+  else {
+    std::cout << "SdfManager: Camera '" + values.at(0) + "' in " << file_path << " can't be parsed." << std::endl;
+    return;
+  }
 }
 
 void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
@@ -319,6 +313,8 @@ void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scen
 
   renderer.lights_ = std::make_shared<std::vector<std::shared_ptr<Light>>>(scene->light_vec_);
   renderer.shapes_ = std::make_shared<std::vector<std::shared_ptr<Shape>>>(scene->shape_vec_);
+
+  renderer.root_ = scene->root_;
 
   scene->renderer_vec_.push_back(renderer);
 }

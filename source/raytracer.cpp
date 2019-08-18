@@ -23,8 +23,8 @@ int main(int argc, char* argv[]) {
   // set root element in renderer
   renderer->root_ = std::static_pointer_cast<Composite>(scene->root_);
 
-  //create separate thread to see updates of pixels while rendering
-  //std::thread render_thread([&renderer]() {renderer->render();});
+  // set camera
+  renderer->cam_ = scene->camera_map_.begin()->second;
 
   renderer->render();
 
@@ -68,14 +68,9 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    window.handle_events();
-
     window.show(renderer->get_color_buffer());
 
   }
-
-  //"join" threads, i.e. synchronize main thread with render_thread
-  //render_thread.join();
 
   return 0;
 

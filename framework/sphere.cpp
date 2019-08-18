@@ -51,6 +51,8 @@ Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
 
   // transform ray to local space
   Ray ray_trans = ray.to_local_space(world_transform_inv_);
+
+  // always normalize direction vector
   ray_trans.direction_ = glm::normalize(ray_trans.direction_);
 
   Hitpoint h;
@@ -73,6 +75,7 @@ Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
 
   }
 
+  // transform normal and intersection back to world space
   h.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
 
   return h;

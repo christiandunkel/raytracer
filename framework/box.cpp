@@ -61,6 +61,9 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   // transform ray to local space
   Ray ray_trans = ray.to_local_space(world_transform_inv_);
 
+  // always normalize direction vector
+  ray_trans.direction_ = glm::normalize(ray_trans.direction_);
+
   distance = -1.0f;
 
   float tmin = (min_.x - ray_trans.origin_.x) / ray_trans.direction_.x;
@@ -136,7 +139,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   hp.color_ = material_->kd_;
   hp.name_ = name_;
 
-  // transform back to world space
+  // transform normal and intersection back to world space
   hp.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
   return hp;
 }

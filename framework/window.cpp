@@ -191,22 +191,6 @@ void Window::update() {
 
 }
 
-void Window::handle_events() {
-
-  // close window on pressing ESC
-  if (key_pressed(GLFW_KEY_ESCAPE)) {
-    close();
-  }
-
-  key_w = key_pressed(GLFW_KEY_W);
-  key_a = key_pressed(GLFW_KEY_A);
-  key_s = key_pressed(GLFW_KEY_S);
-  key_d = key_pressed(GLFW_KEY_D);
-  key_c = key_pressed(GLFW_KEY_C);
-  key_space = key_pressed(GLFW_KEY_SPACE);
-
-}
-
 glm::ivec2 Window::window_size() const {
   glm::ivec2 size(0);
   glfwGetFramebufferSize(window_, &size.x, &size.y);

@@ -103,8 +103,6 @@ Color Renderer::trace(Ray const& ray) {
     }
   }
 
-  //hit_shape = iterate(hp.name_, root_);
-
   /*
   TODO:
     fix tests
@@ -189,17 +187,18 @@ Color Renderer::trace(Ray const& ray) {
     }
 
     if (recursion_limit > 0) {
-
+      /*
       // refraction
       if (material->transparency_ != 0.0f) {
-        /*
+    
         float cosi = glm::clamp(-1.0f, 1.0f, glm::dot(hp.normal_, ray.direction_));
 
         float etai = 1.0f;
-        float etat = material->refraction_index_;
+        float etat = 0.000000000000001f;
 
         glm::vec3 n = hp.normal_;
-        if (cosi < 0) {
+
+        if (cosi < 0.0f) {
           cosi = -cosi;
         }
         else {
@@ -208,17 +207,16 @@ Color Renderer::trace(Ray const& ray) {
         }
 
         float eta = etai / etat;
-        float k = 1.0f - pow(eta, 2) * (1 - pow(cosi, 2));
 
-        if (k > 0) {
+        float k = 1.0f - eta * eta * (1.0f - cosi * cosi);
 
+        if (k >= 0.0f) {
           glm::vec3 temp = glm::normalize(eta * ray.direction_ + (eta * cosi - sqrtf(k)) * n);
           Color refracted = trace(Ray{ray.origin_, temp});
           color += refracted;
         }
-        */
       }
-
+      */
       // reflection
       if (material->r_ != 0.0f) {
 
@@ -228,7 +226,7 @@ Color Renderer::trace(Ray const& ray) {
         color +=  material->r_ * color_reflected;
       }
     }
-  }
+}
   else {
     // return background color
     return Color(0.2f, 0.2f, 0.2f);
