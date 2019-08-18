@@ -240,7 +240,7 @@ Color Renderer::trace(Ray const& ray) {
   // perform gamma correction
   const float gamma = 2.2f;
 
-  glm::vec3 gamma_corrected = pow(glm::vec3(color.r, color.g, color.b), glm::vec3(1.0 / gamma));
+  glm::vec3 gamma_corrected = pow(glm::vec3(color.r, color.g, color.b), glm::vec3(1.0f / gamma));
   color = Color{gamma_corrected.x, gamma_corrected.y, gamma_corrected.z};
 
   return color;

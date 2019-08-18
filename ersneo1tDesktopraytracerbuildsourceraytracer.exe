@@ -1,0 +1,467 @@
+[33mcommit 3a05adb7c8cde3c4608614a239bfa0e6744c2445[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 17 20:18:05 2019 +0200
+
+    added composite system
+
+[33mcommit 257bf54be66b9efff3f2960960e3039471e9ad4f[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 17 15:25:44 2019 +0200
+
+    added transformations
+
+[33mcommit d8764da6dd2eb0c3d42f3b0266750f12be932a5b[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 21:54:57 2019 +0200
+
+    added gamma correction and simple reflections
+
+[33mcommit 17d8a8060ad2e4b25be3046f5b952cbf6dd0c7b8[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 21:54:21 2019 +0200
+
+    added reflection coefficient and fixed is number function
+
+[33mcommit 81f4b15ce53a8304f85b5fe6b32afaaa0c59ec85[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 18:09:53 2019 +0200
+
+    added tone mapping and separate inv. world transform member to shape
+
+[33mcommit 17a715559674c1b2ea977021213a312d76757799[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 17:38:41 2019 +0200
+
+    removed output image file
+
+[33mcommit 6614caf8ad3e24931d2659cabda4f9e9023ae05b[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 15:27:28 2019 +0200
+
+    now compatible with Windows
+
+[33mcommit e474f86d7487af0fe76a10d771bcb176c841e830[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 17:09:07 2019 +0200
+
+    adjusted light ambient intensity
+
+[33mcommit 394bc287a8c7bcaa6f0e52773996a381bd0d0122[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 17:04:52 2019 +0200
+
+    fixed box intersection and normal calculations
+
+[33mcommit c4ad457d477d2d4cd1268be6ef4cf8c8503ad0ba[m
+Author: Christian <christiandunkel.contact@gmail.com>
+Date:   Fri Aug 16 16:34:15 2019 +0200
+
+    fixed .gitignore in output folder
+
+[33mcommit 3081e12f763f234ec8009aaaf0136d2d81c0bf33[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 16:13:40 2019 +0200
+
+    added ray transform to box
+
+[33mcommit 1ceab5d62c82e706b215908ee3d1621fab9941f7[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Fri Aug 16 14:54:40 2019 +0200
+
+    fixed key events and formatted window scripts
+
+[33mcommit 5e59a23fa83a9bdc292392a4019034c895a68d60[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Fri Aug 16 14:38:27 2019 +0200
+
+    ignore output image files on commits
+
+[33mcommit f6dc57100ac66777f4cb5f0e6f45f6787be4a0ac[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 16 14:31:53 2019 +0200
+
+    adjusted camera angle and added operators to color struct
+
+[33mcommit c53c15c0c4eb2f19a2ad7daf10ae2fd7c1222c65[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Thu Aug 15 23:29:35 2019 +0200
+
+    fixed segmentation fault caused by lighting
+
+[33mcommit f8ff2de48935c668fe4f0509ec6f5493d5e07986[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Thu Aug 15 22:46:27 2019 +0200
+
+    added conversion to homogeneous rays and new camera implementation
+
+[33mcommit 9f0424362ca009bdbf6c14c6bfd9b8bd4c198e55[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Mon Aug 12 18:03:19 2019 +0200
+
+    removed unncessary ppm files
+
+[33mcommit 4f1561fc975e305905fe285e0180eaabff23a4ef[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Mon Aug 12 18:01:53 2019 +0200
+
+    implemented minimal ray tracing
+
+[33mcommit 78f969af91e7345c6ceed7a3d1d0ec1208e9f693[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 10 19:34:49 2019 +0200
+
+    added camera to renderer and removed checkerboard pattern
+
+[33mcommit 32b264e6f7379d60bda30270f1bbd9b2a5c06fa6[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 10 16:28:57 2019 +0200
+
+    added renderer parsing
+
+[33mcommit 87069aee8552e96cb539db30321b9d3d2a83dab8[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 10 14:07:15 2019 +0200
+
+    removed some tests and unnecessary containers in scene
+
+[33mcommit 50c4c9b92b9fa229f6ede0d6929a80e38b98399d[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 10 13:54:41 2019 +0200
+
+    fixed glm
+
+[33mcommit 856e0e214a536277538b3b5c87583f85c4b00e89[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 10 13:53:16 2019 +0200
+
+    removed glm
+
+[33mcommit 9f1665cf089d1584c79045005d41de98a0eed7e0[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 10 13:50:17 2019 +0200
+
+    updated glm
+
+[33mcommit 62a8c4b05f2127a54ba50ca6d0e4b3124acced7b[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Thu Aug 8 01:31:00 2019 +0200
+
+    added vec2 and mat2 structs
+
+[33mcommit 457c688dddaf309b2342cd2e530d7f4fbe95a2fe[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Thu Aug 8 01:15:10 2019 +0200
+
+    fixed typo
+
+[33mcommit c23221bcf4b15a8328f71228e64daf706c0110c1[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Thu Aug 8 01:13:55 2019 +0200
+
+    added credits markdown file
+
+[33mcommit 1f0b641d581c8743b76cc2a279b577de8e78efb6[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Thu Aug 8 01:06:36 2019 +0200
+
+    updated readme file
+
+[33mcommit 938253db0cf6a3c6b82a83697352263a8bd3b015[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Thu Aug 8 00:58:12 2019 +0200
+
+    added tasks and translated solutions for assignment 4, 5, 6
+
+[33mcommit 3d429cc8c2431e0e9970e59e0dd0e999a6dfafde[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Aug 7 20:54:45 2019 +0200
+
+    updated readme file
+
+[33mcommit 1791ab82685a737543ead394f9f715233ab9bccf[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Aug 7 02:03:23 2019 +0200
+
+    added tasks and translated solutions for assignment 3
+
+[33mcommit 227f4e14da6d165440227f7a36ee0bdcf1f1c345[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Aug 7 00:24:20 2019 +0200
+
+    added assignment papers
+
+[33mcommit 3b4f558d57f5295ef216e23790b9ec904b7801e2[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Aug 7 00:20:34 2019 +0200
+
+    fixed a typo
+
+[33mcommit 69b27282ee6ab8801b65347d754a9d1a58d8bb5f[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Aug 7 00:19:34 2019 +0200
+
+    added description of raytracer to readme file
+
+[33mcommit 428f2de82c997219ffddfdeb22b6cf05737c060b[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Aug 6 23:46:53 2019 +0200
+
+    removed old catch library
+
+[33mcommit 03d4063fd060e2d191969d5cc0f94d6680635ce7[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 19:50:08 2019 +0200
+
+    added tasks and translated solutions for assignment 2
+
+[33mcommit 8e0f35d3f12c5a533e3afa413298e118a561ff57[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 18:28:09 2019 +0200
+
+    fixed images not displaying in 'theoretical tasks' markdown file
+
+[33mcommit dc0b3fd242d25e354c96cde40e608c3ab6c098bf[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 18:25:14 2019 +0200
+
+    added and translated tasks for assignment 1 to Englishand translated solutions
+
+[33mcommit a08d65fee539062ce48752480416985623af207a[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 17:06:28 2019 +0200
+
+    updated readme file; renamed tasks markdown file to 'theoretical_tasks'
+
+[33mcommit d27b36240a584579e1e26fe547183a5fae8fd7ef[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 16:56:52 2019 +0200
+
+    added tasks from previous assignments to markdown file
+
+[33mcommit e55674db8c0f9fa23a380faf68143ffcc3cf9861[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 16:38:35 2019 +0200
+
+    renamed UML diagram file; move tasks markdown file into documentation; removed license
+
+[33mcommit 1191a24ecf92bcf027a183ee544b234957e78e8e[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 16:36:19 2019 +0200
+
+    updated .gitignore
+
+[33mcommit bb7f9fb1192851b31f605244d2e542bb92055964[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Aug 5 16:30:59 2019 +0200
+
+    added style guide document
+
+[33mcommit 9664ace7c3905b7a9d7d85576814bc39aedff750[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Aug 3 13:48:53 2019 +0200
+
+    added light and camera parsing
+
+[33mcommit c0c5b7c39070b40eeb92fb5a095ff8fbce7f5001[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 2 17:42:59 2019 +0200
+
+    added parsing for all shapes
+
+[33mcommit b99f4be033daa71e750aec7bd5c68bc5ae4e08de[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 2 17:41:51 2019 +0200
+
+    fixed ray triangle intersection
+
+[33mcommit 230e8f133638d336c7b1defe1afc9788eb9414b7[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Fri Aug 2 17:40:41 2019 +0200
+
+    updated glm to latest version
+
+[33mcommit af92f22d6afa4df2be8d58e82cc283b7e1a1e038[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Thu Aug 1 19:13:56 2019 +0200
+
+    added triangle
+
+[33mcommit dadd7bcbaca067fe7de69eeb14e250cb4c8d1564[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Thu Aug 1 16:46:10 2019 +0200
+
+    updated UML diagram
+
+[33mcommit 5cc543763cc7065ca69fb476befac3f2fe59caf2[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Thu Aug 1 16:42:42 2019 +0200
+
+    added light structs, camera class and outsourced parse methods
+
+[33mcommit 7eafea34e3de696e1630acb9eaf176e78928067b[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jul 17 19:27:42 2019 +0200
+
+    removed default documentation; moved uml diagram to 'documentation' folder
+
+[33mcommit 9ba942f9ae952d23c12ce3562ac55799ab6f461e[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jul 17 19:21:12 2019 +0200
+
+    updated UML diagram
+
+[33mcommit 288f89e7ad2d422c4937fe81146146f9199d4c3d[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Jul 8 21:56:34 2019 +0200
+
+    added code formatting to tasks file
+
+[33mcommit 28e93393ab8082fa26d96d61ca2f5668cad80d11[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Jul 8 21:52:26 2019 +0200
+
+    added new lines to tasks file
+
+[33mcommit 72129f1bad22be37ac78b8e91241e36078e46560[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Jul 8 21:50:47 2019 +0200
+
+    added task 6.1
+
+[33mcommit 0a92f0e38333ef63621dd170bc070d34e173efcb[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Jul 8 21:34:44 2019 +0200
+
+    updated uml diagram
+
+[33mcommit d8886beea2ec7c12c96f72ca776eb9453a2ac6c1[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Mon Jul 8 21:12:54 2019 +0200
+
+    added task 6.2 (raytracer UML diagram)
+
+[33mcommit 8e9346bd0ac3037865eb146f78ad6082bd53cc31[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Mon Jul 8 21:01:21 2019 +0200
+
+    changed function visibility in sdfManager
+
+[33mcommit 7d763fdb936ce26bef2f7ac69884cd40feb279e8[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Mon Jul 8 17:01:30 2019 +0200
+
+    added scene class and time complexities of map and set
+
+[33mcommit e49cf327b5aca1225d996c6b533540142134a533[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Jul 6 21:36:08 2019 +0200
+
+    some changes
+
+[33mcommit 74931e080405a66678da669632a94d8ea2ccc590[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Jul 6 20:04:54 2019 +0200
+
+    added tests for 6.5
+
+[33mcommit ee58fb524e52a423e3dd3c3e62b356526b4d5a25[m
+Author: 03NN30 <n30.email@gmail.com>
+Date:   Sat Jul 6 18:29:43 2019 +0200
+
+    task 6.5 almost done
+
+[33mcommit d3c3b204c1f9c63e0cb9a6d4ee19a39932492fc3[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jul 3 19:25:27 2019 +0200
+
+    added task 6.4
+
+[33mcommit d7250df7cf67a0b48bd111b6c861ed2b6b1cf9c4[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jul 3 17:51:54 2019 +0200
+
+    added task 6.3
+
+[33mcommit f04fe1f0ccc1e79b9e93bf8825c49ce8f34ee419[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Sat Jun 15 22:05:48 2019 +0200
+
+    added more stuff for theoretical tasks
+
+[33mcommit cb8dd2990c99b24f447bd6625bbd8901e119a894[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Fri Jun 14 00:37:56 2019 +0200
+
+    added theoretical tasks
+
+[33mcommit 16472245cb2e05f06ab63813c386357481e17725[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Fri Jun 14 00:09:28 2019 +0200
+
+    adjusted constructors for sphere and box
+
+[33mcommit 683e09e0ebd7a2e62071c4707ad4fbf529cc2274[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jun 12 23:12:27 2019 +0200
+
+    added task 5.9
+
+[33mcommit bc77d1f3f4d96188e2e6c15daf1904f92b525332[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jun 12 22:56:04 2019 +0200
+
+    added task 5.8 and some theoretical tasks
+
+[33mcommit 320a8d2c5cab0075f10d1d42ae3552359a1d1f72[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jun 12 00:52:17 2019 +0200
+
+    began with task 5.7
+
+[33mcommit c14339502b9a2b846a6ace932ace8ae05a98cb31[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Wed Jun 12 00:44:17 2019 +0200
+
+    added task 5.6
+
+[33mcommit 4c00009e33870d12ed5563cd83866dbdd19266a0[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Jun 11 23:41:48 2019 +0200
+
+    added task 5.5
+
+[33mcommit ca7928e1d24aea776ad14bb9dbf9bcc47da96eeb[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Jun 11 23:27:42 2019 +0200
+
+    added task 5.4
+
+[33mcommit 8a6122a9431feec5aed1f0b471bc2fca2bf2d894[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Jun 11 23:11:17 2019 +0200
+
+    added task 5.3
+
+[33mcommit 2c7320109f886d77d07d8d47018b6e1dc20d8e67[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Jun 11 22:30:06 2019 +0200
+
+    added task 5.2
+
+[33mcommit c95022c08b6b4dfa6e19c46017c3c885304cce41[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Jun 11 21:15:23 2019 +0200
+
+    added task 5.1
+
+[33mcommit e12a30fce210375722133b933f152d4a3871f1a3[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Jun 11 21:14:53 2019 +0200
+
+    updated .gitignore
+
+[33mcommit 4cb1eb238014a2729c0b473e57b2e2cf45d13723[m
+Author: Christian Dunkel <christiandunkel.contact@gmail.com>
+Date:   Tue Jun 11 20:32:16 2019 +0200
+
+    initial commit

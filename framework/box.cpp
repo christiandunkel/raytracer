@@ -1,6 +1,7 @@
 #include "box.hpp"
 
 #include <limits>
+#include <algorithm>
 
 const int precision = 10;
 
