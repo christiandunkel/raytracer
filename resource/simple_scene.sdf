@@ -5,7 +5,7 @@ define light sun_2 -20 200 -40 0.2 0.2 0.2 0.2
 define light ambient1 0.2 0.2 0.2 0.2
 
 define material red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
-define material green 0 1 0 0 1 0 0 1 0 248 0 1.5 0.7
+define material green 0 1 0 0 1 0 0 1 0 248 0 0 0
 define material blue 0 0 1 0 0 1 0 0 1 32 0 0 0
 define material white 1 1 1 1 1 1 1 1 1 16 0 0 0
 define material gray 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 16 0.1 0 0
@@ -13,7 +13,7 @@ define material gray 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 16 0.1 0 0
 define shape box box1 -70 -50 -50 70 -30 50 gray
 define shape sphere sphere1 40 60 0 30 red
 define shape sphere sphere2 -40 30 0 30 green
-define shape triangle tri1 0 0 0 10 0 0 10 10 0 blue
+define shape triangle tri1 0 0 0 10 0 0 10 10 0 white
 
 define shape composite triangles tri1
 define shape composite spheres sphere1 sphere2

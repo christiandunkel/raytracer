@@ -35,19 +35,26 @@ void Renderer::render() {
   for (unsigned y = 0; y < height_; y++) {
     for (unsigned x = 0; x < width_; x++) {
 
+      // reset recursion limit for each new ray
       recursion_limit = 10;
 
       Pixel p(x, y);
 
-      float x_f = static_cast<float>(x);
-      float y_f = static_cast<float>(y);
+      // anti aliasing (with 4 sub pixels)
+      for (float w = 0.0f; w < 1.0f; w += 0.5f) {
+        for (float h = 0.0f; h < 1.0f; h += 0.5f) {
 
-      x_f = (x_f - width_f / 2.0f) / width_f;
-      y_f = (y_f - height_f / 2.0f) / width_f;
+          float x_f = static_cast<float>(x + w);
+          float y_f = static_cast<float>(y + h);
 
-      Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
+          // transform pixel position (-0.5, 0.5)
+          x_f = (x_f - width_f / 2.0f) / width_f;
+          y_f = (y_f - height_f / 2.0f) / width_f;
 
-      p.color = trace(eye_ray);
+          Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
+          p.color  += 0.25f * trace(eye_ray);
+        }
+      }
 
       write(p);
     }
@@ -106,9 +113,11 @@ Color Renderer::trace(Ray const& ray) {
   /*
   TODO:
     fix tests
+    use root element only to render
+
+  OPTIONAL:
     add refraction
-    update triangle intersection methods
-    use root element to render
+    add cylinder and pyramid
   */
 
   if (hit_shape != nullptr) {
@@ -117,6 +126,9 @@ Color Renderer::trace(Ray const& ray) {
 
     static float attenuation = 1.0f;
 
+
+    if (material->refraction_index_ == 0.0f)
+    {
     // iterate over all existing light sources
     for (auto const light : *lights_) {
 
@@ -185,48 +197,32 @@ Color Renderer::trace(Ray const& ray) {
         color += ambient;
       }
     }
+    }
 
     if (recursion_limit > 0) {
-      /*
-      // refraction
-      if (material->transparency_ != 0.0f) {
-    
-        float cosi = glm::clamp(-1.0f, 1.0f, glm::dot(hp.normal_, ray.direction_));
 
-        float etai = 1.0f;
-        float etat = 0.000000000000001f;
-
-        glm::vec3 n = hp.normal_;
-
-        if (cosi < 0.0f) {
-          cosi = -cosi;
-        }
-        else {
-          std::swap(etai, etat);
-          n = -hp.normal_;
-        }
-
-        float eta = etai / etat;
-
-        float k = 1.0f - eta * eta * (1.0f - cosi * cosi);
-
-        if (k >= 0.0f) {
-          glm::vec3 temp = glm::normalize(eta * ray.direction_ + (eta * cosi - sqrtf(k)) * n);
-          Color refracted = trace(Ray{ray.origin_, temp});
-          color += refracted;
-        }
-      }
-      */
       // reflection
-      if (material->r_ != 0.0f) {
+      if (material->r_ != 0.0f && material->refraction_index_ == 0.0f) {
 
         glm::vec3 reflection = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
-        Color color_reflected = trace(Ray{hp.intersection_+ reflection, reflection});
+        Color color_reflected = trace(Ray{hp.intersection_ + reflection, reflection});
 
         color +=  material->r_ * color_reflected;
       }
+      // reflection and refraction
+      else if (material->r_ != 0.0f && material->refraction_index_ != 0.0f) {
+      /*
+        glm::vec3 refraction = glm::normalize(glm::refract(ray.direction_, hp.normal_, material->refraction_index_));
+        Color color_refracted = trace(Ray{hp.intersection_ + refraction, refraction});
+
+        glm::vec3 reflection = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
+        Color color_reflected = trace(Ray{hp.intersection_ + reflection, reflection});
+
+        color += color_reflected * material->r_ + color_refracted * material->transparency_;
+      */
+      }
     }
-}
+  }
   else {
     // return background color
     return Color(0.2f, 0.2f, 0.2f);
@@ -251,7 +247,7 @@ Hitpoint Renderer::find_intersection(Ray const& ray) {
   Hitpoint first_hit;
   first_hit.distance_ = std::numeric_limits<float>::max();
 
-  for(auto const shape : *shapes_){
+  for (auto const shape : *shapes_) {
 
     Hitpoint hit = shape->intersect(ray);
 
