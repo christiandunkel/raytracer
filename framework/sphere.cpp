@@ -5,7 +5,7 @@
 #include <iostream>
 
 Sphere::~Sphere() {
-  std::cout << "Destroyed sphere " + name_ << std::endl;
+  //std::cout << "Destroyed sphere " + name_ << std::endl;
 }
 
 float Sphere::area() const {

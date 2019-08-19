@@ -7,69 +7,108 @@
 #include <thread>
 #include <utility>
 #include <cmath>
+#include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char* argv[]) {
 
   // load scene from sdf file
   SdfManager manager;
-  std::unique_ptr<Scene> scene = manager.parse("./resource/simple_scene.sdf");
+  std::unique_ptr<Scene> scene;
+
+  bool is_animated = false;
+  std::string output_directory = "./../../output";
+
+  // command line parsing
+  if (argc == 1) {
+    scene = manager.parse("./resource/simple_scene.sdf");
+    output_directory = "output";
+  }
+  else if (argc == 3 && strcmp(argv[1], "--file") == 0) {
+    scene = manager.parse(argv[2]);
+  }
+  else if (argc == 4 && strcmp(argv[1], "--file") == 0 && strcmp(argv[3], "--animated") == 0) {
+    scene = manager.parse(argv[2]);
+    is_animated = true; 
+  }
+
+  if (scene == nullptr) {
+    std::cerr << "Use '--file \"./../../resource/simple_scene.sdf\"' to load a scene" << std::endl;
+    std::cerr << "use '--animation' to generate multiple images" << std::endl;
+    return -1;
+  }
+
+  /*
+  TODO:
+    put renderer->render() in separate thread to keep window responsive and show rendering progress
+  */
 
   // get first renderer
-  int renderer_index = 0;
-  Renderer* renderer = &scene->renderer_vec_.at(renderer_index);
-
-  int renderer_num = scene->renderer_vec_.size();
+  std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(scene->renderer_);
 
   // set root element in renderer
-  renderer->root_ = std::static_pointer_cast<Composite>(scene->root_);
+  renderer->root_ = scene->root_;
 
   // set camera
   renderer->cam_ = scene->camera_map_.begin()->second;
+
+  // set image output  directory
+  renderer->output_directory_ = output_directory;
 
   renderer->render();
 
   Window window{{renderer->get_width(), renderer->get_height()}};
 
-  bool wait_after_event = false;
+  bool first_iteration = true;
 
-  unsigned int counter = 0;
+  unsigned int animation_index = 1;
 
   while (!window.should_close()) {
 
-    // to avoid input spamming
-    counter++;
+    // use already set up renderer in first frame
+    if (first_iteration) {
+      first_iteration = false;
+    }
+    // update renderer to use next scene
+    else if (!first_iteration && is_animated) {
 
-    if (counter % 50 == 0) {
-      wait_after_event = false;
+      static std::string path = argv[2];
 
-      // reset counter to avoid overflow
-      counter = 0;
+      size_t pos_underscore = path.find("_");
+      size_t pos_file_ending = path.find(".sdf");
+
+      std::string updated_path =  path.substr(0, pos_underscore + 1) + std::to_string(animation_index) + path.substr(pos_file_ending);
+
+      std::cout << "Parsing scene at: " << updated_path << std::endl;
+
+      scene = manager.parse(updated_path);
+
+      if (scene == nullptr) {
+        std::cout << animation_index << " images have been generated." << std::endl;
+        return -1;
+      }
+
+      renderer = std::make_unique<Renderer>(scene->renderer_);
+
+      renderer->output_directory_ = output_directory;
+      std::cout << "Storing image at: " << output_directory << std::endl;
+
+      // set next root element
+      renderer->root_ = scene->root_;
+
+      // set next camera
+      renderer->cam_ = scene->camera_map_.begin()->second;
+
+      renderer->render();
+
+      animation_index++;
     }
 
     if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-      renderer->is_running = false;
       window.close();
     }
-    else if (window.get_key(GLFW_KEY_SPACE) == GLFW_PRESS && !wait_after_event) {
 
-      wait_after_event = true;
-
-      if  (renderer_index >= renderer_num - 1) {
-        // last renderer reached, close
-        window.close();
-      }
-      else {
-        renderer_index++;
-        renderer = &scene->renderer_vec_.at(renderer_index);
-
-        // do changes here (e.g. apply further transformations)
-
-        renderer->render();
-      }
-    }
-
-    window.show(renderer->get_color_buffer());
-
+    window.show(renderer->get_color_buffer());    
   }
 
   return 0;

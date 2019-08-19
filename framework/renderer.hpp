@@ -18,12 +18,12 @@ class Renderer {
 
   public:
 
-    bool is_running;
     std::shared_ptr<Camera> cam_;
     std::shared_ptr<Shape> root_;
     std::shared_ptr<std::vector<std::shared_ptr<Shape>>> shapes_;
     std::shared_ptr<std::vector<std::shared_ptr<Light>>> lights_;
     std::vector<Color> color_buffer_;
+    std::string output_directory_;
 
   private:
 
@@ -38,10 +38,11 @@ class Renderer {
 
   public:
 
-    Renderer() = default;
+    Renderer() :
+      output_directory_("output"), ppm_(600u, 600u), color_buffer_(600u * 600u, Color{0.0f, 0.0f, 0.0f}), width_(600u), height_(600u) {}
 
     Renderer(std::string const& file, std::shared_ptr<Camera> cam, unsigned int w, unsigned int h) : 
-      is_running(true), ppm_(w, h), cam_(cam), filename_(file), color_buffer_(w * h, Color{0.0, 0.0, 0.0}), width_(w), height_(h) {}
+      output_directory_("output"), ppm_(w, h), cam_(cam), filename_(file), color_buffer_(w * h, Color{0.0f, 0.0f, 0.0f}), width_(w), height_(h) {}
 
     bool is_valid();
     void render();

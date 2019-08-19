@@ -19,24 +19,24 @@ class Shape {
 
     Shape() :
       name_("default"), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        std::cout << "Created shape " + name_ << std::endl;
+        //std::cout << "Created shape " + name_ << std::endl;
         material_ = std::make_shared<Material>();
       }
 
     Shape(std::string name) :
       name_(name), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        std::cout << "Created shape " + name_ << std::endl;
+        //std::cout << "Created shape " + name_ << std::endl;
         material_ = std::make_shared<Material>();
       }
 
     Shape(std::shared_ptr<Material> material) :
       name_("default"), material_(material), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        std::cout << "Created shape " + name_ << std::endl;
+        //std::cout << "Created shape " + name_ << std::endl;
       }
 
     Shape(std::string name, std::shared_ptr<Material> material) :
       name_(name), material_(material), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        std::cout << "Created shape " + name_ << std::endl;
+        //std::cout << "Created shape " + name_ << std::endl;
       }
 
     virtual float area() const = 0;

@@ -11,7 +11,7 @@ bool float_comparison(float a, float b, int precision) {
 }
 
 Box::~Box() {
-  std::cout << "Destroyed box " + name_ << std::endl;
+  //std::cout << "Destroyed box " + name_ << std::endl;
 }
 
 float Box::area() const {

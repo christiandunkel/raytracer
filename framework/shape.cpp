@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 Shape::~Shape() {
-  std::cout << "Destroyed shape " + name_ << std::endl;
+  //std::cout << "Destroyed shape " + name_ << std::endl;
 }
 
 // print shape object

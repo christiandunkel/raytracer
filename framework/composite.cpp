@@ -28,6 +28,6 @@ void Composite::translate(glm::vec3 const& t) {
 
 void Composite::add_child(std::shared_ptr<Shape> shape) {
 
-  std::cout << "Adding child: " << shape->get_name() << " to parent: " << get_name() << std::endl;
+  //std::cout << "Adding child: " << shape->get_name() << " to parent: " << get_name() << std::endl;
   children_.push_back(shape);
 }

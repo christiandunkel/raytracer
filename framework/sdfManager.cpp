@@ -138,7 +138,7 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
     }
   }
 
-  std::cout << "SdfManager: Found material '" + values.at(0) + "' in " << file_path << "." << std::endl;
+  // std::cout << "SdfManager: Found material '" + values.at(0) + "' in " << file_path << "." << std::endl;
 
   // create new material and fill it with values
   std::shared_ptr<Material> material = std::make_shared<Material>();
@@ -299,24 +299,31 @@ void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scen
     return;
   }
 
-  std::istringstream width_str(values.at(2));
-  unsigned int width;
-  width_str >> width;
+  if (values.size() == 4) {
 
-  std::istringstream height_str(values.at(3));
-  unsigned int height;
-  height_str >> height;
+    std::istringstream width_str(values.at(2));
+    unsigned int width;
+    width_str >> width;
 
-  cam->set_screen_dimensions(width, height);
+    std::istringstream height_str(values.at(3));
+    unsigned int height;
+    height_str >> height;
 
-  Renderer renderer{values.at(1), cam, width, height};
+    cam->set_screen_dimensions(width, height);
 
-  renderer.lights_ = std::make_shared<std::vector<std::shared_ptr<Light>>>(scene->light_vec_);
-  renderer.shapes_ = std::make_shared<std::vector<std::shared_ptr<Shape>>>(scene->shape_vec_);
+    Renderer renderer{values.at(1), cam, width, height};
 
-  renderer.root_ = scene->root_;
+    renderer.lights_ = std::make_shared<std::vector<std::shared_ptr<Light>>>(scene->light_vec_);
+    renderer.shapes_ = std::make_shared<std::vector<std::shared_ptr<Shape>>>(scene->shape_vec_);
 
-  scene->renderer_vec_.push_back(renderer);
+    renderer.root_ = scene->root_;
+
+    scene->renderer_ = renderer;
+  }
+  else {
+    std::cout << "SdfManager: Renderer '" + values.at(0) + "' in " << file_path << " can't be parsed." << std::endl;
+    return;
+  }
 }
 
 void SdfManager::parse_transform(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {

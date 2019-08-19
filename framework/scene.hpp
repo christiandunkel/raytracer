@@ -22,7 +22,7 @@ class Scene {
     std::vector<std::shared_ptr<Light>> light_vec_;
     std::map<std::string, std::shared_ptr<Camera>> camera_map_;
     std::map<std::string, std::shared_ptr<Material>> material_map_;
-    std::vector<Renderer> renderer_vec_;
+    Renderer renderer_;
 
     Scene() = default;
 
