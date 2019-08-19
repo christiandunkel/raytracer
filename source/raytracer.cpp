@@ -14,27 +14,33 @@ int main(int argc, char* argv[]) {
 
   // load scene from sdf file
   SdfManager manager;
-  std::unique_ptr<Scene> scene;
+  std::unique_ptr<Scene> scene = nullptr;
 
   bool is_animated = false;
-  std::string output_directory = "./../../output";
+  std::string output_directory = "./../../output/";
 
   // command line parsing
   if (argc == 1) {
+
+    std::cout << "Parsing scene at: ./resource/simple_scene.sdf" << std::endl;
     scene = manager.parse("./resource/simple_scene.sdf");
-    output_directory = "output";
+    output_directory = "output/";
   }
   else if (argc == 3 && strcmp(argv[1], "--file") == 0) {
+
+    std::cout << "Parsing scene at: " << argv[2] << std::endl;
     scene = manager.parse(argv[2]);
   }
   else if (argc == 4 && strcmp(argv[1], "--file") == 0 && strcmp(argv[3], "--animated") == 0) {
+
+    std::cout << "Parsing scene at: " << argv[2] << std::endl;
     scene = manager.parse(argv[2]);
     is_animated = true; 
   }
 
   if (scene == nullptr) {
     std::cerr << "Use '--file \"./../../resource/simple_scene.sdf\"' to load a scene" << std::endl;
-    std::cerr << "use '--animation' to generate multiple images" << std::endl;
+    std::cerr << "use '--animated' to generate multiple images" << std::endl;
     return -1;
   }
 
@@ -57,6 +63,8 @@ int main(int argc, char* argv[]) {
 
   renderer->render();
 
+  std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
+
   Window window{{renderer->get_width(), renderer->get_height()}};
 
   bool first_iteration = true;
@@ -69,7 +77,7 @@ int main(int argc, char* argv[]) {
     if (first_iteration) {
       first_iteration = false;
     }
-    // update renderer to use next scene
+    // update renderer to use next scene only if animation is enabled
     else if (!first_iteration && is_animated) {
 
       static std::string path = argv[2];
@@ -77,6 +85,7 @@ int main(int argc, char* argv[]) {
       size_t pos_underscore = path.find("_");
       size_t pos_file_ending = path.find(".sdf");
 
+      // replace number after underscore in file name with the next number to generate a new image
       std::string updated_path =  path.substr(0, pos_underscore + 1) + std::to_string(animation_index) + path.substr(pos_file_ending);
 
       std::cout << "Parsing scene at: " << updated_path << std::endl;
@@ -91,7 +100,6 @@ int main(int argc, char* argv[]) {
       renderer = std::make_unique<Renderer>(scene->renderer_);
 
       renderer->output_directory_ = output_directory;
-      std::cout << "Storing image at: " << output_directory << std::endl;
 
       // set next root element
       renderer->root_ = scene->root_;
@@ -100,6 +108,8 @@ int main(int argc, char* argv[]) {
       renderer->cam_ = scene->camera_map_.begin()->second;
 
       renderer->render();
+
+      std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
 
       animation_index++;
     }

@@ -23,7 +23,9 @@ class Renderer {
     std::shared_ptr<std::vector<std::shared_ptr<Shape>>> shapes_;
     std::shared_ptr<std::vector<std::shared_ptr<Light>>> lights_;
     std::vector<Color> color_buffer_;
+
     std::string output_directory_;
+    std::string full_path_;
 
   private:
 

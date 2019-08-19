@@ -399,7 +399,7 @@ TEST_CASE("Task 6.4", "Material DTO") {
 
 TEST_CASE("Task 6.5", "") {
   SdfManager sdfs;
-
+  
   std::unique_ptr<Scene> scene_nullptr = sdfs.parse("non_existing_path/file_name.nope");
   REQUIRE(scene_nullptr == nullptr);
 
@@ -565,11 +565,7 @@ TEST_CASE("Task 6.5", "") {
   REQUIRE(c1->world_up_.y == Approx(1.0f).epsilon(0.001));
   REQUIRE(c1->world_up_.z == Approx(0.0f).epsilon(0.001));
 
-  auto r1 = scene->renderer_vec_.at(0);
+  auto r1 = scene->renderer_;
 
   REQUIRE(r1.is_valid() == true);
-
-  auto r2 = scene->renderer_vec_.at(1);
-
-  REQUIRE(r2.is_valid() == false);
 }

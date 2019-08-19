@@ -54,8 +54,8 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
     // read line for line
     std::string line;
-    while (getline(file, line)) {
-
+    while (std::getline(file, line)) {
+      
       // only use lines starting with "define", "render" or "transform"
       std::regex REGEX_valid ("^(define|render|transform) .*");
       if (!std::regex_match(line, REGEX_valid)) {

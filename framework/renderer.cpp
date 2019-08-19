@@ -7,6 +7,9 @@
 
 #include <regex>
 #include <limits>
+#include <limits.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 // check if the given renderer instance is valid
 bool Renderer::is_valid() {
@@ -79,7 +82,11 @@ void Renderer::render() {
   std::string time = asctime(curtime);
   std::replace(time.begin(), time.end(), ':', '-');
 
-  ppm_.save(output_directory_ + "/" + time + " " + filename_);
+  // remove line break if exists
+  time.erase(std::remove(time.begin(), time.end(), '\n'), time.end());
+
+  full_path_ = output_directory_ + time + " " + filename_;
+  ppm_.save(full_path_);
 }
 
 void Renderer::write(Pixel const& p) {
