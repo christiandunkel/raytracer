@@ -18,6 +18,21 @@ std::ostream& Shape::print(std::ostream& os) const {
   return os;
 }
 
+void Shape::find_intersection(Hitpoint& first_hit, Ray const& ray) const {
+
+  Hitpoint hit = intersect(ray);
+
+  if (hit.has_hit_) {
+
+    hit.distance_ = glm::distance(hit.intersection_, ray.origin_);
+
+    if (first_hit.distance_ > hit.distance_) {
+      first_hit = hit;
+    }
+  }
+}
+
+
 void Shape::scale(glm::vec3 const& s) {
 
   world_transform_ = glm::scale(world_transform_, s);

@@ -48,10 +48,13 @@ class Shape {
     virtual ~Shape();
 
     virtual Hitpoint intersect(Ray const &ray, float distance = 0.0f) const = 0;
+    virtual void find_intersection(Hitpoint& first_hit, Ray const& ray) const;
 
     virtual void scale(glm::vec3 const& s);
     virtual void rotate(float angle, glm::vec3 const& axis);
     virtual void translate(glm::vec3 const& t);
+
+    virtual std::shared_ptr<Shape> find_shape(std::string const& name) const {}
 
     std::string get_name() const {
       return name_;

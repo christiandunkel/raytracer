@@ -29,3 +29,5 @@ add_executable(tests
 target_link_libraries(tests
   ${GLFW_LIBRARIES}
   )
+
+add_executable(sdfGenerator sdfGenerator.cpp)

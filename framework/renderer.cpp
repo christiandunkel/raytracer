@@ -119,12 +119,7 @@ Color Renderer::trace(Ray const& ray) {
   std::shared_ptr<Shape> hit_shape = nullptr;
 
   // find shape that has been hit by a ray
-  for (auto const shape : (*shapes_)) {
-    
-    if (shape->get_name() == hp.name_) {
-      hit_shape = shape;
-    }
-  }
+  hit_shape = root_->find_shape(hp.name_);
 
   /*
   TODO:
@@ -266,20 +261,7 @@ Hitpoint Renderer::find_intersection(Ray const& ray) {
   Hitpoint first_hit;
   first_hit.distance_ = std::numeric_limits<float>::max();
 
-  for (auto const shape : *shapes_) {
-
-    Hitpoint hit = shape->intersect(ray);
-
-    if (hit.has_hit_) {
-
-      hit.distance_ = glm::distance(hit.intersection_, ray.origin_);
-
-      if (first_hit.distance_ > hit.distance_) {
-        first_hit = hit;
-      }
-    }
-
-  }
+  root_->find_intersection(first_hit, ray);
 
   return first_hit;
 }

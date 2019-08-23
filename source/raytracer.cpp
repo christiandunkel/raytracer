@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
       window.close();
     }
 
-    window.show(renderer->get_color_buffer());    
+    window.show(renderer->get_color_buffer());
   }
 
   return 0;
