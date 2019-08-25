@@ -54,7 +54,7 @@ class Shape {
     virtual void rotate(float angle, glm::vec3 const& axis);
     virtual void translate(glm::vec3 const& t);
 
-    virtual std::shared_ptr<Shape> find_shape(std::string const& name) const {}
+    virtual std::shared_ptr<Shape> find_shape(std::string const& name) const { return std::shared_ptr<Shape>(); }
 
     std::string get_name() const {
       return name_;
