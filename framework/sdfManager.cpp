@@ -381,7 +381,6 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
 
     // replace number after underscore in file name with the next number to generate a new sdf file
     updated_path = path.substr(0, pos_underscore + 1) + std::to_string(i) + path.substr(pos_file_ending);
-    std::cout << "generating new sdf file at: " << updated_path << std::endl;
 
     // copy files
     std::ifstream src(file_path, std::ios::binary);
@@ -395,12 +394,13 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
 
         // retrieve new transform line and add to file
         std::string transform = "\n" + animation.get_transform();
-        std::cout << transform << std::endl;
 
         dst << transform;
       }
     }
   }
+
+  std::cout << "Generated " << limit << " SDF files." << std::endl;
 }
 
 void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
@@ -437,7 +437,7 @@ void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<S
       scene->animation_vec_.push_back(animation);
     }
     else {
-      std::cout << "SdfManager: Animation is can't be parsed." << std::endl;
+      std::cout << "SdfManager: Animation can't be parsed." << std::endl;
       return;
     }
   }
