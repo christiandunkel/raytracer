@@ -15,14 +15,14 @@
 bool Renderer::is_valid() {
 
   if (cam_ == nullptr) {
-    std::cout << "Renderer: Camera points to null for '" << filename_ << "' renderer." << std::endl;
+    std::cerr << "Renderer: Camera points to null for '" << filename_ << "' renderer." << std::endl;
     return false;
   }
 
   // test if defined filename has "ppm" ending
   std::regex REGEX_ppm ("^.+\\.ppm$");
   if (!std::regex_match(filename_, REGEX_ppm)) {
-    std::cout << "Renderer: Given filename '" << filename_ << "' has no '.ppm' file ending." << std::endl;
+    std::cerr << "Renderer: Given filename '" << filename_ << "' has no '.ppm' file ending." << std::endl;
     return false;
   }
 

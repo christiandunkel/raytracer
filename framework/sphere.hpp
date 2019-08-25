@@ -19,7 +19,7 @@ class Sphere : public Shape {
         //std::cout << "Created sphere " << name_ << std::endl;
       }
 
-    Sphere(std::string name) :
+    Sphere(std::string const& name) :
       Shape(name), middle_(glm::vec3(0.0f)), radius_(0.0f) {
         //std::cout << "Created sphere " << name_ << std::endl;
       }

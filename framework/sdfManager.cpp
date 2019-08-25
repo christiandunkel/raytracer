@@ -71,7 +71,6 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
       if (parts.size() < 3) {
         continue;
       }
-      
 
       // detect type of command in current line of sdf file
       if (parts.at(0) == "define") {
@@ -93,6 +92,16 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
         }
         else if (parts.at(0) == "transform") {
           parse_transform(file_path, scene, parts);
+        }
+        else if (parts.at(0) == "animation") {
+
+          // make sure that animation tags get only parsed in the initial file
+          static bool first_iteration = true;
+
+          if (first_iteration) {
+            parse_animation(file_path, scene, parts);
+            first_iteration = false;
+          }
         }
         else {
           std::cout << "SdfManager: Given type '" << parts.at(0) << "' doesn't exist." << std::endl;
@@ -345,6 +354,103 @@ void SdfManager::parse_transform(std::string const& file_path, std::unique_ptr<S
       shape->translate(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     }
     else {
+      return;
+    }
+  }
+  else {
+    std::cout << "SdfManager: Shape '" + values.at(0) + "' used by transform in " << file_path << " doesn't exist (yet)." << std::endl;
+    return;
+  }
+}
+
+void SdfManager::generate_files(std::string const& file_path, std::string const& frames, Scene* scene) {
+
+  static std::string path = file_path;
+
+  size_t pos_underscore = path.find("_");
+  size_t pos_file_ending = path.find(".sdf");
+
+  // convert string to uint
+  std::istringstream frame_str(frames);
+  unsigned int limit;
+  frame_str >> limit;
+
+  std::string updated_path;
+
+  for (unsigned int i = 1; i < limit; i++) {
+
+    // replace number after underscore in file name with the next number to generate a new sdf file
+    updated_path = path.substr(0, pos_underscore + 1) + std::to_string(i) + path.substr(pos_file_ending);
+    std::cout << "generating new sdf file at: " << updated_path << std::endl;
+
+    // copy files
+    std::ifstream src(file_path, std::ios::binary);
+    std::ofstream dst(updated_path, std::ios::binary);
+
+    dst << src.rdbuf();
+
+    // add new transform for each file
+    
+    /*
+    iterate over existing animation vector
+    check if starting frame is the same as i
+      if so then add a transform to that file
+
+    */
+
+    for (auto &animation : scene->animation_vec_) {
+
+      std::cout << i << " | " << animation.start_frame_ << " - " << animation.end_frame_ << std::endl;
+
+      if (i >= animation.start_frame_ && i < animation.end_frame_) {
+
+        std::cout << "Transforming: " << animation.shape_->get_name() << std::endl;
+
+        // retrieve new transform line and add to file
+        std::string transform = "\n" + animation.get_transform();
+        std::cout << transform << std::endl;
+
+        dst << transform;
+      }
+    }
+  }
+}
+
+void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
+
+  // remove "animation" from beginning of string
+  values.erase(values.begin());
+
+  std::shared_ptr<Shape> shape = scene->find_shape(values.at(0));
+
+  if (shape != nullptr) {
+
+    if (values.size() == 6) {
+
+      Animation animation;
+
+      if (values.at(1) == "scale") {
+        animation.type_ = SCALE;
+      }
+      else if (values.at(1) == "rotate") {
+        animation.type_ = ROTATE;
+      }
+      else if (values.at(1) == "translate") {
+        animation.type_ = TRANSLATE;
+      }
+      else {
+        std::cout << "SdfManager: Transform type '" << values.at(1) << "' for animation is not supported." << std::endl;
+        return;
+      }
+
+      animation.shape_ = shape;
+      animation.set_axis(values.at(2));
+      animation.speed_ = stof(values.at(3));
+      animation.set_frames(values.at(4), values.at(5));
+      scene->animation_vec_.push_back(animation);
+    }
+    else {
+      std::cout << "SdfManager: Animation is can't be parsed." << std::endl;
       return;
     }
   }

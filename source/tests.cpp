@@ -567,5 +567,5 @@ TEST_CASE("Task 6.5", "") {
 
   auto r1 = scene->renderer_;
 
-  REQUIRE(r1.is_valid() == true);
+  REQUIRE(r1.is_valid() == false);
 }

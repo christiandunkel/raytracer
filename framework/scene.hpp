@@ -6,6 +6,7 @@
 #include "light.hpp"
 #include "camera.hpp"
 #include "renderer.hpp"
+#include "animation.hpp"
 
 #include <memory>
 #include <vector>
@@ -22,6 +23,9 @@ class Scene {
     std::vector<std::shared_ptr<Light>> light_vec_;
     std::map<std::string, std::shared_ptr<Camera>> camera_map_;
     std::map<std::string, std::shared_ptr<Material>> material_map_;
+
+    std::vector<Animation> animation_vec_;
+
     Renderer renderer_;
 
     Scene() = default;

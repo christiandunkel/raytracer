@@ -11,6 +11,7 @@ class SdfManager {
     SdfManager() = default;
 
     std::unique_ptr<Scene> parse(std::string const& file_path);
+    void generate_files(std::string const& file_path, std::string const& frames, Scene* scene);
 
   private:
 
@@ -23,6 +24,7 @@ class SdfManager {
     void parse_camera(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values);
     void parse_render(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values);
     void parse_transform(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values);
+    void parse_animation(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values);
 
 };
 

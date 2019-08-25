@@ -25,6 +25,8 @@ add_executable(tests
   ../framework/ray.cpp
   ../framework/hitpoint.cpp
   ../framework/composite.cpp
+  ../framework/cone.cpp
+  ../framework/animation.cpp
 )
 target_link_libraries(tests
   ${GLFW_LIBRARIES}

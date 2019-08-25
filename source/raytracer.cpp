@@ -20,27 +20,48 @@ int main(int argc, char* argv[]) {
   std::string output_directory = "./../../output/";
 
   // command line parsing
+
+  // default start renders a single picture using an example file
   if (argc == 1) {
 
-    std::cout << "Parsing scene at: ./resource/simple_scene.sdf" << std::endl;
-    scene = manager.parse("./resource/simple_scene.sdf");
+    std::cout << "Parsing scene at: ./resource/simpleScene.sdf" << std::endl;
+    scene = manager.parse("./resource/simpleScene.sdf");
     output_directory = "output/";
   }
+  // renders a single picture using given path to file
   else if (argc == 3 && strcmp(argv[1], "--file") == 0) {
 
     std::cout << "Parsing scene at: " << argv[2] << std::endl;
     scene = manager.parse(argv[2]);
   }
-  else if (argc == 4 && strcmp(argv[1], "--file") == 0 && strcmp(argv[3], "--animated") == 0) {
+  // renders multiple pictures using numerated file at given path
+  else if (argc == 5 && strcmp(argv[1], "--file") == 0 && strcmp(argv[3], "--frames") == 0) {
 
     std::cout << "Parsing scene at: " << argv[2] << std::endl;
     scene = manager.parse(argv[2]);
-    is_animated = true; 
+    manager.generate_files(argv[2], argv[4], scene.get());
+    is_animated = true;
+  }
+  else if (argc == 2 && strcmp(argv[1], "--help") == 0) {
+
+    std::cout << "--file \"path_to_file\"\n"
+      << "\tTakes a path to an existing sdf file and renders the image using it.\n"
+      << "\tUse path './../../resource/simpleScene.sdf' for a predefined scene." << std::endl;
+
+    std::cout << "--frames \"n\"\n"
+      << "\tCreates n images.\n"
+      << "\tRequires a sdf file that defines at least one animation." << std::endl;
+
+    return 0;
+  }
+  else {
+
+    std::cerr << "Unknown command line parameters\n"
+      << "Use '--help'" << std::endl;
+    return -1;
   }
 
   if (scene == nullptr) {
-    std::cerr << "Use '--file \"./../../resource/simple_scene.sdf\"' to load a scene" << std::endl;
-    std::cerr << "use '--animated' to generate multiple images" << std::endl;
     return -1;
   }
 
@@ -94,7 +115,7 @@ int main(int argc, char* argv[]) {
 
       if (scene == nullptr) {
         std::cout << animation_index << " images have been generated." << std::endl;
-        return -1;
+        return 0;
       }
 
       renderer = std::make_unique<Renderer>(scene->renderer_);
