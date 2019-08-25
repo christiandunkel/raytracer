@@ -78,8 +78,16 @@ std::string Animation::get_transform() {
 std::string Animation::get_scale() {
 
   std::string scale;
+  std::string factor;
 
-  std::string factor = std::to_string(speed_ * tick_);
+  // make shape larger
+  if (speed_ >= 1.0f) {
+    factor = std::to_string(1.0f + ((tick_ * speed_) / 10.0f));
+  }
+  // make shape smaller
+  else {
+    factor = std::to_string(1.0f - ((tick_ * speed_) / 10.0f));
+  }
 
   switch (axis_) {
     case X:
@@ -143,5 +151,34 @@ std::string Animation::get_rotation() {
 
 std::string Animation::get_translation() {
 
-  return get_scale();
+  std::string translation;
+  std::string factor;
+
+  factor = std::to_string(tick_ * speed_);
+
+  switch (axis_) {
+    case X:
+      translation += factor + " 0 0";
+      break;
+    case Y:
+      translation += "0 " + factor + " 0";
+      break;
+    case Z:
+      translation += "0 0 " + factor;
+      break;
+    case XY:
+      translation += factor + " " + factor + " 0";
+      break;
+    case XZ:
+      translation += factor + " 0 " + factor;
+      break;
+    case YZ:
+      translation += "0 " + factor + " " + factor;
+      break;
+    case XYZ:
+      translation += factor + " " + factor + " " + factor;
+      break;
+  }
+
+  return translation;
 }

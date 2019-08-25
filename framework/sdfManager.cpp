@@ -391,11 +391,7 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
 
     for (auto &animation : scene->animation_vec_) {
 
-      std::cout << i << " | " << animation.start_frame_ << " - " << animation.end_frame_ << std::endl;
-
       if (i >= animation.start_frame_ && i < animation.end_frame_) {
-
-        std::cout << "Transforming: " << animation.shape_->get_name() << std::endl;
 
         // retrieve new transform line and add to file
         std::string transform = "\n" + animation.get_transform();
