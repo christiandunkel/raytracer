@@ -30,5 +30,5 @@ render eye image.ppm 600 600
 render eye image2.ppm 600 600
 
 define animation root rotate x 0.5 0 20
-define animation root scale xyz 0.5 0 20
+define animation root scale xyz 2.0 0 20
 define animation root translate xy 0.6 0 20

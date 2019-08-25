@@ -4,22 +4,22 @@
 
 void Animation::set_axis(std::string const& axis) {
 
-  if (axis == "X") {
+  if (axis == "X" || axis == "x") {
     axis_ = X;
   }
-  else if (axis == "Y") {
+  else if (axis == "Y" || axis == "y") {
     axis_ = Y;
   }
-  else if (axis == "Z") {
+  else if (axis == "Z" || axis == "z") {
     axis_ = Z;
   }
-  else if (axis == "XY" || "YX") {
+  else if (axis == "XY" || axis == "xy") {
     axis_ = XY;
   }
-  else if (axis == "XZ" || "ZX") {
+  else if (axis == "XZ" || axis == "xz") {
     axis_ = XZ;
   }
-  else if (axis == "XYZ" || "XZY" || "YXZ" || "YZX" || "ZXY" || "ZYX") {
+  else if (axis == "XYZ" || axis == "xyz") {
     axis_ = XYZ;
   }
   else {
@@ -79,7 +79,31 @@ std::string Animation::get_scale() {
 
   std::string scale;
 
+  std::string factor = std::to_string(speed_ * tick_);
 
+  switch (axis_) {
+    case X:
+      scale += factor + " 0 0";
+      break;
+    case Y:
+      scale += "0 " + factor + " 0";
+      break;
+    case Z:
+      scale += "0 0 " + factor;
+      break;
+    case XY:
+      scale += factor + " " + factor + " 0";
+      break;
+    case XZ:
+      scale += factor + " 0 " + factor;
+      break;
+    case YZ:
+      scale += "0 " + factor + " " + factor;
+      break;
+    case XYZ:
+      scale += factor + " " + factor + " " + factor;
+      break;
+  }
 
   return scale;
 }
@@ -119,8 +143,5 @@ std::string Animation::get_rotation() {
 
 std::string Animation::get_translation() {
 
-  std::string translation;
-
-
-  return translation;
+  return get_scale();
 }

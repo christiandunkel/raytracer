@@ -27,3 +27,6 @@
 # ignore build directories
 build
 cmake_out
+
+# ignore animation files
+animation

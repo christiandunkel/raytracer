@@ -389,15 +389,6 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
 
     dst << src.rdbuf();
 
-    // add new transform for each file
-    
-    /*
-    iterate over existing animation vector
-    check if starting frame is the same as i
-      if so then add a transform to that file
-
-    */
-
     for (auto &animation : scene->animation_vec_) {
 
       std::cout << i << " | " << animation.start_frame_ << " - " << animation.end_frame_ << std::endl;
