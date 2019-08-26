@@ -143,6 +143,7 @@ int main(int argc, char* argv[]) {
     renderer->initial_recursion_limit = atoi(argv[recursion_pos]);
   }
 
+  //std::thread render_thread(&Renderer::render, renderer.get(), flags);
   renderer->render(flags);
 
   std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
@@ -207,6 +208,8 @@ int main(int argc, char* argv[]) {
 
     window.show(renderer->get_color_buffer());
   }
+
+  //render_thread.join();
 
   return 0;
 

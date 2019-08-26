@@ -363,6 +363,57 @@ void SdfManager::parse_transform(std::string const& file_path, std::unique_ptr<S
   }
 }
 
+void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
+
+  // remove "animation" from beginning of string
+  values.erase(values.begin());
+
+  std::shared_ptr<Shape> shape = scene->find_shape(values.at(0));
+
+  if (shape != nullptr) {
+
+    if (values.size() >= 4) {
+
+      Animation animation;
+
+      if (values.at(1) == "scale") {
+        animation.type_ = SCALE;
+      }
+      else if (values.at(1) == "rotate") {
+        animation.type_ = ROTATE;
+      }
+      else if (values.at(1) == "translate") {
+        animation.type_ = TRANSLATE;
+      }
+      else {
+        std::cout << "SdfManager: Transform type '" << values.at(1) << "' for animation is not supported." << std::endl;
+        return;
+      }
+
+      animation.shape_ = shape;
+      animation.set_axis(values.at(2));
+      animation.speed_ = stof(values.at(3));
+
+      if (values.size() == 4) {
+        animation.start_frame_ = 0;
+        animation.end_frame_ = std::numeric_limits<unsigned int>::max();
+      }
+      else {
+        animation.set_frames(values.at(4), values.at(5));
+      }
+      scene->animation_vec_.push_back(animation);
+    }
+    else {
+      std::cout << "SdfManager: Animation can't be parsed." << std::endl;
+      return;
+    }
+  }
+  else {
+    std::cout << "SdfManager: Shape '" + values.at(0) + "' used by transform in " << file_path << " doesn't exist (yet)." << std::endl;
+    return;
+  }
+}
+
 void SdfManager::generate_files(std::string const& file_path, std::string const& frames, Scene* scene) {
 
   static std::string path = file_path;
@@ -392,6 +443,7 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
 
       if (i >= animation.start_frame_ && i < animation.end_frame_) {
 
+
         // retrieve new transform line and add to file
         std::string transform = "\n" + animation.get_transform();
 
@@ -401,48 +453,4 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
   }
 
   std::cout << "Generated " << limit << " SDF files." << std::endl;
-}
-
-void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
-
-  // remove "animation" from beginning of string
-  values.erase(values.begin());
-
-  std::shared_ptr<Shape> shape = scene->find_shape(values.at(0));
-
-  if (shape != nullptr) {
-
-    if (values.size() == 6) {
-
-      Animation animation;
-
-      if (values.at(1) == "scale") {
-        animation.type_ = SCALE;
-      }
-      else if (values.at(1) == "rotate") {
-        animation.type_ = ROTATE;
-      }
-      else if (values.at(1) == "translate") {
-        animation.type_ = TRANSLATE;
-      }
-      else {
-        std::cout << "SdfManager: Transform type '" << values.at(1) << "' for animation is not supported." << std::endl;
-        return;
-      }
-
-      animation.shape_ = shape;
-      animation.set_axis(values.at(2));
-      animation.speed_ = stof(values.at(3));
-      animation.set_frames(values.at(4), values.at(5));
-      scene->animation_vec_.push_back(animation);
-    }
-    else {
-      std::cout << "SdfManager: Animation can't be parsed." << std::endl;
-      return;
-    }
-  }
-  else {
-    std::cout << "SdfManager: Shape '" + values.at(0) + "' used by transform in " << file_path << " doesn't exist (yet)." << std::endl;
-    return;
-  }
 }
