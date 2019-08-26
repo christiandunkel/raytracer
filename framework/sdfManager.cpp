@@ -398,6 +398,10 @@ void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<S
         animation.start_frame_ = 0;
         animation.end_frame_ = std::numeric_limits<unsigned int>::max();
       }
+      else if (values.size() == 5) {
+        animation.set_frames(values.at(4), "0");
+        animation.end_frame_ = std::numeric_limits<unsigned int>::max();
+      }
       else {
         animation.set_frames(values.at(4), values.at(5));
       }
