@@ -18,50 +18,106 @@ int main(int argc, char* argv[]) {
 
   bool is_animated = false;
   std::string output_directory = "./../../output/";
+  std::string example_path = "./resource/animatedScene_0.sdf";
+
+  int flags = 0;
+  int file_pos = -1;
+  int frames_pos = -1;
+  int aa_pos = -1;
+  int recursion_pos = -1;
 
   // command line parsing
+  for (unsigned int i = 1; i < argc; i++) {
 
-  // default start renders a single picture using an example file
-  if (argc == 1) {
+    if (strcmp(argv[i], "--file") == 0 && i < argc) {
+      file_pos = i + 1;
+      flags |= SOURCE;
+      i++;
+    }
+    else if (strcmp(argv[i], "--frames") == 0 && i < argc) {
+      frames_pos = i + 1;
+      flags |= FRAMES;
+      i++;
+    }
+    else if (strcmp(argv[i], "--aa") == 0) {
+      aa_pos = i;
+      flags |= ANTIALIASING;
+    }
+    else if (strcmp(argv[i], "--recursion") == 0 && i < argc) {
+      recursion_pos = i + 1;
+      flags |= RECURSION;
+      i++;
+    }
+    else if (strcmp(argv[i], "--help") == 0) {
+      flags |= HELP;
+      break;
+    }
+    else {
+      flags = 0;
+      std::cerr << "Unknown command line parameters\n"
+        << "Use '--help'" << std::endl;
 
-    std::cout << "Parsing scene at: ./resource/simpleScene.sdf" << std::endl;
-    scene = manager.parse("./resource/simpleScene.sdf");
-    output_directory = "output/";
+      return -1;
+    }
   }
-  // renders a single picture using given path to file
-  else if (argc == 3 && strcmp(argv[1], "--file") == 0) {
 
-    std::cout << "Parsing scene at: " << argv[2] << std::endl;
-    scene = manager.parse(argv[2]);
-  }
-  // renders multiple pictures using numerated file at given path
-  else if (argc == 5 && strcmp(argv[1], "--file") == 0 && strcmp(argv[3], "--frames") == 0) {
-
-    std::cout << "Parsing scene at: " << argv[2] << std::endl;
-    scene = manager.parse(argv[2]);
-    manager.generate_files(argv[2], argv[4], scene.get());
-    is_animated = true;
-  }
-  else if (argc == 2 && strcmp(argv[1], "--help") == 0) {
-
+  // print help instructions
+  if (flags >= 16) {
     std::cout << "--file \"path_to_file\"\n"
       << "\tTakes a path to an existing sdf file and renders the image using it.\n"
-      << "\tUse path './../../resource/simpleScene.sdf' for a predefined scene." << std::endl;
+      << "\tUse path '" << example_path << "' for a predefined scene." << std::endl;
 
     std::cout << "--frames \"n\"\n"
       << "\tCreates n images.\n"
       << "\tRequires a sdf file that defines at least one animation." << std::endl;
 
+    std::cout << "--aa\n"
+      << "\tEnables anti-aliasing using 4 sub pixels." << std::endl;
+
+    std::cout << "--recursion \"n\"\n"
+      << "\tSets the recursion depths of ray relfection and refraction." << std::endl;
+
     return 0;
   }
-  else {
+  // default start up
+  else if (flags < 8) {
 
-    std::cerr << "Unknown command line parameters\n"
-      << "Use '--help'" << std::endl;
-    return -1;
+    std::cout << "Parsing scene at: " << example_path << std::endl;
+    scene = manager.parse(example_path);
+
+    if (scene == nullptr) {
+      std::cerr << "Use '--help'" << std::endl;
+      return -1;
+    }
+
+    output_directory = "output/";
+
+    if (flags & FRAMES) {
+
+      manager.generate_files(example_path, argv[frames_pos], scene.get());
+      is_animated = true;
+    }
+  }
+  else if (flags & SOURCE) {
+
+    std::cout << "Parsing scene at: " << argv[file_pos] << std::endl;
+    scene = manager.parse(argv[file_pos]);
+
+    if (scene == nullptr) {
+      std::cerr << "Use '--help'" << std::endl;
+      return -1;
+    }
+
+    if (flags & FRAMES) {
+
+      std::cout << argv[file_pos] << ", " << argv[frames_pos] << std::endl;
+      manager.generate_files(argv[file_pos], argv[frames_pos], scene.get());
+      is_animated = true;
+    }
   }
 
   if (scene == nullptr) {
+    std::cerr << "Use '--help'" << std::endl;
     return -1;
   }
 
@@ -82,7 +138,12 @@ int main(int argc, char* argv[]) {
   // set image output  directory
   renderer->output_directory_ = output_directory;
 
-  renderer->render();
+  // set recursion depth
+  if (flags & RECURSION) {
+    renderer->initial_recursion_limit = atoi(argv[recursion_pos]);
+  }
+
+  renderer->render(flags);
 
   std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
 
@@ -122,13 +183,18 @@ int main(int argc, char* argv[]) {
 
       renderer->output_directory_ = output_directory;
 
+      // set recursion depth
+      if (flags & RECURSION) {
+        renderer->initial_recursion_limit = atoi(argv[recursion_pos]);
+      }
+
       // set next root element
       renderer->root_ = scene->root_;
 
       // set next camera
       renderer->cam_ = scene->camera_map_.begin()->second;
 
-      renderer->render();
+      renderer->render(flags);
 
       std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
 

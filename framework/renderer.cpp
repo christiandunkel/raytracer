@@ -30,7 +30,7 @@ bool Renderer::is_valid() {
 
 }
 
-void Renderer::render() {
+void Renderer::render(int flags) {
 
   float width_f = static_cast<float>(width_);
   float height_f = static_cast<float>(height_);
@@ -39,36 +39,43 @@ void Renderer::render() {
     for (unsigned x = 0; x < width_; x++) {
 
       // reset recursion limit for each new ray
-      recursion_limit = 10;
+      recursion_limit = initial_recursion_limit;
 
       Pixel p(x, y);
-      /*
+
       // anti aliasing (with 4 sub pixels)
-      for (float w = 0.0f; w < 1.0f; w += 0.5f) {
-        for (float h = 0.0f; h < 1.0f; h += 0.5f) {
+      if (flags & ANTIALIASING) {
+      
+        for (float w = 0.0f; w < 1.0f; w += 0.5f) {
+          for (float h = 0.0f; h < 1.0f; h += 0.5f) {
 
-          float x_f = static_cast<float>(x + w);
-          float y_f = static_cast<float>(y + h);
+            recursion_limit = initial_recursion_limit;
 
-          // transform pixel position (-0.5, 0.5)
-          x_f = (x_f - width_f / 2.0f) / width_f;
-          y_f = (y_f - height_f / 2.0f) / width_f;
+            float x_f = static_cast<float>(x + w);
+            float y_f = static_cast<float>(y + h);
 
-          Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
-          p.color  += 0.25f * trace(eye_ray);
+            // transform pixel position (-0.5, 0.5)
+            x_f = (x_f - width_f / 2.0f) / width_f;
+            y_f = (y_f - height_f / 2.0f) / width_f;
+
+            Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
+            p.color  += 0.25f * trace(eye_ray);
+          }
         }
       }
-      */
+      // no anti aliasing
+      else {
 
-      float x_f = static_cast<float>(x);
-      float y_f = static_cast<float>(y);
+        float x_f = static_cast<float>(x);
+        float y_f = static_cast<float>(y);
 
-      // transform pixel position (-0.5, 0.5)
-      x_f = (x_f - width_f / 2.0f) / width_f;
-      y_f = (y_f - height_f / 2.0f) / width_f;
+        // transform pixel position (-0.5, 0.5)
+        x_f = (x_f - width_f / 2.0f) / width_f;
+        y_f = (y_f - height_f / 2.0f) / width_f;
 
-      Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
-      p.color  += trace(eye_ray);
+        Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
+        p.color  += trace(eye_ray);
+      }
 
       write(p);
     }

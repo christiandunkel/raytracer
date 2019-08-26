@@ -14,6 +14,15 @@
 #include <memory>
 #include <glm/glm.hpp>
 
+enum RenderingFlags {
+
+  ANTIALIASING = 0x01,
+  RECURSION = 0x02,
+  FRAMES = 0x04,
+  SOURCE = 0x08,
+  HELP = 0x10
+};
+
 class Renderer {
 
   public:
@@ -26,6 +35,8 @@ class Renderer {
 
     std::string output_directory_;
     std::string full_path_;
+
+    int initial_recursion_limit = 4;
 
   private:
 
@@ -47,7 +58,7 @@ class Renderer {
       output_directory_("output"), ppm_(w, h), cam_(cam), filename_(file), color_buffer_(w * h, Color{0.0f, 0.0f, 0.0f}), width_(w), height_(h) {}
 
     bool is_valid();
-    void render();
+    void render(int flags);
     void write(Pixel const& p);
 
     inline std::vector<Color> const& get_color_buffer() const {
