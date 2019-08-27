@@ -21,3 +21,4 @@ Finally, a *ppm* picture with the defined dimensions will be generated from the 
 - [Solutions (Theory Part)](/documentation/solutions_theory_part.md)
 - [UML Diagram](/documentation/raytracer_uml_diagram.png)
 - [Credits](/documentation/credits.md)
+- [License](/documentation/license.md)
