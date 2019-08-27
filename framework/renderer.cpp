@@ -84,7 +84,7 @@ void Renderer::render(int flags) {
   // ppm_.save("output/" + filename_);
 
   // generate a sub folder with date & time as name
-  time_t _tm =time(NULL );
+  time_t _tm = time(NULL);
   struct tm * curtime = localtime ( &_tm );
   std::string time = asctime(curtime);
   std::replace(time.begin(), time.end(), ':', '-');
