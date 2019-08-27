@@ -16,6 +16,7 @@ The raytracer will send out a ray for every pixel from the camera. The ray will 
 Finally, a *ppm* picture with the defined dimensions will be generated from the results.
 
 ## Links
+- [Documentation](/documentation/documentation.md)
 - [Assignments](/documentation/assignments/)
 - [Style Guide](/documentation/styleguide_2019.pdf)
 - [Solutions (Theory Part)](/documentation/solutions_theory_part.md)
