@@ -83,6 +83,7 @@ Hitpoint Triangle::intersect(Ray const &ray, float distance) const {
   h.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
 
   return h;
+  
 }
 
 void Triangle::set_a(glm::vec3 const& a) {

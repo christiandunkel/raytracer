@@ -10,4 +10,5 @@ Ray Ray::to_local_space(glm::mat4 const& mat) const {
   glm::vec3 direction = glm::vec3(mat * glm::vec4(direction_, 0.0f));
 
   return Ray{origin, direction};
+  
 }

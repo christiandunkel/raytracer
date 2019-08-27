@@ -7,8 +7,10 @@ void Camera::update_vectors() {
   right_ = glm::normalize(glm::cross(front_, world_up_));
   up_    = glm::normalize(glm::cross(right_, front_));
   front_ = glm::normalize(front_);
+
 }
 
+// generate ray from camera to view plane
 Ray Camera::compute_eye_ray(float x, float y) {
 
   Ray ray;
@@ -23,21 +25,21 @@ Ray Camera::compute_eye_ray(float x, float y) {
   glm::vec4 direction = glm::vec4(ray.direction_, 0);
 
   // transform ray
-  origin = get_view_matrix() * origin;
-  direction = get_view_matrix() * direction;
-
-  ray.origin_ = origin;
-  ray.direction_ = direction;
+  ray.origin_ = get_view_matrix() * origin;
+  ray.direction_ = get_view_matrix() * direction;
 
   return ray;
+
 }
 
 glm::mat4 Camera::get_view_matrix() {
 
   //if (mouse moved)
-    update_vectors();
+  update_vectors();
 
-  // transform to vec4
+  /* more info: https://www.3dgep.com/understanding-the-view-matrix/ */
+
+  // transform to vec4 homogeneous vectors
   glm::vec4 right_h = glm::vec4(right_, 0.0f);
   glm::vec4 up_h    = glm::vec4(up_, 0.0f);
   glm::vec4 front_h = glm::vec4(-front_, -0.0f);
@@ -45,12 +47,8 @@ glm::mat4 Camera::get_view_matrix() {
 
   glm::mat4 view_matrix = glm::mat4(right_h, up_h, front_h, pos_h);
 
-  /*
-  for further information check out:
-  https://www.3dgep.com/understanding-the-view-matrix/
-  */
-
   return view_matrix;
+
 }
 
 void Camera::set_screen_dimensions(int width, int height) {

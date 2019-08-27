@@ -153,8 +153,9 @@ Color Renderer::trace(Ray const& ray) {
       // iterate over all existing light sources
       for (auto const light : *lights_) {
 
-        if (dynamic_cast<DiffusePointLight*>(light.get()))
-        {
+        // test if diffuse point light
+        if (dynamic_cast<DiffusePointLight*>(light.get())) {
+
           // cast light pointer to DiffusePointLight pointer
           auto point_light_ptr = std::static_pointer_cast<DiffusePointLight>(light);
 
@@ -175,7 +176,7 @@ Color Renderer::trace(Ray const& ray) {
           Color diffuse = diff * material->kd_;
 
           // specular
-          glm::vec3 view_direction = glm::normalize(cam_->pos_ -hp.intersection_);
+          glm::vec3 view_direction = glm::normalize(cam_->pos_ - hp.intersection_);
           glm::vec3 reflection_direction = glm::reflect(-light_direction, hp.normal_);
 
           glm::vec3 halfway_direction = glm::normalize(light_direction + view_direction);
@@ -195,14 +196,16 @@ Color Renderer::trace(Ray const& ray) {
           diffuse *= attenuation;
           specular *= attenuation;
 
+          // test if there's no obstacle between light and object
           if (!hp_light.has_hit_) {
             // combine all colors
             color += ambient + diffuse + specular;
           }
           else {
-            // in shadow
+            // object is in shadow
             color += ambient;
           }
+
         }
         else if (dynamic_cast<AmbientLight*>(light.get())) {
 
@@ -216,19 +219,21 @@ Color Renderer::trace(Ray const& ray) {
 
           // only add ambient to final color
           color += ambient;
+
         }
       }
     }
 
     if (recursion_limit > 0) {
 
-      // reflection
+      // reflection if reflection coefficient and refraction index aren't zero
       if (material->r_ != 0.0f && material->refraction_index_ == 0.0f) {
 
         glm::vec3 reflection = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
         Color color_reflected = trace(Ray{hp.intersection_ + reflection, reflection});
 
-        color +=  material->r_ * color_reflected;
+        color += material->r_ * color_reflected;
+
       }
       // reflection and refraction
       /*
@@ -242,6 +247,7 @@ Color Renderer::trace(Ray const& ray) {
         color += color_reflected * material->r_ + color_refracted * material->transparency_;
       }
       */
+
     }
   }
   else {
@@ -249,14 +255,13 @@ Color Renderer::trace(Ray const& ray) {
     return Color(0.2f, 0.2f, 0.2f);
   }
 
-  // apply tone mapping
+  // apply tone mapping (basic HDR, maybe?)
   color.r = color.r / (color.r + 1);
   color.g = color.g / (color.g + 1);
   color.b = color.b / (color.b + 1);
 
   // perform gamma correction
   const float gamma = 2.2f;
-
   glm::vec3 gamma_corrected = pow(glm::vec3(color.r, color.g, color.b), glm::vec3(1.0f / gamma));
   color = Color{gamma_corrected.x, gamma_corrected.y, gamma_corrected.z};
 

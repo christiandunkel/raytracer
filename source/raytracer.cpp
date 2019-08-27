@@ -200,6 +200,7 @@ int main(int argc, char* argv[]) {
       std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
 
       animation_index++;
+      
     }
 
     if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
