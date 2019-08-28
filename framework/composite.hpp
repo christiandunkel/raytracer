@@ -5,7 +5,6 @@
 #include <vector>
 #include <memory>
 
-// scene graph for the poor kids
 class Composite : public Shape {
 
   public:

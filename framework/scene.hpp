@@ -28,6 +28,8 @@ class Scene {
 
     Renderer renderer_;
 
+    Color background_ = Color{0.2f, 0.2f, 0.2f};
+
     Scene() = default;
 
     std::shared_ptr<Shape> find_shape(std::string const& name) const;

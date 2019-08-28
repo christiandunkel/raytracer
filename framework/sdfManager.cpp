@@ -19,15 +19,7 @@ bool SdfManager::file_exists(std::string const& file_path) {
 
 // test if given string can be converted to a number
 bool SdfManager::is_number(std::string const& s) {
-/*
-  std::string::const_iterator it = s.begin();
 
-  while (it != s.end() && std::isdigit(*it)) {
-    ++it;
-  }
-
-  return !s.empty() && it == s.end();
-*/
   std::istringstream iss(s);
   float f;
   iss >> std::noskipws >> f;
@@ -37,6 +29,8 @@ bool SdfManager::is_number(std::string const& s) {
 
 // parse sdf file, convert data to objects and return scene
 std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
+
+  std::cout << "Parsing scene at: " << file_path << std::endl;
 
   // look up file at path, check if it exists
   if (!file_exists(file_path)) {
@@ -80,6 +74,9 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
         if (parts.at(0) == "material") {
           parse_material(file_path, scene, parts);
+        }
+        else if (parts.at(0) == "background") {
+          parse_background(file_path, scene, parts);
         }
         else if (parts.at(0) == "shape") {
           parse_shape(file_path, scene, parts);
@@ -163,6 +160,16 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
   // push material into containers
   scene->material_map_.emplace(std::make_pair(material->name_, material));
 
+}
+
+void SdfManager::parse_background(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
+
+  // remove "background" from beginning of string
+  values.erase(values.begin());
+
+  if (values.size() == 3) {
+    scene->background_ = Color {stof(values.at(0)), stof(values.at(1)), stof(values.at(2))};
+  }
 }
 
 void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
@@ -324,6 +331,8 @@ void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scen
 
     renderer.lights_ = std::make_shared<std::vector<std::shared_ptr<Light>>>(scene->light_vec_);
     renderer.root_ = scene->root_;
+    renderer.background_ = scene->background_;
+    renderer.cam_ = scene->camera_map_.begin()->second;
 
     scene->renderer_ = renderer;
   }

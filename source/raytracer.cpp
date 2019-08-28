@@ -82,7 +82,6 @@ int main(int argc, char* argv[]) {
   // default start up
   else if (flags < 8) {
 
-    std::cout << "Parsing scene at: " << example_path << std::endl;
     scene = manager.parse(example_path);
 
     if (scene == nullptr) {
@@ -100,7 +99,6 @@ int main(int argc, char* argv[]) {
   }
   else if (flags & SOURCE) {
 
-    std::cout << "Parsing scene at: " << argv[file_pos] << std::endl;
     scene = manager.parse(argv[file_pos]);
 
     if (scene == nullptr) {
@@ -110,7 +108,6 @@ int main(int argc, char* argv[]) {
 
     if (flags & FRAMES) {
 
-      std::cout << argv[file_pos] << ", " << argv[frames_pos] << std::endl;
       manager.generate_files(argv[file_pos], argv[frames_pos], scene.get());
       is_animated = true;
     }
@@ -129,13 +126,7 @@ int main(int argc, char* argv[]) {
   // get first renderer
   std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(scene->renderer_);
 
-  // set root element in renderer
-  renderer->root_ = scene->root_;
-
-  // set camera
-  renderer->cam_ = scene->camera_map_.begin()->second;
-
-  // set image output  directory
+  // set image output directory
   renderer->output_directory_ = output_directory;
 
   // set recursion depth
@@ -145,8 +136,6 @@ int main(int argc, char* argv[]) {
 
   //std::thread render_thread(&Renderer::render, renderer.get(), flags);
   renderer->render(flags);
-
-  std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
 
   Window window{{renderer->get_width(), renderer->get_height()}};
 
@@ -171,8 +160,6 @@ int main(int argc, char* argv[]) {
       // replace number after underscore in file name with the next number to generate a new image
       std::string updated_path =  path.substr(0, pos_underscore + 1) + std::to_string(animation_index) + path.substr(pos_file_ending);
 
-      std::cout << "Parsing scene at: " << updated_path << std::endl;
-
       scene = manager.parse(updated_path);
 
       if (scene == nullptr) {
@@ -182,6 +169,7 @@ int main(int argc, char* argv[]) {
 
       renderer = std::make_unique<Renderer>(scene->renderer_);
 
+      // set image output directory
       renderer->output_directory_ = output_directory;
 
       // set recursion depth
@@ -189,18 +177,10 @@ int main(int argc, char* argv[]) {
         renderer->initial_recursion_limit = atoi(argv[recursion_pos]);
       }
 
-      // set next root element
-      renderer->root_ = scene->root_;
-
-      // set next camera
-      renderer->cam_ = scene->camera_map_.begin()->second;
-
       renderer->render(flags);
 
-      std::cout << "Storing image at: " << renderer->full_path_ << std::endl;
-
       animation_index++;
-      
+
     }
 
     if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {

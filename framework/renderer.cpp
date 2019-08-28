@@ -93,6 +93,8 @@ void Renderer::render(int flags) {
   time.erase(std::remove(time.begin(), time.end(), '\n'), time.end());
 
   full_path_ = output_directory_ + time + " " + filename_;
+
+  std::cout << "Storing image at: " << full_path_ << std::endl;
   ppm_.save(full_path_);
 }
 
@@ -129,16 +131,9 @@ Color Renderer::trace(Ray const& ray) {
   hit_shape = root_->find_shape(hp.name_);
 
   /*
-  TODO:
-    fix tests
-    use root element only to render
-
-    write a separate program that generates sdf files
-    figure out how to draw the newly generated image to glfw window
-
   OPTIONAL:
     add refraction
-    add cylinder and pyramid
+    add cylinder and cone
   */
 
   if (hit_shape != nullptr) {
@@ -146,7 +141,6 @@ Color Renderer::trace(Ray const& ray) {
     std::shared_ptr<Material> material = hit_shape->get_material();
 
     static float attenuation = 1.0f;
-
 
     if (material->refraction_index_ == 0.0f) {
 
@@ -235,24 +229,11 @@ Color Renderer::trace(Ray const& ray) {
         color += material->r_ * color_reflected;
 
       }
-      // reflection and refraction
-      /*
-      else if (material->r_ != 0.0f && material->refraction_index_ != 0.0f) {
-        glm::vec3 refraction = glm::normalize(glm::refract(ray.direction_, hp.normal_, material->refraction_index_));
-        Color color_refracted = trace(Ray{hp.intersection_ + refraction, refraction});
-
-        glm::vec3 reflection = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
-        Color color_reflected = trace(Ray{hp.intersection_ + reflection, reflection});
-
-        color += color_reflected * material->r_ + color_refracted * material->transparency_;
-      }
-      */
-
     }
   }
   else {
     // return background color
-    return Color(0.2f, 0.2f, 0.2f);
+    return background_;
   }
 
   // apply tone mapping (basic HDR, maybe?)
