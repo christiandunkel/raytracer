@@ -29,4 +29,4 @@ struct Hitpoint {
 
 };
 
-#endif // define HITPOINT_HPP
+#endif // HITPOINT_HPP

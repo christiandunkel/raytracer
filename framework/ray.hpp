@@ -14,4 +14,4 @@ struct Ray {
 };
 
 
-#endif // define RAY_HPP
+#endif // RAY_HPP

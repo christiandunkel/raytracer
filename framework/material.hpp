@@ -31,4 +31,4 @@ struct Material {
 
 void print_material(const std::shared_ptr<Material> material);
 
-#endif // define MATERIAL_HPP
+#endif // MATERIAL_HPP
