@@ -7,6 +7,7 @@
 #include "sphere.hpp"
 #include "box.hpp"
 #include "triangle.hpp"
+#include "cone.hpp"
 #include "ray.hpp"
 #include "sdfManager.hpp"
 #include "renderer.hpp"
@@ -58,6 +59,14 @@ TEST_CASE("Task 5.2", "Sphere, Box, Triangle methods area(), volume()") {
               glm::vec3(-2.0f, -2.0f, 2.0f));
   REQUIRE(t2.area() == Approx(10.17f).epsilon(0.001));
 
+  // cone
+  Cone c1;
+  REQUIRE(c1.area() == Approx(0.0f).epsilon(0.001));
+  REQUIRE(c1.volume() == Approx(0.0f).epsilon(0.001));
+
+  Cone c2({1.0f, 2.0f, 1.0f}, 5.0f, 10.0f);
+  REQUIRE(c2.area() == Approx(254.16f).epsilon(0.001));
+  REQUIRE(c2.volume() == Approx(261.799f).epsilon(0.001));
 }
 
 
@@ -403,7 +412,7 @@ TEST_CASE("Task 6.5", "") {
   std::unique_ptr<Scene> scene_nullptr = sdfs.parse("non_existing_path/file_name.nope");
   REQUIRE(scene_nullptr == nullptr);
 
-  std::unique_ptr<Scene> scene = sdfs.parse("resource/materials_test.sdf");
+  std::unique_ptr<Scene> scene = sdfs.parse("resource/materialsTest.sdf");
 
   // BEST CASE: 1
   // AVERAGE CASE: n/2

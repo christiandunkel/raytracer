@@ -1,9 +1,9 @@
-#ifndef CONE_HPP
-#define CONE_HPP
+#ifndef CYLINDER_HPP
+#define CYLINDER_HPP
 
 #include "shape.hpp"
 
-class Cone : public Shape {
+class Cylinder : public Shape {
 
   private:
 
@@ -13,14 +13,14 @@ class Cone : public Shape {
 
   public:
 
-    Cone() :
+    Cylinder() :
       middle_(glm::vec3(0.0f)), radius_(0.0f), height_(0.0f) {
-        //std::cout << "Created cone " << name_ << std::endl;
+        //std::cout << "Created cylinder " << name_ << std::endl;
       }
 
-    Cone(glm::vec3 const& middle, float radius, float height) :
+    Cylinder(glm::vec3 const& middle, float radius, float height) :
       middle_(middle), radius_(radius), height_(height) {
-        //std::cout << "Created cone " << name_ << std::endl;
+        //std::cout << "Created cylinder " << name_ << std::endl;
       }
 
     float area() const override;
@@ -38,4 +38,4 @@ class Cone : public Shape {
     void set_height(float height);
 };
 
-#endif // CONE_HPP
+#endif // CYLINDER_HPP

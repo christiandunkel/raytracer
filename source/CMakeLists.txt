@@ -26,6 +26,7 @@ add_executable(tests
   ../framework/hitpoint.cpp
   ../framework/composite.cpp
   ../framework/cone.cpp
+  ../framework/cylinder.cpp
   ../framework/animation.cpp
 )
 target_link_libraries(tests

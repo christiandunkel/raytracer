@@ -15,7 +15,7 @@ float Sphere::area() const {
     return -1.0f;
   }
   
-  return 4.0f * static_cast<float>(M_PI) * pow(radius_, 2);
+  return 4.0f * PI * pow(radius_, 2);
 }
 
 float Sphere::volume() const {
@@ -25,7 +25,7 @@ float Sphere::volume() const {
     return -1.0f;
   }
 
-  return (4.0f / 3.0f) * static_cast<float>(M_PI) * pow(radius_, 3);
+  return (4.0f / 3.0f) * PI * pow(radius_, 3);
 }
 
 // print sphere object

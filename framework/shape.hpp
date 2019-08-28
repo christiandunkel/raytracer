@@ -7,6 +7,8 @@
 #include "hitpoint.hpp"
 #include "material.hpp"
 
+const float PI = static_cast<float>(M_PI);
+
 class Shape {
 
   protected:

@@ -1,16 +1,14 @@
 #include "cone.hpp"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include <glm/gtx/string_cast.hpp>
 
 float Cone::area() const {
-  return (static_cast<float>(M_PI) * pow(radius_, 2.0f) * height_) / 3.0f;
+  float slant_height = sqrt(pow(height_, 2.0f) + pow(radius_, 2.0f));
+  return PI * radius_ * (slant_height + radius_);
 }
 
 float Cone::volume() const {
-  float slant_height = sqrt(pow(height_, 2.0f) + pow(radius_, 2.0f));
-  return static_cast<float>(M_PI) * radius_ * (slant_height + radius_);
+  return 1.0f / 3.0f * PI * pow(radius_, 2.0f) * height_;
 }
 
 std::ostream& Cone::print(std::ostream& os) const {
