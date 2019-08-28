@@ -323,8 +323,6 @@ void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scen
     Renderer renderer{values.at(1), cam, width, height};
 
     renderer.lights_ = std::make_shared<std::vector<std::shared_ptr<Light>>>(scene->light_vec_);
-    renderer.shapes_ = std::make_shared<std::vector<std::shared_ptr<Shape>>>(scene->shape_vec_);
-
     renderer.root_ = scene->root_;
 
     scene->renderer_ = renderer;

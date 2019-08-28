@@ -29,7 +29,6 @@ class Renderer {
 
     std::shared_ptr<Camera> cam_;
     std::shared_ptr<Shape> root_;
-    std::shared_ptr<std::vector<std::shared_ptr<Shape>>> shapes_;
     std::shared_ptr<std::vector<std::shared_ptr<Light>>> lights_;
     std::vector<Color> color_buffer_;
 

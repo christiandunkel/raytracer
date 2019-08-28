@@ -1,0 +1,11 @@
+define camera eye 45.0 0 200 200 0 -1 -1 0 1 0
+
+define light sun 200 1000 200 0.2 0.2 0.2 0.2
+
+define material grey 0.95 0.95 0.95 0.95 0.95 0.95 0.95 0.95 0.95 16 0.2 0 0
+
+define shape sphere sphere1 0 0 0 30 grey
+
+define shape composite root sphere1
+
+render eye image.ppm 1920 1080
