@@ -115,4 +115,4 @@ struct Color {
 
 };
 
-#endif //#define COLOR_HPP
+#endif // COLOR_HPP
