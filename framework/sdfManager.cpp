@@ -25,16 +25,18 @@ bool SdfManager::is_number(std::string const& s) {
   iss >> std::noskipws >> f;
 
   return iss.eof() && !iss.fail();
+
 }
 
-// parse sdf file, convert data to objects and return scene
+// parse sdf file, convert data to objects and return pointer to scene
 std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
-  std::cout << "Parsing scene at: " << file_path << std::endl;
+  std::cout << "Parsing scene defined in file " << file_path << "." << std::endl;
 
   // look up file at path, check if it exists
   if (!file_exists(file_path)) {
-    std::cout << "SdfManager: File '" << file_path << "' wasn't found." << std::endl;
+    std::cout << "SdfManager: File '" << file_path << 
+                 "' wasn't found." << std::endl;
     return nullptr;
   }
 
@@ -101,16 +103,13 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
           }
         }
         else {
-          std::cout << "SdfManager: Given type '" << parts.at(0) << "' doesn't exist." << std::endl;
+          std::cout << "SdfManager: Given definition '" << parts.at(0) << 
+                       "' used in file " << file_path << 
+                       " is not valid." << std::endl;
         }
 
       }
-      else if (parts.at(0) == "transform") {
-        
-      }
       else if (parts.at(0) == "render") {
-        // remove "render" from beginning of string
-        parts.erase(parts.begin());
         parse_render(file_path, scene, parts);
       }
 
@@ -121,12 +120,14 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
   }
   else {
-    std::cout << "SdfManager: File '" << file_path << "' couldn't be opened." << std::endl;
+    std::cout << "SdfManager: File at path '" << file_path << 
+                 "' couldn't be opened." << std::endl;
   }
 
   return nullptr;
 }
 
+// parse material definition in sdf file
 void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
   // remove "material" from beginning of string
@@ -134,6 +135,9 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
 
   // material must have 14 (name, 3 colors (3x3=9), 4 floats) values
   if (values.size() != 14) {
+    std::cout << "SdfManager: A material '" << values.at(0) << 
+                 "' defined in file '" << file_path << 
+                 "' couldn't be opened." << std::endl;
     return;
   }
 
@@ -143,8 +147,6 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
       return;
     }
   }
-
-  // std::cout << "SdfManager: Found material '" + values.at(0) + "' in " << file_path << "." << std::endl;
 
   // create new material and fill it with values
   std::shared_ptr<Material> material = std::make_shared<Material>();
@@ -162,6 +164,7 @@ void SdfManager::parse_material(std::string const& file_path, std::unique_ptr<Sc
 
 }
 
+// parse background definition in sdf file
 void SdfManager::parse_background(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
   // remove "background" from beginning of string
@@ -172,6 +175,7 @@ void SdfManager::parse_background(std::string const& file_path, std::unique_ptr<
   }
 }
 
+// parse shape definition in sdf file
 void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
   // remove "shape" from beginning of string
@@ -188,6 +192,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     box_ptr->set_min(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     box_ptr->set_max(glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7))));
     box_ptr->set_material(scene->find_material(values.at(8)));
+
   }
   else if (values.at(0) == "sphere") {
 
@@ -198,6 +203,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     sphere_ptr->set_middle(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     sphere_ptr->set_radius(stof(values.at(5)));
     sphere_ptr->set_material(scene->find_material(values.at(6)));
+
   }
   else if (values.at(0) == "triangle") {
 
@@ -210,6 +216,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     triangle_ptr->set_c(glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10))));
 
     triangle_ptr->set_material(scene->find_material(values.at(11)));
+
   }
   else if (values.at(0) == "composite") {
 
@@ -231,21 +238,29 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
         composite_ptr->add_child(temp);
       }
       else {
-        std::cout << "SdfManager: Shape '" + values.at(i) + "' in " << file_path << ", used by: '" << shape->get_name() << "' doesn't exist." << std::endl;
+        std::cout << "SdfManager: Shape '" << values.at(i) << 
+                    "' defined in file " << file_path << 
+                    " and used by composite '" << composite_ptr->get_name() <<
+                    "' doesn't exist." << std::endl;
       }
     }
 
     // last composite always has to be the root element
     scene->root_ = shape;
+
   }
   else {
-    std::cout << "SdfManager: Shape type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;
+    std::cout << "SdfManager: Shape type '" << values.at(0) << 
+                 "' defined in file " << file_path << 
+                 " doesn't exist." << std::endl;
     return;
   }
 
   scene->shape_vec_.push_back(shape);
+
 }
 
+// parse light definition in sdf file
 void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
   // remove "light" from beginning of string
@@ -253,7 +268,7 @@ void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene
 
   std::shared_ptr<Light> light;
 
-  // diffuse point light
+  // check if a diffuse point light was defined
   if (values.size() == 8) {
 
     light = std::make_shared<DiffusePointLight>();
@@ -264,7 +279,7 @@ void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene
     point_light_ptr->color_ = Color(stof(values.at(4)), stof(values.at(5)), stof(values.at(6)));
     point_light_ptr->intensity_ = stof(values.at(7));
   }
-  // ambient light
+  // otherwise, it might be an ambient light
   else if (values.size() == 5) {
 
     light = std::make_shared<AmbientLight>();
@@ -275,14 +290,20 @@ void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene
     point_light_ptr->intensity_ = stof(values.at(4));
 
   }
+  // else, the light type can't be determined
   else {
-    std::cout << "SdfManager: Light type '" + values.at(0) + "' in " << file_path << " doesn't exist." << std::endl;
+    std::cout << "SdfManager: Light type '" << values.at(0) << 
+                 "' defined in file " << file_path << 
+                 " doesn't exist." << std::endl;
     return;
   }
 
+  // add light to container
   scene->light_vec_.push_back(light);
+
 }
 
+// parse camera definition in sdf file
 void SdfManager::parse_camera(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
   // remove "camera" from beginning of string
@@ -298,20 +319,29 @@ void SdfManager::parse_camera(std::string const& file_path, std::unique_ptr<Scen
     std::shared_ptr<Camera> camera = std::make_shared<Camera>(values.at(0), stof(values.at(1)), pos, front, world_up);
 
     scene->camera_map_.emplace(std::make_pair(camera->name_, camera));
+
   }
   else {
-    std::cout << "SdfManager: Camera '" + values.at(0) + "' in " << file_path << " can't be parsed." << std::endl;
-    return;
+    std::cout << "SdfManager: Camera '" << values.at(0) << 
+                 "' defined in file " << file_path << 
+                 " couldn't be parsed." << std::endl;
   }
+
 }
 
+// parse render definition in sdf file
 void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
+
+  // remove "render" from beginning of string
+  values.erase(values.begin());
 
   // find camera
   std::shared_ptr<Camera> cam = scene->find_camera(values.at(0));
 
   if (cam == nullptr) {
-    std::cout << "SdfManager: Camera '" + values.at(0) + "' used by renderer in " << file_path << " doesn't exist (yet)." << std::endl;
+    std::cout << "SdfManager: Renderer with camera '" << values.at(0) << 
+                 "' defined in file " << file_path << 
+                 " doesn't exist (yet)." << std::endl;
     return;
   }
 
@@ -335,13 +365,17 @@ void SdfManager::parse_render(std::string const& file_path, std::unique_ptr<Scen
     renderer.cam_ = scene->camera_map_.begin()->second;
 
     scene->renderer_ = renderer;
+
   }
   else {
-    std::cout << "SdfManager: Renderer '" + values.at(0) + "' in " << file_path << " can't be parsed." << std::endl;
-    return;
+    std::cout << "SdfManager: Renderer '" << values.at(0) << 
+                 "' defined in file " << file_path << 
+                 " can't be parsed." << std::endl;
   }
+
 }
 
+// parse transform definition in sdf file
 void SdfManager::parse_transform(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
   // remove "transform" from beginning of string
@@ -361,15 +395,21 @@ void SdfManager::parse_transform(std::string const& file_path, std::unique_ptr<S
       shape->translate(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     }
     else {
-      return;
+      std::cout << "SdfManager: Transform type '" << values.at(0) << 
+                   "' defined in file " << file_path << 
+                   " is not valid." << std::endl;
     }
+    
   }
   else {
-    std::cout << "SdfManager: Shape '" + values.at(0) + "' used by transform in " << file_path << " doesn't exist (yet)." << std::endl;
-    return;
+    std::cout << "SdfManager: Shape '" << values.at(0) << 
+                 "' used by transform in file " << file_path << 
+                 " doesn't exist (yet)." << std::endl;
   }
+
 }
 
+// parse animation definition in sdf file
 void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<Scene>& scene, std::vector<std::string>& values) {
 
   // remove "animation" from beginning of string
@@ -393,7 +433,9 @@ void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<S
         animation.type_ = TRANSLATE;
       }
       else {
-        std::cout << "SdfManager: Transform type '" << values.at(1) << "' for animation is not supported." << std::endl;
+        std::cout << "SdfManager: Transform type '" << values.at(1) << 
+                     "' for animation used in " << file_path << 
+                     " does not exist." << std::endl;
         return;
       }
 
@@ -415,16 +457,20 @@ void SdfManager::parse_animation(std::string const& file_path, std::unique_ptr<S
       scene->animation_vec_.push_back(animation);
     }
     else {
-      std::cout << "SdfManager: Animation can't be parsed." << std::endl;
-      return;
+      std::cout << "SdfManager: Animation in " << file_path << 
+                   "couldn't be parsed." << std::endl;
     }
+
   }
   else {
-    std::cout << "SdfManager: Shape '" + values.at(0) + "' used by transform in " << file_path << " doesn't exist (yet)." << std::endl;
-    return;
+    std::cout << "SdfManager: Shape '" << values.at(0) << 
+                 "' used by animation in " << file_path << 
+                 " doesn't exist (yet)." << std::endl;
   }
+
 }
 
+// generate sdf files for an animated scene
 void SdfManager::generate_files(std::string const& file_path, std::string const& frames, Scene* scene) {
 
   static std::string path = file_path;
@@ -432,7 +478,7 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
   size_t pos_underscore = path.find("_");
   size_t pos_file_ending = path.find(".sdf");
 
-  // convert string to uint
+  // convert string to uint 'limit'
   std::istringstream frame_str(frames);
   unsigned int limit;
   frame_str >> limit;
@@ -454,14 +500,14 @@ void SdfManager::generate_files(std::string const& file_path, std::string const&
 
       if (i >= animation.start_frame_ && i < animation.end_frame_) {
 
-
         // retrieve new transform line and add to file
         std::string transform = "\n" + animation.get_transform();
-
         dst << transform;
+
       }
     }
   }
 
-  std::cout << "Generated " << limit << " SDF files." << std::endl;
+  std::cout << "SdfManager: Generated " << limit << " SDF files." << std::endl;
+
 }

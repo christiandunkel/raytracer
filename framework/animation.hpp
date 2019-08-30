@@ -42,6 +42,7 @@ class Animation {
     std::string get_scale();
     std::string get_rotation();
     std::string get_translation();
+    
 };
 
 #endif // ANIMATION_HPP
