@@ -1,5 +1,8 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
+
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <string>
 
 #include "color.hpp"
