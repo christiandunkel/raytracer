@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
   bool is_animated = false;
   std::string output_directory = "./../../output/";
-  std::string example_path = "./resource/animatedScene_0.sdf";
+  std::string example_path = "./resource/simpleScene.sdf";
 
   int flags = 0;
   int file_pos = -1;

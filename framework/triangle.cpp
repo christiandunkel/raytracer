@@ -85,15 +85,3 @@ Hitpoint Triangle::intersect(Ray const &ray, float distance) const {
   return h;
   
 }
-
-void Triangle::set_a(glm::vec3 const& a) {
-  a_ = a;
-}
-
-void Triangle::set_b(glm::vec3 const& b) {
-  b_ = b;
-}
-
-void Triangle::set_c(glm::vec3 const& c) {
-  c_ = c;
-}

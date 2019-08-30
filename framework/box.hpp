@@ -14,31 +14,21 @@ class Box : public Shape {
   public:
 
     Box() :
-      min_(glm::vec3(0.0f)), max_(glm::vec3(0.0f)) {
-        //std::cout << "Created box " << name_ << std::endl;
-      }
+      min_(glm::vec3(0.0f)), max_(glm::vec3(0.0f)) {}
 
     Box(std::string name) :
-      Shape(name), min_(glm::vec3(0.0f)), max_(glm::vec3(0.0f)) {
-        //std::cout << "Created box " << name_ << std::endl;
-      }
+      Shape(name), min_(glm::vec3(0.0f)), max_(glm::vec3(0.0f)) {}
 
     Box(glm::vec3 min, glm::vec3 max) :
-      min_(min), max_(max) {
-        //std::cout << "Created box " << name_ << std::endl;
-      }
+      min_(min), max_(max) {}
 
     Box(glm::vec3 min, glm::vec3 max, std::shared_ptr<Material> material) :
-      Shape(material), min_(min), max_(max) {
-        //std::cout << "Created box " << name_ << std::endl;
-      }
+      Shape(material), min_(min), max_(max) {}
 
     Box(glm::vec3 min, glm::vec3 max, std::shared_ptr<Material> material, std::string name) :
-      Shape(name, material), min_(min), max_(max) {
-        //std::cout << "Created box " << name_ << std::endl;
-      }
+      Shape(name, material), min_(min), max_(max) {}
     
-    ~Box() override;
+    ~Box() override {}
 
     float area() const override;
     float volume() const override;
@@ -50,9 +40,10 @@ class Box : public Shape {
     glm::vec3 get_min() const {return min_;}
     glm::vec3 get_max() const {return max_;}
 
-    void set_min(glm::vec3 const& vec);
-    void set_max(glm::vec3 const& vec);
+    // setter
+    void set_min(glm::vec3 const& vec) {min_ = vec;}
+    void set_max(glm::vec3 const& vec) {max_ = vec;}
 
 };
 
-#endif // define BOX_HPP
+#endif // BOX_HPP

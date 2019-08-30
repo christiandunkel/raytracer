@@ -12,7 +12,9 @@ class Composite : public Shape {
     std::vector<std::shared_ptr<Shape>> children_;
 
     Composite() = default;
-    Composite(std::shared_ptr<Shape> shape);
+    Composite(std::shared_ptr<Shape> shape) {
+      add_child(shape);
+    };
 
     float area() const override {return 0.0f;}
     float volume() const override {return 0.0f;}
@@ -26,6 +28,7 @@ class Composite : public Shape {
 
     void add_child(std::shared_ptr<Shape> shape);
     std::shared_ptr<Shape> find_shape(std::string const& name) const override;
+
 };
 
 void find_shape_recursively(std::shared_ptr<Shape> root, std::string const& name);

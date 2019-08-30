@@ -41,24 +41,11 @@ Hitpoint Cone::intersect(Ray const& ray, float distance) const {
   float discriminant = pow(b, 2.0f) - a * c;
 
   if (discriminant > 0) {
-
     float root_1 = (-1.0f * b - discriminant) / 2.0f - 0.000001;
-    
   }
 
   h.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
 
   return h;
-}
 
-void Cone::set_middle(glm::vec3 const& middle) {
-  middle_ = middle;
-}
-
-void Cone::set_radius(float radius) {
-  radius_ = radius;
-}
-
-void Cone::set_height(float height) {
-  height_ = height;
 }

@@ -4,10 +4,6 @@
 #include <math.h>
 #include <iostream>
 
-Sphere::~Sphere() {
-  //std::cout << "Destroyed sphere " + name_ << std::endl;
-}
-
 float Sphere::area() const {
 
   // error -> radius must at least be 0
@@ -16,6 +12,7 @@ float Sphere::area() const {
   }
   
   return 4.0f * PI * pow(radius_, 2);
+
 }
 
 float Sphere::volume() const {
@@ -26,6 +23,7 @@ float Sphere::volume() const {
   }
 
   return (4.0f / 3.0f) * PI * pow(radius_, 3);
+  
 }
 
 // print sphere object
@@ -79,12 +77,5 @@ Hitpoint Sphere::intersect(Ray const& ray, float distance) const {
   h.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
 
   return h;
-}
 
-void Sphere::set_middle(glm::vec3 const& middle) {
-  middle_ = middle;
-}
-
-void Sphere::set_radius(float radius) {
-  radius_ = radius;
 }

@@ -34,16 +34,5 @@ Hitpoint Cylinder::intersect(Ray const& ray, float distance) const {
   h.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
 
   return h;
-}
-
-void Cylinder::set_middle(glm::vec3 const& middle) {
-  middle_ = middle;
-}
-
-void Cylinder::set_radius(float radius) {
-  radius_ = radius;
-}
-
-void Cylinder::set_height(float height) {
-  height_ = height;
+  
 }

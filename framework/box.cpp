@@ -10,10 +10,6 @@ bool float_comparison(float a, float b, int precision) {
   return std::abs(a - b) <= std::numeric_limits<float>::epsilon() * std::abs(a + b) * precision || std::abs(a - b) < std::numeric_limits<float>::min();
 }
 
-Box::~Box() {
-  //std::cout << "Destroyed box " + name_ << std::endl;
-}
-
 float Box::area() const {
   // area = 2*l*w + 2*l*h + 2*w*h
   float side_x = max_.x - min_.x,
@@ -53,6 +49,7 @@ std::ostream& Box::print(std::ostream& os) const {
         Shape::print(os);
 
   return os;
+
 }
 
 Hitpoint Box::intersect(Ray const &ray, float distance) const {
@@ -143,13 +140,5 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   // transform normal and intersection back to world space
   hp.to_world_space(world_transform_, glm::transpose(world_transform_inv_));
   return hp;
-}
 
-
-void Box::set_min(glm::vec3 const& vec) {
-  min_ = vec;
-}
-
-void Box::set_max(glm::vec3 const& vec) {
-  max_ = vec;
 }

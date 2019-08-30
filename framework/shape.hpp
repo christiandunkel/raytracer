@@ -24,25 +24,19 @@ class Shape {
 
     Shape() :
       name_("default"), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        //std::cout << "Created shape " + name_ << std::endl;
         material_ = std::make_shared<Material>();
       }
 
     Shape(std::string name) :
       name_(name), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        //std::cout << "Created shape " + name_ << std::endl;
         material_ = std::make_shared<Material>();
       }
 
     Shape(std::shared_ptr<Material> material) :
-      name_("default"), material_(material), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        //std::cout << "Created shape " + name_ << std::endl;
-      }
+      name_("default"), material_(material), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {}
 
     Shape(std::string name, std::shared_ptr<Material> material) :
-      name_(name), material_(material), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {
-        //std::cout << "Created shape " + name_ << std::endl;
-      }
+      name_(name), material_(material), world_transform_(glm::mat4(1.0f)), world_transform_inv_(glm::inverse(world_transform_)) {}
 
     virtual float area() const = 0;
     virtual float volume() const = 0;
@@ -50,7 +44,7 @@ class Shape {
   public:
 
     virtual std::ostream& print(std::ostream& os) const;
-    virtual ~Shape();
+    virtual ~Shape() {};
 
     virtual Hitpoint intersect(Ray const &ray, float distance = 0.0f) const = 0;
     virtual void find_intersection(Hitpoint& first_hit, Ray const& ray) const;
@@ -61,19 +55,16 @@ class Shape {
 
     virtual std::shared_ptr<Shape> find_shape(std::string const& name) const { return std::shared_ptr<Shape>(); }
 
-    std::string get_name() const {
-      return name_;
-    }
+    // getter
+    std::string get_name() const {return name_;}
+    std::shared_ptr<Material> get_material() const {return material_;}
 
-    std::shared_ptr<Material> get_material() const {
-      return material_;
-    }
-
-    void set_name(std::string const& name);
-    void set_material(std::shared_ptr<Material> material); 
+    // setter
+    void set_name(std::string const& name) {name_ = name;}
+    void set_material(std::shared_ptr<Material> material) {material_ = material;} 
 
 };
 
 std::ostream& operator <<(std::ostream& os, Shape const& s);
 
-#endif // define SHAPE_HPP
+#endif // SHAPE_HPP
