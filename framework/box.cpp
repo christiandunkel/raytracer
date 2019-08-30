@@ -90,7 +90,8 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   tmin = (min_.z - ray_trans.origin_.z) / ray_trans.direction_.z;
   tmax = (max_.z - ray_trans.origin_.z) / ray_trans.direction_.z;
 
-  if (float_comparison(0.0f, ray_trans.direction_.x, precision) && float_comparison(ray_trans.direction_.y, 0.0f, precision)) {
+  if (float_comparison(0.0f, ray_trans.direction_.x, precision) && 
+      float_comparison(ray_trans.direction_.y, 0.0f, precision)) {
 
     tfar = std::max(tmin, tmax);
     tnear = std::min(tmin, tmax);
@@ -113,7 +114,7 @@ Hitpoint Box::intersect(Ray const &ray, float distance) const {
   hp.distance_ = glm::distance(hp.intersection_, ray_trans.origin_);
 
   // calculate normal vector for the respective plane
-  if(float_comparison(hp.intersection_.x, min_.x, precision)) {
+  if (float_comparison(hp.intersection_.x, min_.x, precision)) {
     hp.normal_ = {-1.0f, 0.0f, 0.0f};
   }
   else if (float_comparison(hp.intersection_.x, max_.x, precision)) {

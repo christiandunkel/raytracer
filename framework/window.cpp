@@ -1,3 +1,5 @@
+// Window (C) Andreas-C. Bernstein
+
 #include "window.hpp"
 #include "camera.hpp"
 #include <utility>

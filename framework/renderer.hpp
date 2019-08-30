@@ -21,6 +21,7 @@ enum RenderingFlags {
   FRAMES = 0x04,
   SOURCE = 0x08,
   HELP = 0x10
+
 };
 
 class Renderer {
@@ -61,21 +62,11 @@ class Renderer {
     void render(int flags);
     void write(Pixel const& p);
 
-    inline std::vector<Color> const& get_color_buffer() const {
-      return color_buffer_;
-    }
-
-    inline std::string const get_filename() const {
-      return filename_;
-    }
-
-    inline unsigned int const get_width() const {
-      return width_;
-    }
-
-    inline unsigned int const get_height() const {
-      return height_;
-    }
+    // getter
+    inline std::vector<Color> const& get_color_buffer() const {return color_buffer_;}
+    inline std::string const get_filename() const {return filename_;}
+    inline unsigned int const get_width() const {return width_;}
+    inline unsigned int const get_height() const {return height_;}
 
   private:
 
@@ -86,6 +77,7 @@ class Renderer {
     Color calc_ambient_color(Hitpoint const& hitpoint, std::shared_ptr<Shape> shape);
     Color calc_diffuse_color(Hitpoint const& hitpoint, std::shared_ptr<Shape> shape);
     Color calc_specular_color(Hitpoint const& hitpoint, std::shared_ptr<Shape> shape);
+    
 };
 
 #endif // RENDERER_HPP

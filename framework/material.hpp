@@ -18,8 +18,8 @@ struct Material {
   float m_ = 0.0f;
 
   // reflection coefficient
-  float r_ = 0.0f; 
-
+  float r_ = 0.0f;
+  
   float refraction_index_;
 
   // transparency coeffiecient

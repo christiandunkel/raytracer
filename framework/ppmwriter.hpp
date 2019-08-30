@@ -1,21 +1,12 @@
-// -----------------------------------------------------------------------------
-// Copyright  : (C) 2014-2017 Andre Schollmeyer and Andreas-C. Bernstein
-// License    : MIT (see the file LICENSE)
-// Maintainer : Andreas-C. Bernstein <andreas.bernstein@uni-weimar.de>
-// Stability  : experimental
-//
-// PpmWriter
-// -----------------------------------------------------------------------------
+// PpmWriter (C) Andre Schollmeyer, Andreas-C. Bernstein
 
-#ifndef BUW_PPMWRITER_HPP
-#define BUW_PPMWRITER_HPP
+#ifndef PPMWRITER_HPP
+#define PPMWRITER_HPP
 
-// header, system
+#include "pixel.hpp"
+
 #include <string>
 #include <vector>
-
-// header, project
-#include <pixel.hpp>
 
 class PpmWriter {
 
@@ -44,4 +35,4 @@ class PpmWriter {
 
 };
 
-#endif // BUW_PPMWRITER
+#endif // PPMWRITER_HPP

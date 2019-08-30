@@ -11,7 +11,7 @@ struct Ray {
   glm::vec3 direction_{0.0f, 0.0f, -1.0f};
 
   Ray to_local_space(glm::mat4 const& mat) const;
-};
 
+};
 
 #endif // RAY_HPP

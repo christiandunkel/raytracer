@@ -15,14 +15,14 @@
 bool Renderer::is_valid() {
 
   if (cam_ == nullptr) {
-    std::cerr << "Renderer: Camera points to null for '" << filename_ << "' renderer." << std::endl;
+    std::cerr << "Renderer: Camera points to null in file '" << filename_ << "'." << std::endl;
     return false;
   }
 
   // test if defined filename has "ppm" ending
   std::regex REGEX_ppm ("^.+\\.ppm$");
   if (!std::regex_match(filename_, REGEX_ppm)) {
-    std::cerr << "Renderer: Given filename '" << filename_ << "' has no '.ppm' file ending." << std::endl;
+    std::cerr << "Renderer: Filename '" << filename_ << "' has no '.ppm' file ending." << std::endl;
     return false;
   }
 
@@ -247,6 +247,7 @@ Color Renderer::trace(Ray const& ray) {
   color = Color{gamma_corrected.x, gamma_corrected.y, gamma_corrected.z};
 
   return color;
+
 }
 
 Hitpoint Renderer::find_intersection(Ray const& ray) {
@@ -257,4 +258,5 @@ Hitpoint Renderer::find_intersection(Ray const& ray) {
   root_->find_intersection(first_hit, ray);
 
   return first_hit;
+  
 }

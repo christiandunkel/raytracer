@@ -3,8 +3,10 @@
 
 #include "ray.hpp"
 #include <string>
+
 #define _USE_MATH_DEFINES
 #include <math.h>
+
 #define GLM_EXPERIMENTAL_ENABLED
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -49,6 +51,7 @@ class Camera {
     glm::mat4 get_view_matrix();
 
     void set_screen_dimensions(int width, int height);
+
 };
 
 #endif // CAMERA_HPP

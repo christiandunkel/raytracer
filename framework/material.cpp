@@ -32,7 +32,5 @@ std::ostream& Material::print(std::ostream& os) const {
 }
 
 void print_material(const std::shared_ptr<Material> material) {
-
   std::cout << material;
-
 }

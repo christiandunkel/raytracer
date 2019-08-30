@@ -1,3 +1,5 @@
+// Window (C) Andreas-C. Bernstein
+
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
@@ -58,7 +60,7 @@ class Window {
     void update();
 
     // test if given key is pressed 
-    // key codes: http://www.glfw.org/docs/latest/group__keys.html
+    // (key codes: http://www.glfw.org/docs/latest/group__keys.html)
     int get_key(int key) const;
     bool key_pressed(int key) const;
     int get_mouse_button(int button) const;

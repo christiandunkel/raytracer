@@ -12,6 +12,7 @@ std::ostream& Shape::print(std::ostream& os) const {
         material_->print(os);
   
   return os;
+  
 }
 
 void Shape::find_intersection(Hitpoint& first_hit, Ray const& ray) const {
@@ -26,6 +27,7 @@ void Shape::find_intersection(Hitpoint& first_hit, Ray const& ray) const {
       first_hit = hit;
     }
   }
+
 }
 
 // scale the shape

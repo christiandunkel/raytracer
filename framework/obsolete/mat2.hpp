@@ -3,7 +3,6 @@
 
 #include "vec2.hpp"
 
-// Mat2 class definition
 struct Mat2 {
 
   // matrix member values in order

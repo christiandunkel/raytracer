@@ -1,3 +1,5 @@
+// Pixel (C) Andre Schollmeyer, Andreas-C. Bernstein
+
 #ifndef PIXEL_HPP
 #define PIXEL_HPP
 
