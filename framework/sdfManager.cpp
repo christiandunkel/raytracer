@@ -188,7 +188,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     shape = std::make_shared<Box>();
     shape->set_name(values.at(1));
 
-    std::shared_ptr<Box> box_ptr = std::static_pointer_cast<Box>(shape);
+    std::shared_ptr<Box> box_ptr = std::dynamic_pointer_cast<Box>(shape);
     box_ptr->set_min(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     box_ptr->set_max(glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7))));
     box_ptr->set_material(scene->find_material(values.at(8)));
@@ -199,7 +199,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     shape = std::make_shared<Sphere>();
     shape->set_name(values.at(1));
 
-    std::shared_ptr<Sphere> sphere_ptr = std::static_pointer_cast<Sphere>(shape);
+    std::shared_ptr<Sphere> sphere_ptr = std::dynamic_pointer_cast<Sphere>(shape);
     sphere_ptr->set_middle(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     sphere_ptr->set_radius(stof(values.at(5)));
     sphere_ptr->set_material(scene->find_material(values.at(6)));
@@ -210,7 +210,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     shape = std::make_shared<Triangle>();
     shape->set_name(values.at(1));
 
-    std::shared_ptr<Triangle> triangle_ptr = std::static_pointer_cast<Triangle>(shape);
+    std::shared_ptr<Triangle> triangle_ptr = std::dynamic_pointer_cast<Triangle>(shape);
     triangle_ptr->set_a(glm::vec3(stof(values.at(2)), stof(values.at(3)), stof(values.at(4))));
     triangle_ptr->set_b(glm::vec3(stof(values.at(5)), stof(values.at(6)), stof(values.at(7))));
     triangle_ptr->set_c(glm::vec3(stof(values.at(8)), stof(values.at(9)), stof(values.at(10))));
@@ -228,7 +228,7 @@ void SdfManager::parse_shape(std::string const& file_path, std::unique_ptr<Scene
     shape = std::make_shared<Composite>();
     shape->set_name(values.at(1));
 
-    std::shared_ptr<Composite> composite_ptr = std::static_pointer_cast<Composite>(shape);
+    std::shared_ptr<Composite> composite_ptr = std::dynamic_pointer_cast<Composite>(shape);
 
     for (size_t i = 2; i < values.size(); i++) {
 
@@ -274,7 +274,7 @@ void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene
     light = std::make_shared<DiffusePointLight>();
     light->name_ = values.at(0);
 
-    std::shared_ptr<DiffusePointLight> point_light_ptr = std::static_pointer_cast<DiffusePointLight>(light);
+    std::shared_ptr<DiffusePointLight> point_light_ptr = std::dynamic_pointer_cast<DiffusePointLight>(light);
     point_light_ptr->pos_ = glm::vec3(stof(values.at(1)), stof(values.at(2)), stof(values.at(3)));
     point_light_ptr->color_ = Color(stof(values.at(4)), stof(values.at(5)), stof(values.at(6)));
     point_light_ptr->intensity_ = stof(values.at(7));
@@ -285,7 +285,7 @@ void SdfManager::parse_light(std::string const& file_path, std::unique_ptr<Scene
     light = std::make_shared<AmbientLight>();
     light->name_ = values.at(0);
 
-    std::shared_ptr<AmbientLight> point_light_ptr = std::static_pointer_cast<AmbientLight>(light);
+    std::shared_ptr<AmbientLight> point_light_ptr = std::dynamic_pointer_cast<AmbientLight>(light);
     point_light_ptr->color_ = Color(stof(values.at(1)), stof(values.at(2)), stof(values.at(3)));
     point_light_ptr->intensity_ = stof(values.at(4));
 

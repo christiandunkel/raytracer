@@ -58,7 +58,7 @@ void find_shape_recursively(std::shared_ptr<Shape> root, std::string const& name
 
     if (dynamic_cast<Composite*>(root.get())) {
 
-      auto composite_ptr = std::static_pointer_cast<Composite>(root);
+      auto composite_ptr = std::dynamic_pointer_cast<Composite>(root);
 
       for (auto child : composite_ptr->children_) {
 

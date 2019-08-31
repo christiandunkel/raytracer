@@ -151,7 +151,7 @@ Color Renderer::trace(Ray const& ray) {
         if (dynamic_cast<DiffusePointLight*>(light.get())) {
 
           // cast light pointer to DiffusePointLight pointer
-          auto point_light_ptr = std::static_pointer_cast<DiffusePointLight>(light);
+          auto point_light_ptr = std::dynamic_pointer_cast<DiffusePointLight>(light);
 
           // calculate direction of light
           glm::vec3 light_direction = glm::normalize(point_light_ptr->pos_ - hp.intersection_);
@@ -204,7 +204,7 @@ Color Renderer::trace(Ray const& ray) {
         else if (dynamic_cast<AmbientLight*>(light.get())) {
 
           // cast light pointer to AmbientLight pointer
-          auto ambient_light_ptr = std::static_pointer_cast<AmbientLight>(light);
+          auto ambient_light_ptr = std::dynamic_pointer_cast<AmbientLight>(light);
 
           // ambient
           static float ambient_intensity = ambient_light_ptr->intensity_;
