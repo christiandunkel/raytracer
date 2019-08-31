@@ -43,7 +43,7 @@ In order to build this project in Linux, open the terminal. You have to navigate
 cd directory/raytracer
 ```
 
-Enter the following commands in order, which will create the build of the raytracer:
+Enter the following commands in order, which will create the build.
 
 ```
 mkdir build
@@ -52,7 +52,7 @@ cmake ..
 make all
 ```
 
-After the build is finished, you can directly execute the file using the following commands:
+After the build is finished, you can directly execute the raytracer by using the following commands in order:
 
 ```
 cd build/source
