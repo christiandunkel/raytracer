@@ -21,9 +21,43 @@ Finally, a picture as a `.ppm` file with the defined dimensions will be generate
 
 This project is written in `C++` and build using the tool [CMake](https://cmake.org/), version `3.1` or higher.
 
-The recommended process for building this project is to install `Visual Studio 2017` and then `Visual Studio Code`. Install the extensions `CMake 0.0.17` and `CMake Tools 1.1.1` in Visual Studio Code, then open the project folder inside Visual Studio Code. Make a clean re-configuration, and then make a clean build of *source > raytracer*, which generates the main executable.
-
 The build was tested in *Linux (Ubuntu)* and *Windows 10*.
+
+In order to run this project, you first want to clone the project by entering the following command in the command prompt in windows or the terminal in Linux.
+
+```
+git clone https://github.com/christiandunkel/raytracer
+```
+
+### Windows
+
+The recommended process for building this project in Windows is to install `Visual Studio 2017` and then `Visual Studio Code`. Install the extensions `CMake 0.0.17` and `CMake Tools 1.1.1` in Visual Studio Code, then open the project folder inside Visual Studio Code. Make a clean build of *source > raytracer* in the new *Cmake* section in the toolbar, and you're done.
+
+After the build is finished, the program will be executed inside the terminal of Visual Studio Code. If you want to find the `.exe` file, it is located in *build > source > raytracer.exe*.
+
+### Linux
+
+In order to build this project in Linux, open the terminal. You have to navigate towards the directory into which you cloned the remote.
+
+```
+cd directory/raytracer
+```
+
+Enter the following commands in order, which will create the build of the raytracer:
+
+```
+mkdir build
+cd build
+cmake ..
+make all
+```
+
+After the build is finished, you can directly execute the file using the following commands:
+
+```
+cd build/source
+./raytracer
+```
 
 ## Assignments
 - [Style Guide](/documentation/styleguide_2019.pdf)
