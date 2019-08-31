@@ -17,6 +17,14 @@ Additionally, rays from all light sources will be sent out towards the intersect
 
 Finally, a picture as a `.ppm` file with the defined dimensions will be generated from the results. The program also supports animations and outputs the defined frames per second as `.ppm` files if an animated scene is selected.
 
+## How to run it?
+
+This project is written in `C++` and build using the tool [CMake](https://cmake.org/), version `3.1` or higher.
+
+The recommended process for building this project is to install `Visual Studio 2017` and then `Visual Studio Code`. Install the extensions `CMake 0.0.17` and `CMake Tools 1.1.1` in Visual Studio Code, then open the project folder inside Visual Studio Code. Make a clean re-configuration, and then make a clean build of *source > raytracer*, which generates the main executable.
+
+The build was tested in *Linux (Ubuntu)* and *Windows 10*.
+
 ## Assignments
 - [Style Guide](/documentation/styleguide_2019.pdf)
 - [Assignments](/documentation/assignments/)
