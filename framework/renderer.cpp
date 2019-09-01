@@ -68,14 +68,16 @@ float fresnel(glm::vec3 const& direction, glm::vec3 const& normal, float ior) {
 bool Renderer::is_valid() {
 
   if (cam_ == nullptr) {
-    std::cerr << "Renderer: Camera points to null in file '" << filename_ << "'." << std::endl;
+    std::cerr << "Renderer: Camera points to null in file '" << 
+                 filename_ << "'." << std::endl;
     return false;
   }
 
   // test if defined filename has "ppm" ending
   std::regex REGEX_ppm ("^.+\\.ppm$");
   if (!std::regex_match(filename_, REGEX_ppm)) {
-    std::cerr << "Renderer: Filename '" << filename_ << "' has no '.ppm' file ending." << std::endl;
+    std::cerr << "Renderer: Given file name '" << filename_ << 
+                 "' has no '.ppm' file ending." << std::endl;
     return false;
   }
 
@@ -94,58 +96,67 @@ void Renderer::render(int flags) {
       // reset recursion limit for each new ray
       recursion_limit = initial_recursion_limit;
 
+      // current pixel
       Pixel p(x, y);
 
-      // anti aliasing (with 4 sub pixels)
+      // anti-aliasing (to smooth out sharp edges, also called jaggies)
       if (flags & ANTIALIASING) {
       
+        // go through 4 sub pixels for this pixel
         for (float y_sub = 0.0f; y_sub < 1.0f; y_sub += 0.5f) {
           for (float x_sub = 0.0f; x_sub < 1.0f; x_sub += 0.5f) {
 
             recursion_limit = initial_recursion_limit;
 
+            // send out ray for pixel position
             Ray eye_ray = cam_->compute_eye_ray(static_cast<float>(x + x_sub), static_cast<float>(y + y_sub));
-            p.color  += 0.25f * trace(eye_ray);
+            
+            // assign color returned by ray
+            p.color += 0.25f * trace(eye_ray);
+
           }
         }
       }
       // no anti aliasing
       else {
 
+        // send out ray for pixel position
         Ray eye_ray = cam_->compute_eye_ray(static_cast<float>(x), static_cast<float>(y));
+        
+        // assign color returned by ray
         p.color  += trace(eye_ray);
+
       }
 
       write(p);
+
     }
   }
 
-  // ppm_.save("output/" + filename_);
-
-  // generate a sub folder with date & time as name
+  // generate a string with the current date and time
   time_t _tm = time(NULL);
   struct tm * curtime = localtime ( &_tm );
   std::string time = asctime(curtime);
   std::replace(time.begin(), time.end(), ':', '-');
 
-  // remove line break if exists
+  // remove line break from 'time' (may be added in some operating systems)
   time.erase(std::remove(time.begin(), time.end(), '\n'), time.end());
 
+  // generate the full path (with name) and save the image
   full_path_ = output_directory_ + time + " " + filename_;
-
   std::cout << "Storing image at: " << full_path_ << std::endl;
   ppm_.save(full_path_);
+
 }
 
+// write current pixel into ppm file
 void Renderer::write(Pixel const& p) {
 
   // flip pixels, because of opengl glDrawPixels
   size_t buf_pos = (width_*p.y + p.x);
   if (buf_pos >= color_buffer_.size() || (int)buf_pos < 0) {
-    std::cerr << "Fatal Error Renderer::write(Pixel p) : "
-      << "pixel out of ppm_ : "
-      << (int)p.x << "," << (int)p.y
-      << std::endl;
+    std::cerr << "Fatal Error Renderer::write(Pixel p) for pixel in .ppm ("
+              << (int)p.x << ", " << (int)p.y << ")" << std::endl;
   } 
   else {
     color_buffer_[buf_pos] = p.color;
@@ -183,7 +194,7 @@ Color Renderer::trace(Ray const& ray) {
       // iterate over all existing light sources
       for (auto const light : *lights_) {
 
-        // test if diffuse point light
+        // test if it's a diffuse point light
         if (dynamic_cast<DiffusePointLight*>(light.get())) {
 
           // cast light pointer to DiffusePointLight pointer
@@ -226,13 +237,12 @@ Color Renderer::trace(Ray const& ray) {
           diffuse *= attenuation;
           specular *= attenuation;
 
-          // test if there's no obstacle between light and object
+          // test if there's no obstacle between light and object, then combine all colors
           if (!hp_light.has_hit_) {
-            // combine all colors
             color += ambient + diffuse + specular;
           }
+          // otherwise, the object is in shadow
           else {
-            // object is in shadow
             color += ambient;
           }
 
@@ -295,17 +305,17 @@ Color Renderer::trace(Ray const& ray) {
       }
     }
   }
+  // otherwise, return background color
   else {
-    // return background color
     return background_;
   }
 
-  // apply tone mapping
+  // apply tone mapping (to reduce high contrast)
   color.r = color.r / (color.r + 1);
   color.g = color.g / (color.g + 1);
   color.b = color.b / (color.b + 1);
 
-  // perform gamma correction
+  // perform gamma correction (to counteract false perception of humans of linear changes (for example black to white))
   const float gamma = 2.2f;
   glm::vec3 gamma_corrected = pow(glm::vec3(color.r, color.g, color.b), glm::vec3(1.0f / gamma));
   color = Color{gamma_corrected.x, gamma_corrected.y, gamma_corrected.z};

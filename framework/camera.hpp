@@ -36,8 +36,9 @@ class Camera {
     Camera(std::string const& name, float fov, glm::vec3 const& pos, glm::vec3 const& front, glm::vec3 const& world_up) :
       name_(name), fov_(fov), pos_(pos), front_(front), world_up_(world_up) {
 
+        // distance between iewing plane to camera
         screen_distance = 0.5f / tan(glm::radians(fov_) / 2.0f);
-
+        
         update_vectors();
 
       }

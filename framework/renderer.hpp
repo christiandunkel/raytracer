@@ -72,8 +72,7 @@ class Renderer {
 
     Color trace(Ray const& ray);
     Hitpoint find_intersection(Ray const& ray);
-    //Color shade(std::shared_ptr<Shape> shape, Hitpoint const& hitpoint, float distance);
-
+    
     Color calc_ambient_color(Hitpoint const& hitpoint, std::shared_ptr<Shape> shape);
     Color calc_diffuse_color(Hitpoint const& hitpoint, std::shared_ptr<Shape> shape);
     Color calc_specular_color(Hitpoint const& hitpoint, std::shared_ptr<Shape> shape);
