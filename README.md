@@ -1,4 +1,6 @@
 
+![A renderering showing multiple colorful spheres floating around a big reflecting mirror sphere.](documentation/images/renderer_showcase.png)
+
 # Raytracer
 
 This **raytracer** is the final mini project of the course *programming languages* in the summer semester of 2019 at the *Bauhaus University Weimar*. The class started with acquiring the basics of C++ before going into the more complex aspects of the language. The final mini project was made by teams of two people.

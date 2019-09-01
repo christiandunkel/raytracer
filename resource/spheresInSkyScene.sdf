@@ -8,21 +8,32 @@ define background 0 0.2 .6
 define material red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
 define material green 0 1 0 0 1 0 0 1 0 248 0 0 0
 define material white 1 1 1 1 1 1 1 1 1 16 0 0 0
+define material pink 1 0 1 1 0 1 0 1 1 16 0 0 0
+define material yellow 1 1 0 1 1 0 1 1 0 16 0 0 0
+define material ocker 0.3 0.3 0 0.3 0.3 0 0.3 0.3 0 16 0 0 0
 define material gray 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 16 0.1 0 0
 define material mirror 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 8 0.9 0 0
 
 define shape sphere sphere1 0 0 0 10 red
-define shape sphere sphere2 0 0 0 10 green
-define shape sphere sphere3 0 0 0 10 white
+define shape sphere sphere2 0 0 0 8 green
+define shape sphere sphere3 0 0 0 11 white
 define shape sphere sphere4 0 0 0 10 gray
 define shape sphere sphere5 0 0 0 25 mirror
+define shape sphere sphere6 0 0 0 8 pink
+define shape sphere sphere7 0 0 0 13 yellow
+define shape sphere sphere8 0 0 0 7 ocker
+define shape sphere sphere9 0 0 0 5 red
 
 define transform sphere1 translate 18 7 0
 define transform sphere2 translate -23 7 0
 define transform sphere3 translate 8 -17 0
 define transform sphere4 translate 28 -7 0
 define transform sphere5 translate 18 -5 -40
+define transform sphere6 translate -38 14 -10
+define transform sphere7 translate 54 40 -12
+define transform sphere8 translate 45 6 -20
+define transform sphere9 translate -44 -5 10
 
-define shape composite root sphere1 sphere2 sphere3 sphere4 sphere5
+define shape composite root sphere1 sphere2 sphere3 sphere4 sphere5 sphere6 sphere7 sphere8 sphere9
 
 render eye spheres-in-sky.ppm 1920 1080

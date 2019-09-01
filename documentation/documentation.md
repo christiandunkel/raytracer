@@ -14,6 +14,8 @@ Additionally, rays from all light sources will be sent out towards the intersect
 
 ![An illustration of a camera shooting out a ray towards a rectangle, which reflects and hits a circle, and two lights shooting rays at the intersection.](images/raytracer_illustration.png)
 
+![An illustration of a camera shooting out a ray towards a rectangle, which reflects and hits a circle, and two lights shooting rays at the intersection.](documentation/images/renderer_showcase.png)
+
 There are also options to define reflection and refraction effects in the materials. The final colors from the ray will also go through a short post-processing using anti-aliasing, tone mapping and gamma correction.
 
 Finally, the program has generated a full array of all pixels for the image. A picture will then be generated as a `.ppm` file. 
