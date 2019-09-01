@@ -7,49 +7,13 @@ This **raytracer** is the final mini project of the course *programming language
 
 ## What does it do?
 
-This program will read a scene from an `.sdf` file. It will then render the shapes, lights, etc. with the defined rendering information and camera as an image. It will display the image and also save it as a `.ppm` file in the *output* folder.
+This program will parse a `.sdf` file and generate a scene from the `defines` inside. It will then render the shapes, lights, etc. using the defined camera and rendering information as an image in the `.ppm` file format. The rendering process is completely done using raytracing and also includes blinn-phong shading, reflective and refractive surfaces, anti-aliasing, tone mapping and gamma correction.
 
-## How to install
+## Try it out
 
-This project is written in `C++` and build using the tool [CMake](https://cmake.org/), version `3.1` or higher.
+If you know what you're doing, you can simply clone or download the repository and build it using [CMake](https://cmake.org/), version `3.1` or higher. Otherwise, you can also follow the step-by-step installation and usage guide here:
 
-The build was tested in *Linux (Ubuntu)* and *Windows 10*.
-
-In order to run this project, you first want to clone the project by entering the following command in the command prompt in windows or the terminal in Linux.
-
-```
-git clone https://github.com/christiandunkel/raytracer
-```
-
-### Windows
-
-The recommended process for building this project in Windows is to install `Visual Studio 2017` and then `Visual Studio Code`. Install the extensions `CMake 0.0.17` and `CMake Tools 1.1.1` in Visual Studio Code, then open the project folder inside Visual Studio Code. Make a clean build of *source > raytracer* in the new *Cmake* section in the toolbar, and you're done.
-
-After the build is finished, the program will be executed inside the terminal of Visual Studio Code. If you want to find the `.exe` file, it is located in *build > source > raytracer.exe*.
-
-### Linux
-
-In order to build this project in Linux, open the terminal. You have to navigate towards the directory into which you cloned the remote.
-
-```
-cd directory/raytracer
-```
-
-Enter the following commands in order, which will create the build.
-
-```
-mkdir build
-cd build
-cmake ..
-make all
-```
-
-After the build is finished, you can directly execute the raytracer by using the following commands in order:
-
-```
-cd build/source
-./raytracer
-```
+[![Get to the installation guide](/documentation/images/installation_button.png)](/documentation/documentation.md#how-to-install)
 
 ## Assignments
 - [Style Guide](/documentation/styleguide_2019.pdf)
