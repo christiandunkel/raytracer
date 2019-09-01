@@ -3,6 +3,10 @@
 
 This **raytracer** is the final mini project of the course *programming languages* in the summer semester of 2019 at the *Bauhaus University Weimar*. The class started with acquiring the basics of C++ before going into the more complex aspects of the language. The final mini project was made by teams of two people.
 
+## What does it do?
+
+This program will read a scene from an `.sdf` file. It will then render the shapes, lights, etc. with the defined rendering information and camera as an image. It will display the image and also save it as a `.ppm` file in the *output* folder.
+
 ## How to install
 
 This project is written in `C++` and build using the tool [CMake](https://cmake.org/), version `3.1` or higher.
