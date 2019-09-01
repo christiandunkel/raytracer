@@ -1,0 +1,28 @@
+define camera eye 40.0 0 200 140 0 -1 -0.8 0 1 0
+
+define light sun 200 1000 200 0.2 0.2 0.2 0.2
+define light sun_2 -20 200 -40 0.2 0.2 0.2 0.2
+define light ambient1 0 0.03 0.1 0.1
+define background 0 0.2 .6
+
+define material red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
+define material green 0 1 0 0 1 0 0 1 0 248 0 0 0
+define material white 1 1 1 1 1 1 1 1 1 16 0 0 0
+define material gray 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 16 0.1 0 0
+define material mirror 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 8 0.9 0 0
+
+define shape sphere sphere1 0 0 0 10 red
+define shape sphere sphere2 0 0 0 10 green
+define shape sphere sphere3 0 0 0 10 white
+define shape sphere sphere4 0 0 0 10 gray
+define shape sphere sphere5 0 0 0 25 mirror
+
+define transform sphere1 translate 18 7 0
+define transform sphere2 translate -23 7 0
+define transform sphere3 translate 8 -17 0
+define transform sphere4 translate 28 -7 0
+define transform sphere5 translate 18 -5 -40
+
+define shape composite root sphere1 sphere2 sphere3 sphere4 sphere5
+
+render eye spheres-in-sky.ppm 1920 1080
