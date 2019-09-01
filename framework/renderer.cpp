@@ -90,6 +90,7 @@ void Renderer::render(int flags) {
   float width_f = static_cast<float>(width_);
   float height_f = static_cast<float>(height_);
 
+  // go through all pixels
   for (unsigned y = 0; y < height_; y++) {
     for (unsigned x = 0; x < width_; x++) {
 
@@ -99,7 +100,7 @@ void Renderer::render(int flags) {
       // current pixel
       Pixel p(x, y);
 
-      // anti-aliasing (to smooth out sharp edges, also called jaggies)
+      // anti-aliasing to smooth out sharp edges, or "jaggies"
       if (flags & ANTIALIASING) {
       
         // go through 4 sub pixels for this pixel
@@ -310,12 +311,29 @@ Color Renderer::trace(Ray const& ray) {
     return background_;
   }
 
-  // apply tone mapping (to reduce high contrast)
+  // apply tone mapping to reduce high contrast
+  apply_tone_mapping(color);
+
+  // perform gamma correction
+  color = apply_gamma_correction(color);
+
+  return color;
+
+}
+
+// tone mapping reduces high contrast by shortening dynamic color range
+void Renderer::apply_tone_mapping(Color& color) {
+
   color.r = color.r / (color.r + 1);
   color.g = color.g / (color.g + 1);
   color.b = color.b / (color.b + 1);
 
-  // perform gamma correction (to counteract false perception of humans of linear changes (for example black to white))
+}
+
+// gamma correction counteracts false human perception of linear changes,
+// for example black (darkness) to white (light)
+Color Renderer::apply_gamma_correction(Color& color) {
+
   const float gamma = 2.2f;
   glm::vec3 gamma_corrected = pow(glm::vec3(color.r, color.g, color.b), glm::vec3(1.0f / gamma));
   color = Color{gamma_corrected.x, gamma_corrected.y, gamma_corrected.z};

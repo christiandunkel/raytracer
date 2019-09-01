@@ -71,6 +71,8 @@ class Renderer {
   private:
 
     Color trace(Ray const& ray);
+    void apply_tone_mapping(Color& color);
+    Color apply_gamma_correction(Color& color);
     Hitpoint find_intersection(Ray const& ray);
     
     Color calc_ambient_color(Hitpoint const& hitpoint, std::shared_ptr<Shape> shape);
