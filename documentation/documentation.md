@@ -14,4 +14,8 @@ Additionally, rays from all light sources will be sent out towards the intersect
 
 ![An illustration of a camera shooting out a ray towards a rectangle, which reflects and hits a circle, and two lights shooting rays at the intersection.](images/raytracer_illustration.png)
 
-Finally, a picture as a `.ppm` file with the defined dimensions will be generated from the results. The program also supports animations and outputs the defined frames per second as `.ppm` files if an animated scene is selected.
+There are also options to define reflection and refraction effects in the materials. The final colors from the ray will also go through a short post-processing using anti-aliasing, tone mapping and gamma correction.
+
+Finally, the program has generated a full array of all pixels for the image. A picture will then be generated as a `.ppm` file. 
+
+The program also supports animations and outputs the defined frames as `.ppm` files if an 'animated scene' is selected in the options. There's also an option to generate animated `.sdf` files instead.
