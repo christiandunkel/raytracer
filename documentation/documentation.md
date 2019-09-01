@@ -10,9 +10,13 @@
 	 - [Windows](#windows)
 	 - [Linux](#linux)
 
+---
+
 ## General remarks
 
 This raytracer completely works on one thread of the CPU, with no support for GPU and multi-threading. Therefore, the rendering rendering process for images, especially with a lot of objects, higher resolution and graphic settings, can range from a few seconds to a few minutes.
+
+---
 
 ## Raytracing process
 
@@ -31,6 +35,8 @@ There are also options to define reflection and refraction effects in the materi
 Finally, the program has generated a full array of all pixels for the image. A picture will then be generated as a `.ppm` file. 
 
 The program also supports animations and outputs the defined frames as `.ppm` files if an 'animated scene' is selected in the options. There's also an option to generate animated `.sdf` files instead.
+
+---
 
 ## How to install
 
