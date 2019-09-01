@@ -4,9 +4,6 @@
 #include "ray.hpp"
 #include <string>
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 #define GLM_EXPERIMENTAL_ENABLED
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -39,8 +36,7 @@ class Camera {
     Camera(std::string const& name, float fov, glm::vec3 const& pos, glm::vec3 const& front, glm::vec3 const& world_up) :
       name_(name), fov_(fov), pos_(pos), front_(front), world_up_(world_up) {
 
-        float rad = fov_ * static_cast<float>(M_PI) / 360.0f;
-        screen_distance = 0.5f / tan(rad);
+        screen_distance = 0.5f / tan(glm::radians(fov_) / 2.0f);
 
         update_vectors();
 

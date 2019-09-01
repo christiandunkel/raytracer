@@ -11,6 +11,59 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+glm::vec3 refract(glm::vec3 const& direction, glm::vec3 const& normal, float ior) {
+
+  float cosi = glm::clamp(glm::dot(direction, normal), -1.0f, 1.0f);
+  float etai = 1.0f;
+  float etat = ior;
+
+  glm::vec3 n = normal;
+
+  if (cosi < 0.0f) {
+    cosi = -cosi;
+  }
+  else {
+    std::swap(etai, etat);
+    n = -normal;
+  }
+
+  float eta = etai / etat;
+  float k = 1.0f - pow(eta, 2.0f) * (1.0f - pow(cosi, 2.0f));
+
+  return eta * direction + (eta * cosi - sqrtf(k)) * n;
+
+}
+
+float fresnel(glm::vec3 const& direction, glm::vec3 const& normal, float ior) {
+
+  float cosi = glm::clamp(glm::dot(direction, normal), -1.0f, 1.0f);
+  float etai = 1.0f;
+  float etat = ior;
+
+  if (cosi > 0) {
+    std::swap(etai, etat);
+  }
+
+  // snell's law
+  float sint = etai / etat * sqrtf(std::max(0.0f, 1.0f - cosi * cosi));
+
+  // total internal reflection
+  if (sint >= 1.0f) {
+    return 1.0f;
+  }
+  else {
+
+    float cost = sqrtf(std::max(0.0f, 1.0f - sint * sint)); 
+    cosi = fabsf(cosi); 
+    float Rs = ((etat * cosi) - (etai * cost)) / ((etat * cosi) + (etai * cost)); 
+    float Rp = ((etai * cosi) - (etat * cost)) / ((etai * cosi) + (etat * cost)); 
+
+    return (Rs * Rs + Rp * Rp) / 2;
+
+  }
+
+}
+
 // check if the given renderer instance is valid
 bool Renderer::is_valid() {
 
@@ -46,19 +99,12 @@ void Renderer::render(int flags) {
       // anti aliasing (with 4 sub pixels)
       if (flags & ANTIALIASING) {
       
-        for (float w = 0.0f; w < 1.0f; w += 0.5f) {
-          for (float h = 0.0f; h < 1.0f; h += 0.5f) {
+        for (float y_sub = 0.0f; y_sub < 1.0f; y_sub += 0.5f) {
+          for (float x_sub = 0.0f; x_sub < 1.0f; x_sub += 0.5f) {
 
             recursion_limit = initial_recursion_limit;
 
-            float x_f = static_cast<float>(x + w);
-            float y_f = static_cast<float>(y + h);
-
-            // transform pixel position (-0.5, 0.5)
-            x_f = (x_f - width_f / 2.0f) / width_f;
-            y_f = (y_f - height_f / 2.0f) / width_f;
-
-            Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
+            Ray eye_ray = cam_->compute_eye_ray(static_cast<float>(x + x_sub), static_cast<float>(y + y_sub));
             p.color  += 0.25f * trace(eye_ray);
           }
         }
@@ -66,14 +112,7 @@ void Renderer::render(int flags) {
       // no anti aliasing
       else {
 
-        float x_f = static_cast<float>(x);
-        float y_f = static_cast<float>(y);
-
-        // transform pixel position (-0.5, 0.5)
-        x_f = (x_f - width_f / 2.0f) / width_f;
-        y_f = (y_f - height_f / 2.0f) / width_f;
-
-        Ray eye_ray = cam_->compute_eye_ray(x_f, y_f);
+        Ray eye_ray = cam_->compute_eye_ray(static_cast<float>(x), static_cast<float>(y));
         p.color  += trace(eye_ray);
       }
 
@@ -119,6 +158,8 @@ void Renderer::write(Pixel const& p) {
 Color Renderer::trace(Ray const& ray) {
 
   Color color;
+  Color color_reflected;
+  Color color_refracted;
 
   recursion_limit--;
 
@@ -130,18 +171,13 @@ Color Renderer::trace(Ray const& ray) {
   // find shape that has been hit by a ray
   hit_shape = root_->find_shape(hp.name_);
 
-  /*
-  OPTIONAL:
-    add refraction
-    add cylinder and cone
-  */
-
   if (hit_shape != nullptr) {
 
     std::shared_ptr<Material> material = hit_shape->get_material();
 
     static float attenuation = 1.0f;
 
+    // material is a diffuse material
     if (material->refraction_index_ == 0.0f) {
 
       // iterate over all existing light sources
@@ -216,18 +252,46 @@ Color Renderer::trace(Ray const& ray) {
 
         }
       }
+
+      // reflection for non-refractive diffuse object
+      if (material->r_ > 0.0f && material->refraction_index_ == 0.0f) {
+
+        if (recursion_limit > 0) {
+
+          glm::vec3 reflection_direction = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
+          color_reflected = trace(Ray{hp.intersection_ + reflection_direction, reflection_direction});
+
+          color += material->r_ * color_reflected;
+
+        }
+      }
     }
+    // refraction
+    else {
 
-    if (recursion_limit > 0) {
+      if (recursion_limit > 0) {
 
-      // reflection if reflection coefficient and refraction index aren't zero
-      if (material->r_ != 0.0f && material->refraction_index_ == 0.0f) {
+        // with reflection
+        if (material->r_ != 0.0f) {
 
-        glm::vec3 reflection = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
-        Color color_reflected = trace(Ray{hp.intersection_ + reflection, reflection});
+          glm::vec3 reflection_direction = glm::normalize(glm::reflect(ray.direction_, hp.normal_));
+          color_reflected = material->r_ * trace(Ray{hp.intersection_ + reflection_direction, reflection_direction});
 
-        color += material->r_ * color_reflected;
+        }
 
+        float kr = fresnel(ray.direction_, hp.normal_, material->refraction_index_);
+
+        bool outside = glm::dot(ray.direction_, hp.normal_) < 0.0f;
+
+        // transparency
+        if (material->transparency_ > 0.0f) {
+
+          glm::vec3 refraction_direction = refract(ray.direction_, hp.normal_, material->refraction_index_);
+          color_refracted = (1.0f - kr) * trace(Ray{hp.intersection_ + refraction_direction, refraction_direction});
+
+        }
+
+        color += color_reflected * material->transparency_ + color_refracted * material->transparency_;
       }
     }
   }
@@ -236,7 +300,7 @@ Color Renderer::trace(Ray const& ray) {
     return background_;
   }
 
-  // apply tone mapping (basic HDR, maybe?)
+  // apply tone mapping
   color.r = color.r / (color.r + 1);
   color.g = color.g / (color.g + 1);
   color.b = color.b / (color.b + 1);
