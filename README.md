@@ -7,7 +7,11 @@ This **raytracer** is the final mini project of the course *programming language
 
 ## What does it do?
 
-This program will parse a `.sdf` file and generate a scene from the `defines` inside. It will then render the shapes, lights, etc. using the defined camera and rendering information as an image in the `.ppm` file format. The rendering process is completely done using raytracing and also includes blinn-phong shading, reflective and refractive surfaces, anti-aliasing, tone mapping and gamma correction.
+This program will parse a `.sdf` file and generate a scene from the `defines` inside. It will then render the shapes, lights, etc. using the defined camera and rendering information as an image in the `.ppm` file format. 
+
+The rendering process is completely done using raytracing and supports simples shapes like spheres, rectangles and triangles. The program also supports blinn-phong shading, reflective and refractive surfaces, transparency, anti-aliasing, tone mapping and gamma correction.
+
+Animation and `.sdf` file generation are also possible. For a demo video of an animated rendered scene, click [here](https://raw.githubusercontent.com/christiandunkel/raytracer/master/documentation/examples/animation_demo.mp4).
 
 ## Try it out
 
