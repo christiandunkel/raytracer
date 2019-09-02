@@ -21,7 +21,7 @@
 
 ## General remarks
 
-This raytracer completely works on one thread of the CPU, with no support for GPU and multi-threading. Therefore, the rendering rendering process for images, especially with a lot of objects, higher resolution and graphic settings, can range from a few seconds to a few minutes.
+This raytracer completely works on one thread of the CPU, with no support for GPU and multi-threading. Therefore, the rendering rendering process for images, especially with a lot of objects, higher resolution and graphic settings, can range from a few seconds to a few minutes. *Although this time can be considerably reduced, if you build the project as a release build instead of a debug build.*
 
 <br />
 <br />
@@ -60,6 +60,8 @@ In order to run this project, you first want to clone the project by entering th
 ```
 git clone https://github.com/christiandunkel/raytracer
 ```
+
+You can build the project on both Windows and Linux (tested on Ubuntu). But **make sure** to build it as a *Release build* instead of a *Debug build*, which will result in a considerably faster rendering process.
 
 ### Windows
 
@@ -127,6 +129,11 @@ In order to write a custom scene, you need to create a `.sdf` file, which will c
 
 *Every scene needs to have at least one root composite, a material, a shape, a camera and a render definition.*
 
+### Definitions
+- [Camera](#camera)
+- [Material](#material)
+- [Light](#light)
+
 <br />
 <br />
 
@@ -189,7 +196,7 @@ define material mirror_white 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 8 0.9 0 0
 
 ### Light
 
-There are two definitions for light, one for *ambient lights*, that affect the color and lighting of the whole scene, and *diffuse point lights* work like a light source that has a position in world space and can throw shadows.
+There are two definitions for light, one for *ambient lights*, which affect the color and lighting of the whole scene, and *diffuse point lights*, which have a position in world space and can throw shadows.
 
 *Ambient Light:*
 
