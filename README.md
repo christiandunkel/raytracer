@@ -29,4 +29,4 @@ If you know what you're doing, you can simply clone or download the repository a
 ## Other
 - [Documentation](/documentation/documentation.md)
 - [Credits](/documentation/credits.md)
-- [License](/documentation/license.md)
+- [License](LICENSE.md)
