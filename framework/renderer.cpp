@@ -312,17 +312,17 @@ Color Renderer::trace(Ray const& ray) {
   }
 
   // apply tone mapping to reduce high contrast
-  apply_tone_mapping(color);
+  tone_mapping(color);
 
   // perform gamma correction
-  color = apply_gamma_correction(color);
+  color = gamma_correction(color);
 
   return color;
 
 }
 
 // tone mapping reduces high contrast by shortening dynamic color range
-void Renderer::apply_tone_mapping(Color& color) {
+void Renderer::tone_mapping(Color& color) {
 
   color.r = color.r / (color.r + 1);
   color.g = color.g / (color.g + 1);
@@ -332,7 +332,7 @@ void Renderer::apply_tone_mapping(Color& color) {
 
 // gamma correction counteracts false human perception of linear changes,
 // for example black (darkness) to white (light)
-Color Renderer::apply_gamma_correction(Color& color) {
+Color Renderer::gamma_correction(Color& color) {
 
   const float gamma = 2.2f;
   glm::vec3 gamma_corrected = pow(glm::vec3(color.r, color.g, color.b), glm::vec3(1.0f / gamma));

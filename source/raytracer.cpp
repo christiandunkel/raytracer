@@ -10,6 +10,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+void print_help_menu(std::string const example_path) {
+
+    std::cout << "--file \"path_to_file\"\n"
+      << "\tTakes a path to an existing sdf file and renders the image using it.\n"
+      << "\tUse path '" << example_path << "' for a predefined scene." << std::endl;
+
+    std::cout << "--frames \"n\"\n"
+      << "\tCreates n images.\n"
+      << "\tRequires a sdf file that defines at least one animation." << std::endl;
+
+    std::cout << "--aa\n"
+      << "\tEnables anti-aliasing using 4 sub pixels." << std::endl;
+
+    std::cout << "--recursion \"n\"\n"
+      << "\tSets the recursion depths of ray relfection and refraction." << std::endl;
+
+}
+
 int main(int argc, char* argv[]) {
 
   // load scene from sdf file
@@ -63,20 +81,7 @@ int main(int argc, char* argv[]) {
 
   // print help instructions
   if (flags >= 16) {
-    std::cout << "--file \"path_to_file\"\n"
-      << "\tTakes a path to an existing sdf file and renders the image using it.\n"
-      << "\tUse path '" << example_path << "' for a predefined scene." << std::endl;
-
-    std::cout << "--frames \"n\"\n"
-      << "\tCreates n images.\n"
-      << "\tRequires a sdf file that defines at least one animation." << std::endl;
-
-    std::cout << "--aa\n"
-      << "\tEnables anti-aliasing using 4 sub pixels." << std::endl;
-
-    std::cout << "--recursion \"n\"\n"
-      << "\tSets the recursion depths of ray relfection and refraction." << std::endl;
-
+    print_help_menu(example_path);
     return 0;
   }
   // default start up
@@ -84,49 +89,30 @@ int main(int argc, char* argv[]) {
 
     scene = manager.parse(example_path);
 
-    if (scene == nullptr) {
-      std::cerr << "Use '--help'" << std::endl;
-      return -1;
-    }
-
     output_directory = "output/";
 
-    if (flags & FRAMES) {
-
-      manager.generate_files(example_path, argv[frames_pos], scene.get());
-      is_animated = true;
-    }
   }
+  // start up with file path
   else if (flags & SOURCE) {
 
+    // parse file at given path
     scene = manager.parse(argv[file_pos]);
 
-    if (scene == nullptr) {
-      std::cerr << "Use '--help'" << std::endl;
-      return -1;
-    }
-
-    if (flags & FRAMES) {
-
-      manager.generate_files(argv[file_pos], argv[frames_pos], scene.get());
-      is_animated = true;
-    }
   }
 
   if (scene == nullptr) {
-    std::cerr << "Use '--help'" << std::endl;
+    std::cerr << "Scene file couldn't be parsed. Use '--help'" << std::endl;
     return -1;
   }
 
-  /*
-  TODO:
-    put renderer->render() in separate thread to keep window responsive and show rendering progress
-  */
+  // generate animation if so set in terminal parameter (flags)
+  if (flags & FRAMES) {
+    manager.generate_files(argv[file_pos], argv[frames_pos], scene.get());
+    is_animated = true;
+  }
 
-  // get first renderer
+  // get first renderer and set image output directory
   std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(scene->renderer_);
-
-  // set image output directory
   renderer->output_directory_ = output_directory;
 
   // set recursion depth
@@ -134,7 +120,7 @@ int main(int argc, char* argv[]) {
     renderer->initial_recursion_limit = atoi(argv[recursion_pos]);
   }
 
-  //std::thread render_thread(&Renderer::render, renderer.get(), flags);
+  // set up renderer with flags
   renderer->render(flags);
 
   Window window{{renderer->get_width(), renderer->get_height()}};
@@ -183,14 +169,15 @@ int main(int argc, char* argv[]) {
 
     }
 
+    // close window on ESC press
     if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       window.close();
     }
 
+    // display new frame
     window.show(renderer->get_color_buffer());
-  }
 
-  //render_thread.join();
+  }
 
   return 0;
 

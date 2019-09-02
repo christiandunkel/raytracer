@@ -111,6 +111,7 @@ You can define multiple parameters behind each other. The following parameters c
 - `--frames` defines the amount of images to be generated (if there is an animation definition in the scene file)
 - `--aa` enables anti-aliasing
 - `--recursion` defines the maximum recursion depth per ray *(how often a ray is reflected from surface to surface to determine the pixel color)*
+- `--help` show help menu
 
 <br />
 <br />

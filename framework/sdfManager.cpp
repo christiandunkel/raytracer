@@ -50,10 +50,13 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
     // read line for line
     std::string line;
+    int line_counter = 0;
     while (std::getline(file, line)) {
+
+      line_counter++;
       
-      // only use lines starting with "define", "render" or "transform"
-      std::regex REGEX_valid ("^(define|render|transform) .*");
+      // only use lines starting with "define" or "render"
+      std::regex REGEX_valid ("^(define|render) .*");
       if (!std::regex_match(line, REGEX_valid)) {
         continue;
       }
@@ -95,12 +98,13 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
         else if (parts.at(0) == "animation") {
 
           // make sure that animation tags get only parsed in the initial file
-          static bool first_iteration = true;
+          static bool first_line_with_animation = true;
 
-          if (first_iteration) {
+          if (first_line_with_animation) {
             parse_animation(file_path, scene, parts);
-            first_iteration = false;
+            first_line_with_animation = false;
           }
+
         }
         else {
           std::cerr << "SdfManager: Given definition '" << parts.at(0) << 

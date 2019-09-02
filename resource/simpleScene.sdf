@@ -4,6 +4,8 @@ define light sun 200 1000 200 0.2 0.2 0.2 0.2
 define light sun_2 -20 200 -40 0.2 0.2 0.2 0.2
 define light ambient1 0.2 0.2 0.2 0.2
 
+# comments will be ignored
+
 define material red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
 define material green 0 1 0 0 1 0 0 1 0 248 1 1.3 .5
 define material blue 0 0 1 0 0 1 0 0 1 32 0 0 0
