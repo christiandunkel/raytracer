@@ -1,5 +1,5 @@
 
-![A renderering showing multiple colorful spheres floating around a big reflecting mirror sphere.](documentation/images/renderer_showcase.png)
+![Logo depicting a gray sphere reflecting on a white surface with the title 'Raytracer Mini Project' on its right side.](documentation/images/raytracer_logo.png)
 
 # Raytracer
 
@@ -7,7 +7,9 @@ This **raytracer** is the final mini project of the course *programming language
 
 ## What does it do?
 
-This program will parse a `.sdf` file and generate a scene from the `defines` inside. It will then render the shapes, lights, etc. using the defined camera and rendering information as an image in the `.ppm` file format. 
+This program will parse a `.sdf` file and generate a scene from the `defines` inside. It will then render the shapes, lights, etc. using the defined camera and rendering information as an image in the `.ppm` file format.
+
+![A renderering showing multiple colorful spheres floating around a big reflecting mirror sphere.](documentation/images/renderer_showcase.png)
 
 The rendering process is completely done using raytracing and supports simples shapes like spheres, rectangles and triangles. The program also supports blinn-phong shading, reflective and refractive surfaces, transparency, anti-aliasing, tone mapping and gamma correction.
 
