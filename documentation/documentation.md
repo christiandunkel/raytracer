@@ -94,7 +94,7 @@ cd build/source
 
 ## How to use
 
-After you have built the project using CMake, you can execute the `raytrace.exe` file from the top level of the directory using the terminal with the following command:
+After you have built the project using CMake, you can execute the `raytracer.exe` file using the terminal. Navigate to the top level directory of the project and use the following command:
 
 ```
 .\build\source\raytracer.exe
