@@ -13,7 +13,13 @@
  - [Creating a scene](#creating-a-scene)
 	 - [Camera](#camera)
 	 - [Material](#material)
+	 - [Background](#background)
 	 - [Light](#light)
+	 - [Shape](#shape)
+	 - [Composite](#composite)
+	 - [Transform](#transform)
+	 - [Animation](#animation)
+	 - [Render](#render)
 
 <br />
 <br />
@@ -132,7 +138,13 @@ In order to write a custom scene, you need to create a `.sdf` file, which will c
 ### Definitions
 - [Camera](#camera)
 - [Material](#material)
+- [Background](#background)
 - [Light](#light)
+- [Shape](#shape)
+- [Composite](#composite)
+- [Transform](#transform)
+- [Animation](#animation)
+- [Render](#render)
 
 <br />
 <br />
@@ -141,11 +153,13 @@ In order to write a custom scene, you need to create a `.sdf` file, which will c
 
 ### Camera
 
+The `camera` property defines the camera looking on to the scene. The camera is defined using a position, a vector that points up and a vector that points to the right from its origin.
+
+*Multiple cameras can be defined.* The [render](#render) property defines, which camera is used to render the scene as an image.
+
 ```
 define camera <name> <pos> <up-vec> <right-vec>
 ```
-
-The camera front vector is on the z-axis and looks towards the negative z-values. It is defined using a position, a vector that points up and a vector that points to the right from its origin.
 
 - `name` is a string, defining the name of the camera.
 - `pos` is the position of the camera in world space and consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
@@ -165,11 +179,11 @@ define camera eye 20.0 0 200 200 0 -1 -1 0 1 0
 
 ### Material
 
+The `material` property defines the surface properties of all shapes it's assigned to, which includes color, reflection, refraction and opacity.
+
 ```
 define material <name> <ambient> <diffuse> <specular> <specular-reflection-exponent> <reflection-coefficient> <refraction-index> <opacity> 
 ```
-
-The material defines the surface properties of all shapes it's assigned to, which includes color, reflection, refraction and opacity.
 
 - `name` is a string, defining the name of the material.
 - `ambient` defines the ambient color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
@@ -180,13 +194,34 @@ The material defines the surface properties of all shapes it's assigned to, whic
 - `refraction-index` defines how fast the rays pass through a shape, which results in distortion of the background seen through transparent shapes. To turn it off, set it to 0. To turn it on, set the value higher than 1. A number between 1.05 and 1.5 produces the best results.
 - `opacity` defines how transparent the object is. It has to be a number from 0 to 1, whereas 0 is non-transparent and 1 is fully-see-through.
 
-*Example definition:*
+*Example definitions:*
 
 ```
 define material pink 1 0 1 1 0 1 0 1 1 8 0 0 0
 define material transparent_green 0 1 0 0 1 0 0 1 0 248 1 1.3 .5
 define material reflective_red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
 define material mirror_white 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 8 0.9 0 0
+```
+
+<br />
+<br />
+
+---
+
+### Background
+
+The `background` property defines the background color of the scene, and will be rendered as part of reflections or in full if a ray hits no object. 
+
+```
+define background <color>
+```
+
+- `color` defines the background color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
+
+*Example definition:*
+
+```
+define background 1 0.2 0
 ```
 
 <br />
@@ -204,6 +239,10 @@ There are two definitions for light, one for *ambient lights*, which affect the 
 define light <name> <color> <intensity>
 ```
 
+- `name` is a string, defining the name of the light.
+- `color` defines the light color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
+- `intensity` is the light intensity. It is a single number that has to be in the range of 0 to 1.
+
 *Diffuse Point Light:*
 
 ```
@@ -211,7 +250,7 @@ define light <name> <pos> <color> <intensity>
 ```
 
 - `name` is a string, defining the name of the light.
-- `pos` is the position of the diffuse point light in world space, consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
+- `pos` is the position of the diffuse point light in world space, and it consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
 - `color` defines the light color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
 - `intensity` is the light intensity. It is a single number that has to be in the range of 0 to 1.
 
@@ -220,4 +259,189 @@ define light <name> <pos> <color> <intensity>
 ```
 define light point_light1 -20 200 -40 1 1 1 0.4
 define light ambient_light1 -20 20 -40 1 1 0.2 0.1
+```
+
+<br />
+<br />
+
+---
+
+### Shape
+
+There are currently multiple simple shapes included in the framework, but only the following shapes are fully supported by the renderer.
+
+*Sphere:*
+
+```
+define shape sphere <name> <pos> <radius> <material>
+```
+
+- `name` is a string, defining the name of the sphere.
+- `pos` is the position of a sphere in world space, and it consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
+- `radius` defines the radius of the sphere. It must be a number bigger than 0.
+- `material` is a string that defines the name of the material, which is assigned to the sphere.
+
+*Box (Rectangle):*
+
+```
+define shape box <name> <min> <max> <material>
+```
+
+- `name` is a string, defining the name of the box.
+- `min` is the position of the vertex (corner point) of the box with the smallest values for each the x-, y- and z-axis in world space. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
+- `max` is the position of the vertex (corner point) of the box with the biggest values for each the x-, y- and z-axis in world space. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
+- `material` is a string that defines the name of the material, which is assigned to the box.
+
+*Triangle:*
+
+```
+define shape triangle <name> <vertex> <vertex> <vertex> <material>
+```
+
+- `name` is a string, defining the name of the shape.
+- `vertex` defines a vertex (corner point) of the triangle. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis. *Each triangle consists of three such points, resulting in the final definition having 3 points * 3 axes = 9 numbers.*
+- `material` is a string that defines the name of the material, which is assigned to the triangle.
+
+
+*Example definitions:*
+
+```
+define shape sphere sphere1 40 60 0 30 green_mat
+define shape box box1 -70 -50 -50 70 -30 50 red_mat
+define shape triangle triangle1 0 0 0 10 0 0 10 10 0 blue_mat
+```
+
+<br />
+<br />
+
+---
+
+### Composite
+
+A composite is a group of shapes, which can include other composites. The composite has no geometry of its own, but can be used to transform all its children by simply transforming the composite itself.
+
+A root composite is required in every `.sdf` file. It defines the root node, which includes all shapes in the scene.
+
+```
+define shape composite <name> <1st shape> <2nd shape> ... <nth shape>
+```
+
+- `name` is a string, defining the name of the composite.
+- `shape` is the name of a shape, which may be another composite, which is included as a child in this composite
+
+*Example definitions:*
+
+```
+define shape composite triangles triangle1
+define shape composite spheres sphere1 sphere2
+define shape composite root triangles spheres
+```
+
+<br />
+<br />
+
+---
+
+### Transform
+
+Transformations manipulate certain properties of shapes. They can be applied to a composite as well. There are three types of transformations supported by the renderer, which are `translate`, `scale` and `rotate`.
+
+`translate` is a transformation property that moves the shape or composite along the three axes in world space by the defined values.
+
+```
+define transform <shape> translate <x> <y> <z>
+```
+
+- `shape` is a string, defining the name of the shape or composite that will be transformed.
+- `x` is value by which to move the shape or composite along the x-axis.
+- `y` is value by which to move the shape or composite along the y-axis.
+- `z` is value by which to move the shape or composite along the z-axis.
+
+`scale` is a transformation property that defines how much a shape or composite should shrink or grow. For example, setting a parameter to 2 would scale the shape or composite to double its size along that axis, while 0.5 would make it shrink to half its size.
+
+```
+define transform <shape> scale <x> <y> <z>
+```
+
+- `shape` is a string, defining the name of the shape or composite that will be transformed.
+- `x` is value by which to scale the shape or composite along the x-axis.
+- `y` is value by which to scale the shape or composite along the y-axis.
+- `z` is value by which to scale the shape or composite along the z-axis.
+
+`rotate` is a transformation property that rotates the shape or composite around a given axis by a given angle.
+
+```
+define transform <shape> rotate <angle> <axis>
+```
+
+- `shape` is a string, defining the name of the shape or composite that will be transformed.
+- `angle` is the angle in degrees by which to rotate the shape or composite around the defined axis. For example, to rotate the shape or composite a full round to its original position, the angle would need to be 360.
+- `axis` is a vector that defines the axis around which to rotate the shape or composite. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis. To rotate around the x-axis for example, you would set the parameter to *1 0 0*, and for the y-axis it would be *0 1 0*.
+
+
+*Example definitions:*
+
+```
+define transform spheres translate -20 20 0
+define transform spheres scale 4 4 4
+define transform spheres rotate 70 0 1 0
+```
+
+<br />
+<br />
+
+---
+
+### Animation
+
+Animations define a transformation property, which will be applied over multiple frames (images). Only the first frame will be shown in the renderer window, but all generated frames will still be placed as `.ppm` files in the output folder. 
+
+*Multiple animations can be defined.*
+
+The animation **is only enabled**, when the frames per second are defined. The frames per second can be defined when executing the *raytracer.exe* executable file [using the terminal](#how-to-use).
+
+```
+define animation <shape> <transformation> <axes> <speed> <start-frame> <end-frame>
+```
+
+- `shape` is a string, defining the name of the shape or composite that will be animated.
+- `transformation` is a string that defines the type of transformation, which can be all the available [transformation](#transform) types, for example *translation* or *rotation*.
+- `axes` is a string defining the axis or axes around which to apply the transformation. Possible values could be x, xy, z, and so on.
+- `speed` is the value by which to transform the shape or composite in every frame of the animation.
+- `speed` is the value by which to transform the shape or composite in every frame of the animation. It is a number that should be greater than 0.
+- `start` is a number defining the frame at which to start the animation. This number should be equal to or greater than 0.
+- `end` is number defining the frame at which to end the animation.
+
+*Example definitions:*
+
+```
+define animation root rotate x 1.0 0 20
+define animation root scale xyz 0.5 0 20
+define animation root translate xy 0.6 0 20
+```
+
+<br />
+<br />
+
+---
+
+### Render
+
+The `render` property defines the camera, output file and image properties. It is the only property not defined using the `define` prefix. 
+
+**Every scene needs at least one render definition.** However, only the last `render` definition in the `.sdf` file is valid, and previous `render` definitions will be ignored.
+
+```
+render <camera> <file-name> <width> <height>
+```
+
+- `camera` is a string that defines the camera which is used to render the image.
+- `file-name` is a string that defines the file name of the image that will be rendered.
+- `width` is a number that defines the width of the rendered image.
+- `height` is a number that defines the width of the rendered image.
+
+*Example definition:*
+
+```
+render my_camera image.ppm 600 600
 ```

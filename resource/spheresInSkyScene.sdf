@@ -3,7 +3,7 @@ define camera eye 40.0 0 200 140 0 -1 -0.8 0 1 0
 define light sun 200 1000 200 0.2 0.2 0.2 0.2
 define light sun_2 -20 200 -40 0.2 0.2 0.2 0.2
 define light ambient1 0 0.03 0.1 0.1
-define background 0 0.2 .6
+define background 0 0.2 0.6
 
 define material red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
 define material green 0 1 0 0 1 0 0 1 0 248 0 0 0

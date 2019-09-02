@@ -1,14 +1,20 @@
 define camera eye 20.0 0 200 200 0 -1 -1 0 1 0
 
+# light sources
+
 define light sun 200 1000 200 0.2 0.2 0.2 0.2
 define light sun_2 -20 200 -40 0.2 0.2 0.2 0.2
 define light ambient1 0.2 0.2 0.2 0.2
+
+# materials
 
 define material red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
 define material green 0 1 0 0 1 0 0 1 0 248 0 0 0
 define material blue 0 0 1 0 0 1 0 0 1 32 0 0 0
 define material white 1 1 1 1 1 1 1 1 1 16 0 0 0
 define material gray 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 16 0.1 0 0
+
+# shapes
 
 define shape box box1 -70 -50 -50 70 -30 50 gray
 define shape sphere sphere1 40 60 0 30 red
@@ -20,14 +26,19 @@ define shape composite spheres sphere1 sphere2
 define shape composite boxes box1
 define shape composite root spheres boxes triangles
 
+# transformations
+
 define transform triangles translate -20 20 0
 define transform triangles scale 4 4 4
 
 define transform root rotate 70 0 1 0
 define transform root scale 0.5 0.5 0.5
 
-render eye image.ppm 600 600
-render eye image2.ppm 600 600
+# renderer
+
+render eye animation.ppm 600 600
+
+# animations
 
 define animation root rotate x 1.0 0 20
 #define animation root scale xyz 0.5 0 20
