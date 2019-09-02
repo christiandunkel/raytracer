@@ -50,10 +50,7 @@ std::unique_ptr<Scene> SdfManager::parse(std::string const& file_path) {
 
     // read line for line
     std::string line;
-    int line_counter = 0;
     while (std::getline(file, line)) {
-
-      line_counter++;
       
       // only use lines starting with "define" or "render"
       std::regex REGEX_valid ("^(define|render) .*");
