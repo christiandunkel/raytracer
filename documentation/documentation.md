@@ -153,18 +153,18 @@ In order to write a custom scene, you need to create a `.sdf` file, which will c
 
 ### Camera
 
-The `camera` property defines the camera looking on to the scene. The camera is defined using a position, a vector that points up and a vector that points to the right from its origin.
+The `camera` property defines the camera looking on to the scene. The camera is defined using a position, a vector that points in the direction the camera looks and a vector that points to up from its origin.
 
 *Multiple cameras can be defined.* The [render](#render) property defines, which camera is used to render the scene as an image.
 
 ```
-define camera <name> <pos> <up-vec> <right-vec>
+define camera <name> <pos> <front-vector> <up-vector>
 ```
 
 - `name` is a string, defining the name of the camera.
 - `pos` is the position of the camera in world space and consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
-- `up-vec` is the vector pointing up from the origin of the camera. The parameter consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
-- `right-vec` is the vector pointing to the right from the origin of the camera. The parameter consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
+- `front-vector` is the vector pointing in the direction the camera looks from its origin. The parameter consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
+- `up-vector` is the vector pointing up from the origin of the camera. The parameter consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
 
 *Example definition:*
 
@@ -371,12 +371,12 @@ define transform <shape> scale <x> <y> <z>
 `rotate` is a transformation property that rotates the shape or composite around a given axis by a given angle.
 
 ```
-define transform <shape> rotate <angle> <axis>
+define transform <shape> rotate <angle> <axis-vector>
 ```
 
 - `shape` is a string, defining the name of the shape or composite that will be transformed.
 - `angle` is the angle in degrees by which to rotate the shape or composite around the defined axis. For example, to rotate the shape or composite a full round to its original position, the angle would need to be 360.
-- `axis` is a vector that defines the axis around which to rotate the shape or composite. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis. To rotate around the x-axis for example, you would set the parameter to *1 0 0*, and for the y-axis it would be *0 1 0*.
+- `axis-vector` is a vector that defines the axis around which to rotate the shape or composite. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis. To rotate around the x-axis for example, you would set the parameter to *1 0 0*, and for the y-axis it would be *0 1 0*.
 
 
 *Example definitions:*
@@ -398,7 +398,7 @@ Animations define a transformation property, which will be applied over multiple
 
 *Multiple animations can be defined.*
 
-The animation **is only enabled**, when the frames per second are defined. The frames per second can be defined when executing the *raytracer.exe* executable file [using the terminal](#how-to-use).
+The animation **is only enabled**, when the number of frames to be rendered are defined. The frames can be defined when executing the file *raytracer.exe* [using the terminal](#how-to-use).
 
 ```
 define animation <shape> <transformation> <axes> <speed> <start-frame> <end-frame>
