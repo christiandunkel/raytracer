@@ -11,6 +11,9 @@
 	 - [Linux](#linux)
  - [How to use](#how-to-use)
  - [Creating a scene](#creating-a-scene)
+	 - [Camera](#camera)
+	 - [Material](#material)
+	 - [Light](#light)
 
 <br />
 <br />
@@ -101,6 +104,7 @@ After you have built the project using CMake, you can execute the `raytracer.exe
 ```
 
 Doing so will render the scene file that is currently defined in the source code of `raytracer.cpp`. If you want to render a custom scene with *(optionally)* custom settings, you can do so via parameters in your command.
+
 ```
 .\build\source\raytracer.exe --file "scene.sdf"
 ```
@@ -121,4 +125,92 @@ You can define multiple parameters behind each other. The following parameters c
 
 In order to write a custom scene, you need to create a `.sdf` file, which will contain all the definitions for the scene.
 
-**Every scene needs to have at least one root composite, a material, a shape, a camera and a render definition.**
+*Every scene needs to have at least one root composite, a material, a shape, a camera and a render definition.*
+
+<br />
+<br />
+
+---
+
+### Camera
+
+```
+define camera <name> <pos> <up-vec> <right-vec>
+```
+
+The camera front vector is on the z-axis and looks towards the negative z-values. It is defined using a position, a vector that points up and a vector that points to the right from its origin.
+
+- `name` is a string, defining the name of the camera.
+- `pos` is the position of the camera in world space and consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
+- `up-vec` is the vector pointing up from the origin of the camera. The parameter consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
+- `right-vec` is the vector pointing to the right from the origin of the camera. The parameter consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
+
+*Example definition:*
+
+```
+define camera eye 20.0 0 200 200 0 -1 -1 0 1 0
+```
+
+<br />
+<br />
+
+---
+
+### Material
+
+```
+define material <name> <ambient> <diffuse> <specular> <specular-reflection-exponent> <reflection-coefficient> <refraction-index> <opacity> 
+```
+
+The material defines the surface properties of all shapes it's assigned to, which includes color, reflection, refraction and opacity.
+
+- `name` is a string, defining the name of the material.
+- `ambient` defines the ambient color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
+- `diffuse` defines the diffuse color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
+- `specular` defines the specular color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
+- `specular-reflection-exponent` defines the specular reflection exponent, which should be a number to the power of 2, for example 8, 16 or 32.
+- `reflection-coefficient` defines how strongly the rays should experience partial reflectance when passing through a transparent shape. It should be a number between 0 and 1
+- `refraction-index` defines how fast the rays pass through a shape, which results in distortion of the background seen through transparent shapes. To turn it off, set it to 0. To turn it on, set the value higher than 1. A number between 1.05 and 1.5 produces the best results.
+- `opacity` defines how transparent the object is. It has to be a number from 0 to 1, whereas 0 is non-transparent and 1 is fully-see-through.
+
+*Example definition:*
+
+```
+define material pink 1 0 1 1 0 1 0 1 1 8 0 0 0
+define material transparent_green 0 1 0 0 1 0 0 1 0 248 1 1.3 .5
+define material reflective_red 1 0 0 1 0 0 1 0 0 16 0.2 0 0
+define material mirror_white 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 8 0.9 0 0
+```
+
+<br />
+<br />
+
+---
+
+### Light
+
+There are two definitions for light, one for *ambient lights*, that affect the color and lighting of the whole scene, and *diffuse point lights* work like a light source that has a position in world space and can throw shadows.
+
+*Ambient Light:*
+
+```
+define light <name> <color> <intensity>
+```
+
+*Diffuse Point Light:*
+
+```
+define light <name> <pos> <color> <intensity>
+```
+
+- `name` is a string, defining the name of the light.
+- `pos` is the position of the diffuse point light in world space, consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
+- `color` defines the light color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
+- `intensity` is the light intensity. It is a single number that has to be in the range of 0 to 1.
+
+*Example definitions:*
+
+```
+define light point_light1 -20 200 -40 1 1 1 0.4
+define light ambient_light1 -20 20 -40 1 1 0.2 0.1
+```
