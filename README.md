@@ -24,6 +24,7 @@ If you know what you're doing, you can simply clone or download the repository a
 - [Assignments](/documentation/assignments/)
 - [Solutions](/documentation/solutions_theory_part.md)
 - [UML Diagram](/documentation/uml_diagram.md)
+- [Presentation Slides](/documentation/presentation_slides.pdf)
 
 ## Other
 - [Documentation](/documentation/documentation.md)

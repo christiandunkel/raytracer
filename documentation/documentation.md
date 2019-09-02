@@ -1,5 +1,4 @@
 
-
 # Documentation
 [Back to main page](../README.md)
 
@@ -95,18 +94,18 @@ cd build/source
 
 ## How to use
 
-You can execute `raytrace.exe` file using the terminal with the following command:
+After you have built the project using CMake, you can execute the `raytrace.exe` file from the top level of the directory using the terminal with the following command:
 
 ```
 .\build\source\raytracer.exe
 ```
 
-Doing so will render the scene file that is currently defined in the source code of `raytracer.cpp`. If you want to render a custom scene with (optionally) custom settings, you can do so via parameters in your command.
+Doing so will render the scene file that is currently defined in the source code of `raytracer.cpp`. If you want to render a custom scene with *(optionally)* custom settings, you can do so via parameters in your command.
 ```
 .\build\source\raytracer.exe --file "scene.sdf"
 ```
 
-You can define multiple parameters behind each other. The following parameters exist:
+You can define multiple parameters behind each other. The following parameters currently exist:
 
 - `--file` defines a path to the scene (sdf file)
 - `--frames` defines the amount of images to be generated (if there is an animation definition in the scene file)
