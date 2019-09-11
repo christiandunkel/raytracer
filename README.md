@@ -13,7 +13,7 @@ This program will parse a `.sdf` file and generate a scene from the `defines` in
 
 *(Click [here](documentation/examples/rendered_spheres.png) for the enlarged, higher quality version of the screenshot!)*
 
-The rendering process is completely done using raytracing and supports simples shapes like spheres, rectangles and triangles. The program also supports blinn-phong shading, reflective and refractive surfaces, transparency, anti-aliasing, tone mapping and gamma correction.
+The rendering process is completely done using raytracing and supports simples shapes like spheres, rectangles and triangles. The program also supports blinn-phong shading, reflective surfaces, transparency, refraction, anti-aliasing, tone mapping and gamma correction.
 
 Animation and `.sdf` file generation are also possible. For a demo video of an animated rendered scene, click [here](https://raw.githubusercontent.com/christiandunkel/raytracer/master/documentation/examples/animation_demo.mp4).
 
