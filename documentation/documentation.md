@@ -133,22 +133,25 @@ You can define multiple parameters behind each other. The following parameters c
 
 In order to write a custom scene, you need to create a `.sdf` file, which will contain all the definitions for the scene.
 
-- There can only be one definition per line. 
-- Non-valid definitions produce warnings. 
+### Definitions
+
+Definitions can be used to define a certain aspect of the scene. This can be the camera, which will "film" the scene, or a shape like a sphere, that will be rendered somewhere in the scene.
+
+- There can only be one definition per line in the file.
+- Non-valid definitions may produce warnings in the console. 
 - Any file content besides definitions will be ignored.
 
 *Every scene needs at least one material, camera, root composite, a shape, and a render definition.*
 
-### Definitions
-- [Camera](#camera)
-- [Material](#material)
+- **[Camera](#camera)**
+- **[Material](#material)**
 - [Background](#background)
 - [Light](#light)
-- [Shape](#shape)
-- [Composite](#composite)
+- **[Shape](#shape)**
+- **[Composite](#composite)**
 - [Transform](#transform)
 - [Animation](#animation)
-- [Render](#render)
+- **[Render](#render)**
 
 <br />
 <br />
