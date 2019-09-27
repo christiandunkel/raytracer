@@ -412,7 +412,7 @@ TEST_CASE("Task 6.5", "") {
   std::unique_ptr<Scene> scene_nullptr = sdfs.parse("non_existing_path/file_name.nope");
   REQUIRE(scene_nullptr == nullptr);
 
-  std::unique_ptr<Scene> scene = sdfs.parse("resource/materialsTest.sdf");
+  std::unique_ptr<Scene> scene = sdfs.parse("input/materialsTest.sdf");
 
   // BEST CASE: 1
   // AVERAGE CASE: n/2
