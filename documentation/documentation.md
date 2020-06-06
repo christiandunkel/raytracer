@@ -7,19 +7,19 @@
  - [General remarks](#general-remarks)
  - [Raytracing process](#raytracing-process)
  - [How to install](#how-to-install)
-	 - [Windows](#windows)
-	 - [Linux](#linux)
+     - [Windows](#windows)
+     - [Linux](#linux)
  - [How to use](#how-to-use)
  - [Creating a scene](#creating-a-scene)
-	 - [Camera](#camera)
-	 - [Material](#material)
-	 - [Background](#background)
-	 - [Light](#light)
-	 - [Shape](#shape)
-	 - [Composite](#composite)
-	 - [Transform](#transform)
-	 - [Animation](#animation)
-	 - [Render](#render)
+     - [Camera](#camera)
+     - [Material](#material)
+     - [Background](#background)
+     - [Light](#light)
+     - [Shape](#shape)
+     - [Composite](#composite)
+     - [Transform](#transform)
+     - [Animation](#animation)
+     - [Render](#render)
 
 <br />
 <br />
@@ -27,7 +27,7 @@
 
 ## General remarks
 
-This raytracer completely works on one thread of the CPU, with no support for GPU and multi-threading. Therefore, the rendering rendering process for images, especially with a lot of objects, higher resolution and graphic settings, can range from a few seconds to a few minutes. *Although this time can be considerably reduced, if you build the project as a release build instead of a debug build.*
+This raytracer runs on one thread of the CPU with no support for GPU and multi-threading. Therefore, the rendering process for images, especially with a lot of objects, higher resolution, and graphic settings, can range from a few seconds to a few minutes. *Although this time can be considerably reduced, if you build the project as a release build instead of a "debug" build.*
 
 <br />
 <br />
@@ -35,19 +35,19 @@ This raytracer completely works on one thread of the CPU, with no support for GP
 
 ## Raytracing process
 
-The program reads an `.sdf` file that contains data about a scene. The scene consists of shapes, lights, transformations, cameras, and rendering information. The program will construct a scene from this information that contains the references to all the shapes, cameras, and lights. Using the rendering information, the raytracer will now generate a **Netpbm** image of the _**P**ortable **P**ix**M**ap_ format.
+The program reads a `.sdf` file that contains data about a scene. The scene consists of shapes, lights, transformations, cameras, and rendering information. The program will construct a scene from this information that contains the references to all the shapes, cameras, and lights. Then it will generate a **Netpbm** image of the _**P**ortable **P**ix**M**ap_ format.
 
-![A screenshot of an sdf file containing information about the materials and shapes in a scene.](images/raytracer_sdf_file.png)
+![A screenshot of a sdf file containing information about the materials and shapes in a scene.](images/raytracer_sdf_file.png)
 
 The raytracer will send out a ray for every pixel from the camera. The ray will hit the closest object or the background, which will be the base color. After that, it will reflect and possibly hit other objects or the background, of which the colors will be used to calculate the final color of the given pixel. 
 
-Additionally, rays from all light sources will be sent out towards the intersection of ray and shape to calculate shadows. In addition to ambient lights, they will influence the final color of the pixel as well.
+Additionally, rays from all light sources will be sent out towards the intersection of a ray and a shape to calculate the appropriate shadows. In addition to ambient lights, they will influence the final color of the pixel as well.
 
 ![An illustration of a camera shooting out a ray towards a rectangle, which reflects and hits a circle, and two lights shooting rays at the intersection.](images/raytracer_illustration.png)
 
-There are also options to define reflection, transparency and refraction in the materials. The final colors from the ray will also go through a short post-processing using anti-aliasing, tone mapping and gamma correction.
+There are also options to define reflection, transparency, and refraction in the materials. The final colors from the ray will also go through post-processing using anti-aliasing, tone mapping, and gamma correction.
 
-Finally, the program has generated a full array of all pixels for the image. A picture will then be generated as a `.ppm` file. 
+Finally, the program has a full array of all pixels and generate a `.ppm` image file. 
 
 The program also supports animations and outputs the defined frames as `.ppm` files if an 'animated scene' is selected in the options. There's also an option to generate animated `.sdf` files instead.
 
@@ -57,21 +57,21 @@ The program also supports animations and outputs the defined frames as `.ppm` fi
 
 ## How to install
 
-This project is written in `C++` and build using the tool [CMake](https://cmake.org/), version `3.1` or higher.
+This project is written in `C++` and build using the tool [CMake](https://cmake.org/), version `3.1`, or higher.
 
 The build was tested in *Linux (Ubuntu)* and *Windows 10*.
 
-In order to run this project, you first want to clone the project by entering the following command in the command prompt in windows or the terminal in Linux.
+To run this project, you first have to clone the project by entering the following into your terminal:
 
 ```
 git clone https://github.com/christiandunkel/raytracer
 ```
 
-You can build the project on both Windows and Linux (tested on Ubuntu). But **make sure** to build it as a *Release build* instead of a *Debug build*, which will result in a considerably faster rendering process.
+You can build the project on both Windows and Linux (tested on Ubuntu). But **make sure** to build it as a *Release build* instead of a *Debug build*, which will result in a faster rendering process.
 
 ### Windows
 
-The recommended process for building this project in Windows is to install `Visual Studio 2017` and then `Visual Studio Code`. Install the extensions `CMake 0.0.17` and `CMake Tools 1.1.1` in Visual Studio Code, then open the project folder inside Visual Studio Code. Make a clean build of *source > raytracer* in the new *Cmake* section in the toolbar, and you're done.
+The recommended process for building this project in Windows is to install `Visual Studio 2017` and then `Visual Studio Code`. Install the extensions `CMake 0.0.17` and `CMake Tools 1.1.1` in Visual Studio Code, then open the project folder inside Visual Studio Code. Make a clean build of *source > raytracer* in the new *Cmake* section in the toolbar.
 
 After the build is finished, the program will be executed inside the terminal of Visual Studio Code. If you want to find the `.exe` file, it is located in *build > source > raytracer.exe*.
 
@@ -105,7 +105,7 @@ cd build/source
 
 ## How to use
 
-After you have built the project using CMake, you can execute the `raytracer.exe` file using the terminal. Navigate to the top level directory of the project and use the following command:
+After you have built the project using CMake, you can execute the `raytracer.exe` file using the terminal. Navigate to the top-level directory of the project and use the following command:
 
 ```
 .\build\source\raytracer.exe
@@ -119,11 +119,11 @@ Doing so will render the scene file that is currently defined in the source code
 
 You can define multiple parameters behind each other. The following parameters currently exist:
 
-- `--file` defines a path to the scene (sdf file)
-- `--frames` defines the amount of images to be generated (if there is an animation definition in the scene file)
+- `--file` defines a path to the scene `.sdf` file
+- `--frames` defines the number of images to be generated (if there is an animation definition in the scene file)
 - `--aa` enables anti-aliasing
-- `--recursion` defines the maximum recursion depth per ray *(how often a ray is reflected from surface to surface to determine the pixel color)*
-- `--help` show help menu
+- `--recursion` defines the maximum recursion depth per ray *(how often rays can be reflected from surfaces to determine the pixel color)*
+- `--help` shows a help menu
 
 <br />
 <br />
@@ -131,17 +131,17 @@ You can define multiple parameters behind each other. The following parameters c
 
 ## Creating a scene
 
-In order to write a custom scene, you need to create a `.sdf` file, which will contain all the definitions for the scene.
+To write a custom scene, you need to create a `.sdf` file, which will contain all the definitions for the scene.
 
 ### Definitions
 
-Definitions can be used to define a certain aspect of the scene. This can be the camera, which will "film" the scene, or a shape like a sphere, that will be rendered somewhere in the scene.
+Definitions are used to define a specific aspect of the scene. Such aspects can be the camera, which will "film" the scene, or a shape like a sphere, that will be rendered somewhere in the scene.
 
 - There can only be one definition per line in the file.
 - Non-valid definitions may produce warnings in the console. 
 - Any file content besides definitions will be ignored.
 
-*Every scene needs at least one material, camera, root composite, a shape, and a render definition.*
+*Every scene needs at least one material, camera, and shape defined. It also requires a root composite and a render definition.*
 
 - **[Camera](#camera)**
 - **[Material](#material)**
@@ -160,9 +160,9 @@ Definitions can be used to define a certain aspect of the scene. This can be the
 
 ### Camera
 
-The `camera` property defines the camera looking on to the scene. The camera is defined using a position, a vector that points in the direction the camera looks and a vector that points to up from its origin.
+The `camera` property defines the camera looking on to the scene. The camera is defined using a position and a vector that points in the direction where the camera looks. It also needs another vector that points upwards from its origin.
 
-*Multiple cameras can be defined.* The [render](#render) property defines, which camera is used to render the scene as an image.
+*Multiple cameras can be defined.* The [render](#render) property defines which camera is used to render the scene as an image.
 
 ```
 define camera <name> <pos> <front-vector> <up-vector>
@@ -186,7 +186,7 @@ define camera eye 20.0 0 200 200 0 -1 -1 0 1 0
 
 ### Material
 
-The `material` property defines the surface properties of all shapes it's assigned to, which includes color, reflection, refraction and opacity.
+The `material` property defines the surface properties of all shapes it's assigned to, including color, reflection, refraction, and opacity.
 
 ```
 define material <name> <ambient> <diffuse> <specular> <specular-reflection-exponent> <reflection-coefficient> <refraction-index> <opacity> 
@@ -196,10 +196,10 @@ define material <name> <ambient> <diffuse> <specular> <specular-reflection-expon
 - `ambient` defines the ambient color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
 - `diffuse` defines the diffuse color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
 - `specular` defines the specular color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
-- `specular-reflection-exponent` defines the specular reflection exponent, which should be a number to the power of 2, for example 8, 16 or 32.
+- `specular-reflection-exponent` defines the specular reflection exponent, which should be a number to the power of 2, for example, 8, 16, or 32.
 - `reflection-coefficient` defines how strongly the rays should experience partial reflectance when passing through a transparent shape. It should be a number between 0 and 1
 - `refraction-index` defines how fast the rays pass through a shape, which results in distortion of the background seen through transparent shapes. To turn it off, set it to 0. To turn it on, set the value higher than 1. A number between 1.05 and 1.5 produces the best results.
-- `opacity` defines how transparent the object is. It has to be a number from 0 to 1, whereas 0 is non-transparent and 1 is fully-see-through.
+- `opacity` defines how transparent the object is. It has to be a number from 0 to 1, whereas 0 is non-transparent, and 1 is fully-see-through.
 
 *Example definitions:*
 
@@ -217,7 +217,7 @@ define material mirror_white 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 8 0.9 0 0
 
 ### Background
 
-The `background` property defines the background color of the scene, and will be rendered as part of reflections or in full if a ray hits no object. 
+The `background` property defines the background color of the scene and will be rendered as part of reflections or in full if a ray hits no object. 
 
 ```
 define background <color>
@@ -238,7 +238,7 @@ define background 1 0.2 0
 
 ### Light
 
-There are two definitions for light, one for *ambient lights*, which affect the color and lighting of the whole scene, and *diffuse point lights*, which have a position in world space and can throw shadows.
+There are two definitions for light: *ambient lights*, which affect the color and lighting of the whole scene, and *diffuse point lights*, which have a position in world space and can throw shadows.
 
 *Ambient Light:*
 
@@ -257,7 +257,7 @@ define light <name> <pos> <color> <intensity>
 ```
 
 - `name` is a string, defining the name of the light.
-- `pos` is the position of the diffuse point light in world space, and it consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
+- `pos` is its position in world space, and it consists of 3 numbers for the x-, y- and z-axis that are separated by spaces.
 - `color` defines the light color as a RGB value, consisting of 3 numbers from 0 to 1 that are separated by spaces.
 - `intensity` is the light intensity. It is a single number that has to be in the range of 0 to 1.
 
@@ -275,20 +275,20 @@ define light ambient_light1 -20 20 -40 1 1 0.2 0.1
 
 ### Shape
 
-There are currently multiple simple shapes included in the framework, but only the following shapes are fully supported by the renderer.
+There are currently multiple simple shapes included in the framework, but the renderer fully supports only the following shapes:
 
-*Sphere:*
+*Sphere (3D):*
 
 ```
 define shape sphere <name> <pos> <radius> <material>
 ```
 
 - `name` is a string, defining the name of the sphere.
-- `pos` is the position of a sphere in world space, and it consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
-- `radius` defines the radius of the sphere. It must be a number bigger than 0.
-- `material` is a string that defines the name of the material, which is assigned to the sphere.
+- `pos` is its position in world space, and it consists of 3 numbers separated by spaces for the x-, y- and z-axis.
+- `radius` defines the radius as a number bigger than 0.
+- `material` is a string that defines the name of the material assigned to the sphere.
 
-*Box (Rectangle):*
+*Box (3D):*
 
 ```
 define shape box <name> <min> <max> <material>
@@ -297,9 +297,9 @@ define shape box <name> <min> <max> <material>
 - `name` is a string, defining the name of the box.
 - `min` is the position of the vertex (corner point) of the box with the smallest values for each the x-, y- and z-axis in world space. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
 - `max` is the position of the vertex (corner point) of the box with the biggest values for each the x-, y- and z-axis in world space. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis.
-- `material` is a string that defines the name of the material, which is assigned to the box.
+- `material` is a string that defines the name of the material assigned to the box.
 
-*Triangle:*
+*Triangle (2D):*
 
 ```
 define shape triangle <name> <vertex> <vertex> <vertex> <material>
@@ -307,7 +307,7 @@ define shape triangle <name> <vertex> <vertex> <vertex> <material>
 
 - `name` is a string, defining the name of the shape.
 - `vertex` defines a vertex (corner point) of the triangle. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis. *Each triangle consists of three such points, resulting in the final definition having 3 points * 3 axes = 9 numbers.*
-- `material` is a string that defines the name of the material, which is assigned to the triangle.
+- `material` is a string that defines the name of the material assigned to the triangle.
 
 
 *Example definitions:*
@@ -334,7 +334,7 @@ define shape composite <name> <1st shape> <2nd shape> ... <nth shape>
 ```
 
 - `name` is a string, defining the name of the composite.
-- `shape` is the name of a shape, which may be another composite, which is included as a child in this composite
+- `1st - nth shape` defines the names of shapes. Shapes may also be other composites.
 
 *Example definitions:*
 
@@ -360,20 +360,20 @@ define transform <shape> translate <x> <y> <z>
 ```
 
 - `shape` is a string, defining the name of the shape or composite that will be transformed.
-- `x` is value by which to move the shape or composite along the x-axis.
-- `y` is value by which to move the shape or composite along the y-axis.
-- `z` is value by which to move the shape or composite along the z-axis.
+- `x` defines by how much to move the shape or composite along the x-axis.
+- `y` defines by how much to move the shape or composite along the y-axis.
+- `z` defines by how much to move the shape or composite along the z-axis.
 
-`scale` is a transformation property that defines how much a shape or composite should shrink or grow. For example, setting a parameter to 2 would scale the shape or composite to double its size along that axis, while 0.5 would make it shrink to half its size.
+`scale` is a transformation property defines how much a shape or a composite should shrink or grow. For example, setting a parameter to 2 would scale the shape or composite to double its size along that axis, while 0.5 would make it shrink to half its size.
 
 ```
 define transform <shape> scale <x> <y> <z>
 ```
 
 - `shape` is a string, defining the name of the shape or composite that will be transformed.
-- `x` is value by which to scale the shape or composite along the x-axis.
-- `y` is value by which to scale the shape or composite along the y-axis.
-- `z` is value by which to scale the shape or composite along the z-axis.
+- `x` defines how much to scale the shape or composite along the x-axis.
+- `y` defines how much to scale the shape or composite along the y-axis.
+- `z` defines how much to scale the shape or composite along the z-axis.
 
 `rotate` is a transformation property that rotates the shape or composite around a given axis by a given angle.
 
@@ -383,7 +383,7 @@ define transform <shape> rotate <angle> <axis-vector>
 
 - `shape` is a string, defining the name of the shape or composite that will be transformed.
 - `angle` is the angle in degrees by which to rotate the shape or composite around the defined axis. For example, to rotate the shape or composite a full round to its original position, the angle would need to be 360.
-- `axis-vector` is a vector that defines the axis around which to rotate the shape or composite. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis. To rotate around the x-axis for example, you would set the parameter to *1 0 0*, and for the y-axis it would be *0 1 0*.
+- `axis-vector` is a vector that defines the axis around which to rotate the shape or composite. It consists of 3 numbers that are separated by spaces for the x-, y- and z-axis. To rotate around the x-axis, for example, you would set the parameter to *1 0 0*, and for the y-axis, it would be *0 1 0*.
 
 
 *Example definitions:*
@@ -417,7 +417,7 @@ define animation <shape> <transformation> <axes> <speed> <start-frame> <end-fram
 - `speed` is the value by which to transform the shape or composite in every frame of the animation.
 - `speed` is the value by which to transform the shape or composite in every frame of the animation. It is a number that should be greater than 0.
 - `start` is a number defining the frame at which to start the animation. This number should be equal to or greater than 0.
-- `end` is number defining the frame at which to end the animation.
+- `end` is a number defining the frame at which to end the animation.
 
 *Example definitions:*
 
@@ -434,7 +434,7 @@ define animation root translate xy 0.6 0 20
 
 ### Render
 
-The `render` property defines the camera, output file and image properties. It is the only property not defined using the `define` prefix. 
+The `render` property defines the camera, output file, and image properties. It is the only property not defined using the `define` prefix. 
 
 **Every scene needs at least one render definition.** However, only the last `render` definition in the `.sdf` file is valid, and previous `render` definitions will be ignored.
 
@@ -442,7 +442,7 @@ The `render` property defines the camera, output file and image properties. It i
 render <camera> <file-name> <width> <height>
 ```
 
-- `camera` is a string that defines the camera which is used to render the image.
+- `camera` is a string that defines the camera, which should be used to render the image.
 - `file-name` is a string that defines the file name of the image that will be rendered.
 - `width` is a number that defines the width of the rendered image.
 - `height` is a number that defines the width of the rendered image.
