@@ -7,6 +7,7 @@
 #include <regex>
 #include <sys/stat.h>
 #include <fstream>
+#include <iterator>
 #include <ctype.h>
 #include <cctype>
 #include <sstream>
